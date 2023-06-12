@@ -6,7 +6,7 @@ To use ProtoSchemaGen, follow these steps:
 
 Clone this repository to your local machine:
 
-`git clone https://github.com/your-username/ProtoGen.git`
+`git clone https://github.com/your-username/ProtoSchemaGenerator.git`
 
 Install the required dependencies.
 
