@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package personData;
+
+message EduInfo {
+  School school = 1;
+  Collage collage = 2;
+  int32 marks = 3;
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package personData;
+
+message Person {
+  int32 id = 1;
+  string name = 2;
+  Address address = 3;
+  EduInfo eduInfo = 4;
+}
