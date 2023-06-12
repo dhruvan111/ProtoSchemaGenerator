@@ -10,18 +10,9 @@ Clone this repository to your local machine:
 
 Install the required dependencies.
 
-Build the ProtoGen tool by running the following command in the repository's root directory:
-
-`./gradlew build`
-
 # Usage
-Once you have ProtoGen installed, you can use it to generate protobuf schemas for your Java classes. Here's how you can do it:
 
-1. Place your Java classes in the src/main/java directory.
+You can define your own set of classes and nested dependencies in the root class.
+Put root class name instead of Person.class in the main file and give name of directory where you want to generate .proto files for your root class and its dependencies.
 
-2. Run the ProtoGen tool with the following command:
-`java -jar protogen.jar`
-This command will analyze the Java classes in the src/main/java directory and automatically generate the corresponding .proto files or protobuf schemas.
-
-3. The generated .proto files will be saved in the output/proto directory. You can customize the output directory by modifying the configuration in the config.properties file.
-
+Run the main file and you can see directory folder will be made with all the required proto files with necessary imports.
