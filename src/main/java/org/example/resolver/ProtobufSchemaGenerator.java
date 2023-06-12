@@ -108,7 +108,7 @@ public class ProtobufSchemaGenerator {
                 writer.newLine();
             }
         }
-
+        // adding comment for v1.2
         writer.write("}");
         writer.newLine();
         writer.close();
