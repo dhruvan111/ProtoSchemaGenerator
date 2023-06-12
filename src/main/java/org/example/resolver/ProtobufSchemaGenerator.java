@@ -93,6 +93,7 @@ public class ProtobufSchemaGenerator {
             if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
                 writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
                 writer.newLine();
+                // recursively making .proto files for all non-primitive files
                 generateProtobufSchema(fieldType, outputDirectoryPath);
             }
         }
@@ -121,5 +122,4 @@ public class ProtobufSchemaGenerator {
         writer.newLine();
         writer.close();
     }
-
 }
