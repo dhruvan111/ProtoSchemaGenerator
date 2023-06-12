@@ -2,6 +2,9 @@ syntax = "proto3";
 
 package personData;
 
+import "Address.proto";
+import "EduInfo.proto";
+
 message Person {
   int32 id = 1;
   string name = 2;

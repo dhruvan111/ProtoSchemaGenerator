@@ -28,10 +28,6 @@ public class ProtobufSchemaGenerator {
         }
 
         writeProtobufSchema(rootClass, outputDirectoryPath);
-        for (Class<?> dependency : dependencies) {
-//            System.out.println(dependency);
-            writeProtobufSchema(dependency, outputDirectoryPath);
-        }
     }
 
     private void traverseClass(Class<?> clazz) {
@@ -91,10 +87,22 @@ public class ProtobufSchemaGenerator {
         writer.newLine();
         writer.newLine();
 
+        Field[] fields = clazz.getDeclaredFields();
+        for (Field field : fields) {
+            Class<?> fieldType = field.getType();
+            if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
+                writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+                writer.newLine();
+                generateProtobufSchema(fieldType, outputDirectoryPath);
+            }
+        }
+
+        writer.newLine();
+
         writer.write("message " + clazz.getSimpleName() + " {");
         writer.newLine();
 
-        Field[] fields = clazz.getDeclaredFields();
+
         int tagNumber = 1;
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
