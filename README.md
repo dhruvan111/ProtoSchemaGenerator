@@ -1,7 +1,7 @@
 # ProtoSchemaGenerator
 This repository contains a tool called ProtoGen, which is designed to automate the process of converting Java classes with dependencies into .proto files or protobuf schemas. With ProtoGen, you can generate the necessary protobuf schemas without having to manually write them for every Java bean.
 
-Installation
+# Installation
 To use ProtoSchemaGen, follow these steps:
 
 Clone this repository to your local machine:
@@ -14,7 +14,7 @@ Build the ProtoGen tool by running the following command in the repository's roo
 
 `./gradlew build`
 
-Usage
+# Usage
 Once you have ProtoGen installed, you can use it to generate protobuf schemas for your Java classes. Here's how you can do it:
 
 1. Place your Java classes in the src/main/java directory.
