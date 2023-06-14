@@ -2,13 +2,11 @@ syntax = "proto3";
 
 package personData;
 
-import "Address.proto";
 import "EduInfo.proto";
 
 message Person {
   int32 id = 1;
   string name = 2;
-  Address address = 3;
-  Address address2 = 4;
-  EduInfo eduInfo = 5;
+  EduInfo eduInfo = 3;
+  repeated phoneNo = 4;
 }

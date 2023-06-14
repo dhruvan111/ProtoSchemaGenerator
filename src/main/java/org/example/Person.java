@@ -1,9 +1,11 @@
 package org.example;
 
+import java.util.List;
+
 public class Person{
     int id;
     String name;
-    Address address;
-    Address address2;
     EduInfo eduInfo;
+    List<Address> phoneNo;
 }
+
