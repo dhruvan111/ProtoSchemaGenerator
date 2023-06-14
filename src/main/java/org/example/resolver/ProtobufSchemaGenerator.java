@@ -27,10 +27,10 @@ public class ProtobufSchemaGenerator {
             }
         }
 
-        writeProtobufSchema(rootClass, outputDirectoryPath);
+//        writeProtobufSchema(rootClass, outputDirectoryPath);
         for (Class<?> dependency : dependencies) {
             System.out.println(dependency);
-            writeProtobufSchema(dependency, outputDirectoryPath);
+//            writeProtobufSchema(dependency, outputDirectoryPath);
         }
     }
 

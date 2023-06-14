@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-package personData;
-
-message School {
-  int32 marks = 1;
-}
