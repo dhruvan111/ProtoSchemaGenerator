@@ -5,4 +5,5 @@ public class Person {
     String name;
     Address address;
     EduInfo eduInfo;
+    Address address2;
 }

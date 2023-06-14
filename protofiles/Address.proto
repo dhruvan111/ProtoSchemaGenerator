@@ -5,4 +5,5 @@ package personData;
 message Address {
   string cityName = 1;
   string PIN = 2;
+  Person person = 3;
 }
