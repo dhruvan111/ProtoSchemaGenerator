@@ -2,7 +2,9 @@ package org.example.resolver;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class ProtobufSchemaGenerator {
@@ -71,6 +73,7 @@ public class ProtobufSchemaGenerator {
     }
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
+        // removing classes to prevent from multiple recursive calls
         visitedClasses.remove(clazz);
         String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + ".proto";
         File file = new File(fileName);
@@ -97,11 +100,14 @@ public class ProtobufSchemaGenerator {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            if (importDone.contains(fieldType) || ProtobufUtils.isPrimitiveType(fieldType)){
+            System.out.println(fieldType);
+            if (importDone.contains(fieldType)){
                 continue;
             }
+            if (ProtobufUtils.isPrimitiveType(fieldType)){
+                    // check for list
+            }
             if (visitedClasses.contains(fieldType)) {
-                System.out.println(fieldType);
                 importDone.add(fieldType);
                 writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
                 writer.newLine();
