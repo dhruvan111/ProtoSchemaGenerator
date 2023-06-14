@@ -27,6 +27,7 @@ public class ProtobufSchemaGenerator {
             }
         }
 
+        // creating .proto file for rootClass
         writeProtobufSchema(rootClass, outputDirectoryPath);
     }
 
@@ -51,6 +52,9 @@ public class ProtobufSchemaGenerator {
 
     private void analyzeImports(Class<?>[] interfaces) {
         for (Class<?> iface : interfaces) {
+            if (iface == null){
+                continue;
+            }
             if (!iface.isPrimitive() && !iface.getPackage().getName().startsWith("java.")) {
                 traverseClass(iface);
                 dependencies.add(iface);
@@ -67,6 +71,7 @@ public class ProtobufSchemaGenerator {
     }
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
+        visitedClasses.remove(clazz);
         String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + ".proto";
         File file = new File(fileName);
         if (!file.exists()){
@@ -87,14 +92,26 @@ public class ProtobufSchemaGenerator {
         writer.newLine();
         writer.newLine();
 
+        Set<Class<?>> importDone = new HashSet<>();
+
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
+            if (importDone.contains(fieldType) || ProtobufUtils.isPrimitiveType(fieldType)){
+                continue;
+            }
+            if (visitedClasses.contains(fieldType)) {
+                System.out.println(fieldType);
+                importDone.add(fieldType);
                 writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
                 writer.newLine();
                 // recursively making .proto files for all non-primitive files
-                generateProtobufSchema(fieldType, outputDirectoryPath);
+                writeProtobufSchema(fieldType, outputDirectoryPath);
+            }
+            else {
+                importDone.add(fieldType);
+                writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+                writer.newLine();
             }
         }
 

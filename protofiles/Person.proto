@@ -9,5 +9,6 @@ message Person {
   int32 id = 1;
   string name = 2;
   Address address = 3;
-  EduInfo eduInfo = 4;
+  Address address2 = 4;
+  EduInfo eduInfo = 5;
 }

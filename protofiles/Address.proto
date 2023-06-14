@@ -2,8 +2,10 @@ syntax = "proto3";
 
 package personData;
 
+import "Person.proto";
 
 message Address {
   string cityName = 1;
   string PIN = 2;
+  Person person = 3;
 }
