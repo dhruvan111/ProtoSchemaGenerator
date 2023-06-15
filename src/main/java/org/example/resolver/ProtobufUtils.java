@@ -2,10 +2,7 @@ package org.example.resolver;
 
 import org.example.resolver.prototypes.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProtobufUtils {
 
@@ -21,7 +18,11 @@ public class ProtobufUtils {
         PRIMITIVE_TYPE_MAPPING.put(float.class, float.class);
         PRIMITIVE_TYPE_MAPPING.put(double.class, double.class);
         PRIMITIVE_TYPE_MAPPING.put(java.lang.String.class, string.class);
+
+        // for List types
         PRIMITIVE_TYPE_MAPPING.put(List.class, repeated.class);
+        PRIMITIVE_TYPE_MAPPING.put(ArrayList.class, repeated.class);
+        PRIMITIVE_TYPE_MAPPING.put(LinkedList.class, repeated.class);
     }
 
     public static boolean isPrimitiveType(Class<?> clazz) {
