@@ -1,10 +1,10 @@
 package org.example;
 
 import java.util.Collection;
+import java.util.List;
 
 public class EduInfo {
-    School school;
-    Collage collage;
+    List<School> school;
+    List<Collage> collage;
     int marks;
-
 }

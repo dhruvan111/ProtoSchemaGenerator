@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package personData;
+
+import "School.proto";
+import "Collage.proto";
+
+message EduInfo {
+  repeated School school = 1;
+  repeated Collage collage = 2;
+  int32 marks = 3;
+}
