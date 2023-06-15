@@ -13,6 +13,13 @@ public class ProtobufSchemaGenerator {
     private Set<Class<?>> dependencies;
 
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
+
+        makeDirAndTraverse(rootClass, outputDirectoryPath);
+        // creating .proto file for rootClass
+        writeProtobufSchema(rootClass, outputDirectoryPath);
+    }
+
+    private void makeDirAndTraverse(Class<?> rootClass, String outputDirectoryPath) throws IOException {
         visitedClasses = new HashSet<>();
         dependencies = new HashSet<>();
 
@@ -28,9 +35,6 @@ public class ProtobufSchemaGenerator {
                 throw new IOException("Unable to create file at specified path. It already exists");
             }
         }
-
-        // creating .proto file for rootClass
-        writeProtobufSchema(rootClass, outputDirectoryPath);
     }
 
     private void traverseClass(Class<?> clazz) {
@@ -121,21 +125,7 @@ public class ProtobufSchemaGenerator {
         writeProtobufSchema(fieldType, outputDirectoryPath);
     }
 
-    private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
-        // removing classes to prevent from multiple recursive calls
-        visitedClasses.remove(clazz);
-        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + ".proto";
-        File file = new File(fileName);
-        if (!file.exists()){
-            boolean fileCreated =  file.createNewFile();
-            if (!fileCreated){
-              throw new IOException("Unable to create file at specified path. It already exists");
-            }
-        }
-        clearFile(fileName);
-
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-
+    private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Field[] fields) throws IOException {
         writer.write("syntax = \"proto3\";");
         writer.newLine();
         writer.newLine();
@@ -146,7 +136,6 @@ public class ProtobufSchemaGenerator {
 
         Set<Class<?>> importDone = new HashSet<>();
 
-        Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
 
             Class<?> fieldType = field.getType();
@@ -166,12 +155,13 @@ public class ProtobufSchemaGenerator {
                 onlyImport(fieldType, importDone, writer);
             }
         }
+    }
 
+
+    private void writeMessage(BufferedWriter writer, Class<?> clazz, Field[] fields) throws IOException {
         writer.newLine();
-
         writer.write("message " + clazz.getSimpleName() + " {");
         writer.newLine();
-
 
         int tagNumber = 1;
         for (Field field : fields) {
@@ -201,5 +191,28 @@ public class ProtobufSchemaGenerator {
         writer.write("}");
         writer.newLine();
         writer.close();
+    }
+
+
+    private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
+        // removing classes to prevent from multiple recursive calls
+        visitedClasses.remove(clazz);
+        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + ".proto";
+        File file = new File(fileName);
+        if (!file.exists()){
+            boolean fileCreated =  file.createNewFile();
+            if (!fileCreated){
+              throw new IOException("Unable to create file at specified path. It already exists");
+            }
+        }
+        clearFile(fileName);
+
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        Field[] fields = clazz.getDeclaredFields();
+        // Header writing
+        writeHeaders(writer, outputDirectoryPath, clazz, fields);
+
+        // message writing
+        writeMessage(writer, clazz, fields);
     }
 }
