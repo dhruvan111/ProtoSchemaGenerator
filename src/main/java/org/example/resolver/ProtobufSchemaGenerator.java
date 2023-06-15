@@ -2,10 +2,10 @@ package org.example.resolver;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.nio.Buffer;
+import java.util.*;
 
 public class ProtobufSchemaGenerator {
 
@@ -45,7 +45,18 @@ public class ProtobufSchemaGenerator {
     private void analyzeFields(Field[] fields) {
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
+            if (checkListType(fieldType)){
+                // now taking out its generic class
+                Type genericType = field.getGenericType();
+                if (genericType instanceof ParameterizedType) {
+                    Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+                    if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
+                        traverseClass(genericClass);
+                        dependencies.add(genericClass);
+                    }
+                }
+            }
+            else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
                 traverseClass(fieldType);
                 dependencies.add(fieldType);
             }
@@ -70,6 +81,44 @@ public class ProtobufSchemaGenerator {
         pwOb.flush();
         pwOb.close();
         fwOb.close();
+    }
+
+    private boolean checkListType(Class<?> fieldType){
+        return fieldType.equals(List.class) || fieldType.equals(ArrayList.class) || fieldType.equals(LinkedList.class);
+    }
+
+    private void checkAndUpdateList(Field field, Set<Class<?>> importDone, BufferedWriter writer, String outputDirectoryPath) throws IOException {
+        Class<?> fieldType = field.getType();
+        if (checkListType(fieldType)){
+            Type genericType = field.getGenericType();
+            if (genericType instanceof ParameterizedType) {
+                Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+                if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
+
+                    if (!importDone.contains(genericClass)){
+                        if (visitedClasses.contains(genericClass)){
+                            importWithCall(genericClass, importDone, writer, outputDirectoryPath);
+                        }else{
+                            onlyImport(genericClass, importDone, writer);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void onlyImport(Class<?> fieldType, Set<Class<?>> importDone, BufferedWriter writer) throws IOException {
+        importDone.add(fieldType);
+        writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+        writer.newLine();
+    }
+
+    private void importWithCall(Class<?> fieldType, Set<Class<?>> importDone, BufferedWriter writer, String outputDirectoryPath) throws IOException {
+        importDone.add(fieldType);
+        writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+        writer.newLine();
+        // recursively making .proto files for all non-primitive files
+        writeProtobufSchema(fieldType, outputDirectoryPath);
     }
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
@@ -99,25 +148,22 @@ public class ProtobufSchemaGenerator {
 
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+
             Class<?> fieldType = field.getType();
-            System.out.println(fieldType);
             if (importDone.contains(fieldType)){
                 continue;
             }
-            if (ProtobufUtils.isPrimitiveType(fieldType)){
-                    // check for list
+            else if (ProtobufUtils.isPrimitiveType(fieldType)){
+                // check for List types and update if generic Type present
+                checkAndUpdateList(field, importDone, writer, outputDirectoryPath);
             }
-            if (visitedClasses.contains(fieldType)) {
-                importDone.add(fieldType);
-                writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
-                writer.newLine();
-                // recursively making .proto files for all non-primitive files
-                writeProtobufSchema(fieldType, outputDirectoryPath);
+            else if (visitedClasses.contains(fieldType)) {
+                // import with recursive call
+                importWithCall(fieldType, importDone, writer, outputDirectoryPath);
             }
             else {
-                importDone.add(fieldType);
-                writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
-                writer.newLine();
+                // only import in case of cyclic dependency or dependency file has been made
+                onlyImport(fieldType, importDone, writer);
             }
         }
 
@@ -130,7 +176,18 @@ public class ProtobufSchemaGenerator {
         int tagNumber = 1;
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            if (ProtobufUtils.isPrimitiveType(fieldType)) {
+
+            if (checkListType(fieldType)){
+                Type genericType = field.getGenericType();
+                if (genericType instanceof ParameterizedType) {
+                    Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+                    if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
+                        writer.write("  repeated " + genericClass.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
+                        writer.newLine();
+                    }
+                }
+            }
+            else if (ProtobufUtils.isPrimitiveType(fieldType)) {
                 Class<?> protobufType = ProtobufUtils.getProtobufType(fieldType);
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
@@ -140,7 +197,7 @@ public class ProtobufSchemaGenerator {
                 writer.newLine();
             }
         }
-        // adding comment for v1.2
+
         writer.write("}");
         writer.newLine();
         writer.close();
