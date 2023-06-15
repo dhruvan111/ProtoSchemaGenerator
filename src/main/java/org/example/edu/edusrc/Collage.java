@@ -1,4 +1,4 @@
-package org.example;
+package org.example.edu.edusrc;
 
 import org.example.edu.Universities;
 

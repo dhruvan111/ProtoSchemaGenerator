@@ -1,6 +1,8 @@
-package org.example;
+package org.example.edu;
 
-import java.util.Collection;
+import org.example.edu.edusrc.Collage;
+import org.example.edu.edusrc.School;
+
 import java.util.List;
 
 public class EduInfo {

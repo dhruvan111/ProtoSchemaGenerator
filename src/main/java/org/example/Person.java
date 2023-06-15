@@ -1,8 +1,12 @@
 package org.example;
 
+import org.example.edu.EduInfo;
+import org.example.livinglife.People;
+import org.example.livinglife.info.Address;
+
 import java.util.List;
 
-public class Person extends People{
+public class Person extends People {
     int id;
     String name;
     EduInfo eduInfo;

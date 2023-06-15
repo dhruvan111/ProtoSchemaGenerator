@@ -4,7 +4,6 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.nio.Buffer;
 import java.util.*;
 
 public class ProtobufSchemaGenerator {
@@ -103,6 +102,10 @@ public class ProtobufSchemaGenerator {
         writer.newLine();
 
         writer.write("package personData;");
+        writer.newLine();
+        writer.newLine();
+
+        writer.write("option java_multiple_files = true;");
         writer.newLine();
         writer.newLine();
 
