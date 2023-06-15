@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package personData;
 
+import "Universities.proto";
 
 message School {
-  int32 marks = 1;
+  Universities UniversitiesInstance = 1;
+  int32 marks = 2;
 }

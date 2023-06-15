@@ -2,8 +2,8 @@ syntax = "proto3";
 
 package personData;
 
-import "School.proto";
 import "Collage.proto";
+import "School.proto";
 
 message EduInfo {
   repeated School school = 1;
