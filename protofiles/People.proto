@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package personData;
-
-import "LivingAnimals.proto";
-
-message People {
-  LivingAnimals LivingAnimalsInstance = 1;
-}
