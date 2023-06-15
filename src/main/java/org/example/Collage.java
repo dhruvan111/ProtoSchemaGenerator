@@ -1,5 +1,7 @@
 package org.example;
 
-public class Collage {
+import org.example.edu.Universities;
+
+public class Collage extends Universities {
     int marks;
 }

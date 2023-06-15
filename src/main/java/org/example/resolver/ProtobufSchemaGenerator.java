@@ -15,8 +15,12 @@ public class ProtobufSchemaGenerator {
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
         makeDirAndTraverse(rootClass, outputDirectoryPath);
+
+        for (Class<?> dep:dependencies){
+            System.out.println(dep);
+        }
         // creating .proto file for rootClass
-        writeProtobufSchema(rootClass, outputDirectoryPath);
+//        writeProtobufSchema(rootClass, outputDirectoryPath);
     }
 
     private void makeDirAndTraverse(Class<?> rootClass, String outputDirectoryPath) throws IOException {
@@ -55,14 +59,14 @@ public class ProtobufSchemaGenerator {
                 if (genericType instanceof ParameterizedType) {
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
                     if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
-                        traverseClass(genericClass);
-                        dependencies.add(genericClass);
+//                        traverseClass(genericClass);
+//                        dependencies.add(genericClass);
                     }
                 }
             }
             else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
-                traverseClass(fieldType);
-                dependencies.add(fieldType);
+//                traverseClass(fieldType);
+//                dependencies.add(fieldType);
             }
         }
     }
@@ -73,7 +77,7 @@ public class ProtobufSchemaGenerator {
                 continue;
             }
             if (!iface.isPrimitive() && !iface.getPackage().getName().startsWith("java.")) {
-                traverseClass(iface);
+//                traverseClass(iface);
                 dependencies.add(iface);
             }
         }
