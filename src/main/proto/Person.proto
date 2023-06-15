@@ -1,7 +1,0 @@
-syntax = "proto3";
-
-message person{
-  int32 id = 1;
-  string name = 2;
-  repeated int64 phoneNo = 3;
-}

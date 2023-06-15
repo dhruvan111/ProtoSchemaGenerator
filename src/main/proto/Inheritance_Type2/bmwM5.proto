@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message car{
+  int32 capacity = 1;
+}
+
+message bmw{
+  car bmwCar = 1;
+  string logo = 2;
+}
+
+message bmwM5{
+  int32 id = 1;
+  int32 price = 2;
+  bmw M5 = 3;
+}

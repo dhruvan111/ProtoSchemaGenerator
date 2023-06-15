@@ -1,0 +1,7 @@
+syntax = "proto3";
+import "car.proto";
+
+message bmw{
+  car bmw_car = 1;
+  string logo = 2;
+}
