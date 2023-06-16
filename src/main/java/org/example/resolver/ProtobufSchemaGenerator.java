@@ -202,7 +202,7 @@ public class ProtobufSchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + ".proto";
+        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName().toLowerCase() + ".proto";
         File file = new File(fileName);
         if (!file.exists()){
             boolean fileCreated =  file.createNewFile();

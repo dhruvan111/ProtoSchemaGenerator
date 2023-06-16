@@ -1,0 +1,17 @@
+syntax = "proto3";
+package animals1;
+option java_multiple_files = true;
+
+message Animal{
+  string name = 1;
+  bool hunt = 2;
+
+  message Tiger{
+    string type = 1;
+    int32 capacity = 2;
+    int32 id = 3;
+    Animal animalObject = 4;
+  }
+
+  Tiger tiger = 3;
+}
