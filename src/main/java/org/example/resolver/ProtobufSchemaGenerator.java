@@ -133,6 +133,9 @@ public class ProtobufSchemaGenerator {
 
         // Imports for Fields
         for (Class<?> dependency:fields){
+            if (ProtobufUtils.isPrimitiveType(dependency)){
+                continue;
+            }
             if (!schemaGen.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath);
                 importDone.add(dependency);
@@ -175,7 +178,12 @@ public class ProtobufSchemaGenerator {
                 if (genericType instanceof ParameterizedType) {
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
                     if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
-                        writer.write("  repeated " + genericClass.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
+
+                        String className = genericClass.getSimpleName();
+                        if (ProtobufUtils.isPrimitiveType(genericClass)){
+                            className = ProtobufUtils.getProtobufType(genericClass).getSimpleName();
+                        }
+                        writer.write("  repeated " + className + " " + field.getName() + " = " + (tagNumber++) + ";");
                         writer.newLine();
                     }
                 }
