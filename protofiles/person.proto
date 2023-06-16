@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package personData;
+
+option java_multiple_files = true;
+
+import "School.proto";
+import "Address.proto";
+
+message Person {
+  repeated Addresses addresses = 1;
+
+  message Addresses {
+    repeated Address tem = 1;
+  }
+  repeated int32 marks = 2;
+  repeated Schools schools = 3;
+
+  message Schools {
+    repeated School tem = 1;
+  }
+}

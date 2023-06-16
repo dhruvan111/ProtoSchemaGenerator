@@ -1,15 +1,14 @@
 package org.example;
 
-import org.example.edu.EduInfo;
-import org.example.livinglife.People;
+import org.example.edu.edusrc.School;
 import org.example.livinglife.info.Address;
 
+import java.net.Inet4Address;
 import java.util.List;
 
-public class Person extends People {
-    private int id;
-    String name;
-    EduInfo eduInfo;
-    List<String> phoneNo;
+public class Person{
+    List<List<Address>> addresses;
+    List<Integer> marks;
+    List<List<School>> schools;
 }
 

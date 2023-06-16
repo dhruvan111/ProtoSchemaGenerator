@@ -36,16 +36,28 @@ public class ProtobufSchemaGenerator {
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
             // checking if there is List<Class<?>>
-            if (checkListType(fieldType)){
-                // now taking out its generic class
+
+            if (checkListType(fieldType)) {
                 Type genericType = field.getGenericType();
                 if (genericType instanceof ParameterizedType) {
+
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-                    if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
-                        dependencies.add(genericClass);
+                    if (typeArguments.length > 0 && typeArguments[0] instanceof ParameterizedType) {
+
+                        // nested List
+                        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
+                        if (typeArguments2.length > 0 && typeArguments2[0] instanceof Class<?> innerClass) {
+                            dependencies.add(innerClass);
+                        }
+                    }
+                    else if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> innerClass) {
+
+                        // simple List
+                        dependencies.add(innerClass);
                     }
                 }
             }
+
             else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
                 dependencies.add(fieldType);
             }
@@ -91,6 +103,14 @@ public class ProtobufSchemaGenerator {
         writeProtobufSchema(fieldType, outputDirectoryPath);
     }
 
+    private String capitalize(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
+    }
+
+
     private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         Set<Class<?>> importDone, fields;
@@ -133,6 +153,7 @@ public class ProtobufSchemaGenerator {
 
         // Imports for Fields
         for (Class<?> dependency:fields){
+            System.out.println(dependency);
             if (ProtobufUtils.isPrimitiveType(dependency)){
                 continue;
             }
@@ -174,20 +195,53 @@ public class ProtobufSchemaGenerator {
             Class<?> fieldType = field.getType();
 
             if (checkListType(fieldType)){
+                String nestedListName = capitalize(field.getName());
                 Type genericType = field.getGenericType();
-                if (genericType instanceof ParameterizedType) {
-                    Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-                    if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> genericClass) {
 
-                        String className = genericClass.getSimpleName();
-                        if (ProtobufUtils.isPrimitiveType(genericClass)){
-                            className = ProtobufUtils.getProtobufType(genericClass).getSimpleName();
+                if (genericType instanceof ParameterizedType) {
+
+                    Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+
+                    if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
+
+                        // nested List
+                        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
+                        if (typeArguments2.length>0 && typeArguments2[0] instanceof Class<?> innerClass){
+
+                            String elementName = null;
+                            if (ProtobufUtils.isPrimitiveType(innerClass)){
+                                elementName = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
+                            }
+                            else{
+                                elementName = innerClass.getSimpleName();
+                            }
+                            writer.write("  repeated " + nestedListName + " " + field.getName() + " = " + (tagNumber++) + ";");
+                            writer.newLine();
+                            writer.newLine();
+                            writer.write("  message " + nestedListName + " {");
+                            writer.newLine();
+                            writer.write("    repeated " + elementName + " tem = 1;");
+                            writer.newLine();
+                            writer.write("  }");
+                            writer.newLine();
                         }
-                        writer.write("  repeated " + className + " " + field.getName() + " = " + (tagNumber++) + ";");
-                        writer.newLine();
+                    }
+                    else {
+                        // Not nested
+                        if (typeArguments[0] instanceof Class<?> innerClass){
+                            if (ProtobufUtils.isPrimitiveType(innerClass)){
+                                writer.write("  repeated " + ProtobufUtils.getProtobufType(innerClass).getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
+                                writer.newLine();
+                            }
+                            else {
+                                writer.write("  repeated " + innerClass.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
+                                writer.newLine();
+                            }
+                        }
                     }
                 }
             }
+
             else if (ProtobufUtils.isPrimitiveType(fieldType)) {
 
                 Class<?> protobufType = ProtobufUtils.getProtobufType(fieldType);
