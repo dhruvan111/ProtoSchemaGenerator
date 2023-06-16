@@ -10,6 +10,8 @@ public class ProtobufSchemaGenerator {
 
     private Set<Class<?>> schemaGen;
 
+
+
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
         schemaGen = new HashSet<>();
