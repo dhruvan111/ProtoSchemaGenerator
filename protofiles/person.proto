@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+package personData;
+
+option java_multiple_files = true;
+
+
+message Person {
+  repeated AddressesList addresses = 1;
+  message AddressesList {
+
+    repeated AddressesList1 addresses = 1;
+    message AddressesList1 {
+
+      repeated int32 addresses = 1;
+    }
+  }
+
+  repeated string names = 2;
+
+}

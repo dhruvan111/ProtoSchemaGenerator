@@ -167,14 +167,30 @@ public class ProtobufSchemaGenerator {
         }
     }
 
-    private void nestedList(BufferedWriter writer, Type[] typeArguments, String nestedListName, Field field, int tagNumber) throws IOException {
+    private void nestedList(BufferedWriter writer, Type[] typeArguments, String nestedListName, Field field, int tagNumber, int cnt) throws IOException {
 
-        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
-        if (typeArguments2.length>0 && typeArguments2[0] instanceof ParameterizedType){
+        if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
+            String currListName = null;
             // again nested List
-            nestedList(writer, typeArguments2, nestedListName, field, tagNumber);
+            if (cnt>0){
+                currListName = nestedListName + cnt;
+            }
+            else {
+                currListName = nestedListName;
+            }
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write("  repeated " + currListName + " " + field.getName() + " = " + (tagNumber) + ";");
+            writer.newLine();
+
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write("  message " + currListName + " {");
+            writer.newLine();
+            writer.newLine();
+            Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
+            cnt++;
+            nestedList(writer, typeArguments2, nestedListName, field, tagNumber, cnt);
         }
-        else if (typeArguments2.length>0 && typeArguments2[0] instanceof Class<?> innerClass){
+        else if (typeArguments.length>0 && typeArguments[0] instanceof Class<?> innerClass){
 
             String elementName = null;
             if (ProtobufUtils.isPrimitiveType(innerClass)){
@@ -183,17 +199,16 @@ public class ProtobufSchemaGenerator {
             else{
                 elementName = innerClass.getSimpleName();
             }
-            writer.write("  repeated " + nestedListName + " " + field.getName() + " = " + (tagNumber++) + ";");
-            writer.newLine();
-            writer.newLine();
-            writer.write("  message " + nestedListName + " {");
-            writer.newLine();
-            writer.write("    repeated " + elementName + " tem = 1;");
-            writer.newLine();
-            writer.write("  }");
-            writer.newLine();
-        }
 
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write("  repeated " + elementName + " " + field.getName() + " = " + (tagNumber) + ";");
+            writer.newLine();
+            for (int i=cnt; i>0; i--){
+                writer.write("  ".repeat(i-1));
+                writer.write("  }");
+                writer.newLine();
+            }
+        }
     }
 
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
@@ -229,47 +244,9 @@ public class ProtobufSchemaGenerator {
                 if (genericType instanceof ParameterizedType) {
 
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-
-
-                    if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
-
-                        // nested List
-
-
-                        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
-                        if (typeArguments2.length>0 && typeArguments2[0] instanceof Class<?> innerClass){
-
-                            String elementName = null;
-                            if (ProtobufUtils.isPrimitiveType(innerClass)){
-                                elementName = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
-                            }
-                            else{
-                                elementName = innerClass.getSimpleName();
-                            }
-                            writer.write("  repeated " + nestedListName + " " + field.getName() + " = " + (tagNumber++) + ";");
-                            writer.newLine();
-                            writer.newLine();
-                            writer.write("  message " + nestedListName + " {");
-                            writer.newLine();
-                            writer.write("    repeated " + elementName + " tem = 1;");
-                            writer.newLine();
-                            writer.write("  }");
-                            writer.newLine();
-                        }
-                    }
-                    else {
-                        // Not nested
-                        if (typeArguments.length>0 && typeArguments[0] instanceof Class<?> innerClass){
-                            if (ProtobufUtils.isPrimitiveType(innerClass)){
-                                writer.write("  repeated " + ProtobufUtils.getProtobufType(innerClass).getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
-                                writer.newLine();
-                            }
-                            else {
-                                writer.write("  repeated " + innerClass.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
-                                writer.newLine();
-                            }
-                        }
-                    }
+                    nestedList(writer, typeArguments, nestedListName, field, tagNumber, 0);
+                    tagNumber++;
+                    writer.newLine();
                 }
             }
 
