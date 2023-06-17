@@ -4,18 +4,17 @@ package personData;
 
 option java_multiple_files = true;
 
+import "Address.proto";
 
 message Person {
-  repeated AddressesList addresses = 1;
-  message AddressesList {
+  repeated AddressList address = 1;
+  message AddressList {
 
-    repeated AddressesList1 addresses = 1;
-    message AddressesList1 {
+    repeated AddressList1 address = 1;
+    message AddressList1 {
 
-      repeated int32 addresses = 1;
+      repeated Address address = 1;
     }
   }
-
-  repeated string names = 2;
 
 }

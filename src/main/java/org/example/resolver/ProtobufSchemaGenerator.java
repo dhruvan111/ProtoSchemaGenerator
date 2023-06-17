@@ -35,23 +35,17 @@ public class ProtobufSchemaGenerator {
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
 
-            // checking if there is List<Class<?>> or ArrayList<Class<?>> or ...
+            // checking for nestedList Type
             if (ProtobufUtils.isPrimitiveListType(fieldType)) {
                 Type genericType = field.getGenericType();
+
                 if (genericType instanceof ParameterizedType) {
 
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-                    if (typeArguments.length > 0 && typeArguments[0] instanceof ParameterizedType) {
-
-                        // nested List
-                        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
-                        if (typeArguments2.length > 0 && typeArguments2[0] instanceof Class<?> innerClass) {
-                            dependencies.add(innerClass);
-                        }
+                    while (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
+                        typeArguments = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
                     }
-                    else if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> innerClass) {
-
-                        // simple List
+                    if (typeArguments.length > 0 && typeArguments[0] instanceof Class<?> innerClass){
                         dependencies.add(innerClass);
                     }
                 }
