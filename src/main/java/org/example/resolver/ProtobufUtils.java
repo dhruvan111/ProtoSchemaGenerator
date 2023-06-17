@@ -57,4 +57,5 @@ public class ProtobufUtils {
     public static Class<?> getProtobufListType(Class<?> clazz){
         return PRIMITIVE_LIST_MAPPING.get(clazz);
     }
+
 }

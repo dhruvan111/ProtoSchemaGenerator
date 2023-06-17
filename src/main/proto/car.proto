@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+message Car{
+  // List<List<List<int32>>> pass;
+
+  repeated passList pass = 1;
+  message passList{
+    repeated passList1 pass = 1;
+    message passList1{
+      repeated int32 pass = 1;
+    }
+  }
+}
+
+message Car1{
+
+  // List<List<int32>> pass;
+
+  repeated passList pass = 1;
+  message passList{
+    repeated int32 pass = 1;
+  }
+}
+
+message Car2{
+
+  // List<int32> pass;
+
+  repeated int32 pass = 1;
+}

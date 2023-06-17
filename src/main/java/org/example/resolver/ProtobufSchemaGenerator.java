@@ -9,9 +9,6 @@ import java.util.*;
 public class ProtobufSchemaGenerator {
 
     private Set<Class<?>> schemaGen;
-
-
-
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
         schemaGen = new HashSet<>();
@@ -37,9 +34,9 @@ public class ProtobufSchemaGenerator {
 
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            // checking if there is List<Class<?>>
 
-            if (checkListType(fieldType)) {
+            // checking if there is List<Class<?>> or ArrayList<Class<?>> or ...
+            if (ProtobufUtils.isPrimitiveListType(fieldType)) {
                 Type genericType = field.getGenericType();
                 if (genericType instanceof ParameterizedType) {
 
@@ -89,10 +86,6 @@ public class ProtobufSchemaGenerator {
         fwOb.close();
     }
 
-    private boolean checkListType(Class<?> fieldType){
-        return fieldType.equals(List.class) || fieldType.equals(ArrayList.class) || fieldType.equals(LinkedList.class);
-    }
-
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer) throws IOException {
         writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
         writer.newLine();
@@ -113,12 +106,7 @@ public class ProtobufSchemaGenerator {
     }
 
 
-    private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
-
-        Set<Class<?>> importDone, fields;
-        importDone = new HashSet<>();
-        fields = analyzeFields(clazz.getDeclaredFields());
-
+    private void hardCodeHeaders(BufferedWriter writer) throws IOException {
         writer.write("syntax = \"proto3\";");
         writer.newLine();
         writer.newLine();
@@ -130,6 +118,16 @@ public class ProtobufSchemaGenerator {
         writer.write("option java_multiple_files = true;");
         writer.newLine();
         writer.newLine();
+    }
+
+
+    private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
+
+        Set<Class<?>> importDone, fields;
+        importDone = new HashSet<>();
+        fields = analyzeFields(clazz.getDeclaredFields());
+
+        hardCodeHeaders(writer);
 
         // Import for interfaces & Parent class
         for (Class<?> dependency:interfaces){
@@ -155,7 +153,6 @@ public class ProtobufSchemaGenerator {
 
         // Imports for Fields
         for (Class<?> dependency:fields){
-            System.out.println(dependency);
             if (ProtobufUtils.isPrimitiveType(dependency)){
                 continue;
             }
@@ -170,6 +167,34 @@ public class ProtobufSchemaGenerator {
         }
     }
 
+    private void nestedList(BufferedWriter writer, Type[] typeArguments, String nestedListName, Field field, int tagNumber) throws IOException {
+
+        Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
+        if (typeArguments2.length>0 && typeArguments2[0] instanceof ParameterizedType){
+            // again nested List
+            nestedList(writer, typeArguments2, nestedListName, field, tagNumber);
+        }
+        else if (typeArguments2.length>0 && typeArguments2[0] instanceof Class<?> innerClass){
+
+            String elementName = null;
+            if (ProtobufUtils.isPrimitiveType(innerClass)){
+                elementName = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
+            }
+            else{
+                elementName = innerClass.getSimpleName();
+            }
+            writer.write("  repeated " + nestedListName + " " + field.getName() + " = " + (tagNumber++) + ";");
+            writer.newLine();
+            writer.newLine();
+            writer.write("  message " + nestedListName + " {");
+            writer.newLine();
+            writer.write("    repeated " + elementName + " tem = 1;");
+            writer.newLine();
+            writer.write("  }");
+            writer.newLine();
+        }
+
+    }
 
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
@@ -196,17 +221,21 @@ public class ProtobufSchemaGenerator {
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
 
-            if (checkListType(fieldType)){
-                String nestedListName = capitalize(field.getName());
+            // checking for any Collection Type
+            if (ProtobufUtils.isPrimitiveListType(fieldType)){
+                String nestedListName = capitalize(field.getName()) + "List";
                 Type genericType = field.getGenericType();
 
                 if (genericType instanceof ParameterizedType) {
 
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
 
+
                     if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
 
                         // nested List
+
+
                         Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
                         if (typeArguments2.length>0 && typeArguments2[0] instanceof Class<?> innerClass){
 
@@ -230,7 +259,7 @@ public class ProtobufSchemaGenerator {
                     }
                     else {
                         // Not nested
-                        if (typeArguments[0] instanceof Class<?> innerClass){
+                        if (typeArguments.length>0 && typeArguments[0] instanceof Class<?> innerClass){
                             if (ProtobufUtils.isPrimitiveType(innerClass)){
                                 writer.write("  repeated " + ProtobufUtils.getProtobufType(innerClass).getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                                 writer.newLine();
