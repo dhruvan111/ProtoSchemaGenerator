@@ -182,6 +182,9 @@ public class ProtobufSchemaGenerator {
             writer.newLine();
             Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
             cnt++;
+            if (cnt == 1){
+                tagNumber = 1;
+            }
             nestedList(writer, typeArguments2, nestedListName, field, tagNumber, cnt);
         }
         else if (typeArguments.length>0 && typeArguments[0] instanceof Class<?> innerClass){

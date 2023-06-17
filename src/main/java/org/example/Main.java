@@ -3,6 +3,7 @@ package org.example;
 import animals.Animal;
 import animals.Lion;
 import org.example.resolver.ProtobufSchemaGenerator;
+import org.example.test.ExampleBean;
 
 import java.io.IOException;
 import java.util.Arrays;

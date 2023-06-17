@@ -9,6 +9,7 @@ public class ProtobufUtils {
 
     private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_MAPPING = new HashMap<>();
     private static final Map<Class<?>, Class<?>> PRIMITIVE_LIST_MAPPING = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_MAP_MAPPING = new HashMap<>();
 
     static {
         PRIMITIVE_TYPE_MAPPING.put(boolean.class, int32.class);
@@ -42,6 +43,14 @@ public class ProtobufUtils {
         PRIMITIVE_LIST_MAPPING.put(TreeSet.class, repeated.class);
     }
 
+    static {
+        PRIMITIVE_MAP_MAPPING.put(Map.class, map.class);
+        PRIMITIVE_MAP_MAPPING.put(SortedMap.class, map.class);
+        PRIMITIVE_MAP_MAPPING.put(TreeMap.class, map.class);
+        PRIMITIVE_MAP_MAPPING.put(HashMap.class, map.class);
+        PRIMITIVE_MAP_MAPPING.put(LinkedHashMap.class, map.class);
+    }
+
     public static boolean isPrimitiveType(Class<?> clazz) {
         return PRIMITIVE_TYPE_MAPPING.containsKey(clazz);
     }
@@ -54,8 +63,15 @@ public class ProtobufUtils {
         return PRIMITIVE_LIST_MAPPING.containsKey(clazz);
     }
 
-    public static Class<?> getProtobufListType(Class<?> clazz){
+    public static Class<?> getProtoListType(Class<?> clazz){
         return PRIMITIVE_LIST_MAPPING.get(clazz);
     }
 
+    public static boolean isPrimitiveMapType(Class<?> clazz){
+        return PRIMITIVE_MAP_MAPPING.containsKey(clazz);
+    }
+
+    public static Class<?> getProtoMapType(Class<?> clazz){
+        return PRIMITIVE_MAP_MAPPING.get(clazz);
+    }
 }
