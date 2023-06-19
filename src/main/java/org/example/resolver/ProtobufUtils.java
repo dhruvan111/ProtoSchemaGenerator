@@ -17,10 +17,11 @@ public class ProtobufUtils {
         PRIMITIVE_TYPE_MAPPING.put(short.class, int32.class);
         PRIMITIVE_TYPE_MAPPING.put(int.class, int32.class);
         PRIMITIVE_TYPE_MAPPING.put(long.class, int64.class);
-        PRIMITIVE_TYPE_MAPPING.put(java.lang.Integer.class, int32.class);
         PRIMITIVE_TYPE_MAPPING.put(float.class, float.class);
         PRIMITIVE_TYPE_MAPPING.put(double.class, double.class);
         PRIMITIVE_TYPE_MAPPING.put(java.lang.String.class, string.class);
+        PRIMITIVE_TYPE_MAPPING.put(java.lang.Integer.class, int32.class);
+        PRIMITIVE_TYPE_MAPPING.put(java.lang.Long.class, int64.class);
     }
 
     static {

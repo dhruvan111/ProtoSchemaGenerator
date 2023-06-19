@@ -208,7 +208,7 @@ public class ProtobufSchemaGenerator {
         }
     }
 
-    private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
+    private int schemaDependency(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         writer.newLine();
         writer.write("message " + clazz.getSimpleName() + " {");
@@ -227,6 +227,12 @@ public class ProtobufSchemaGenerator {
             writer.write("  " + dependency.getSimpleName() + " " + dependencyName + " = " + (tagNumber++) + ";");
             writer.newLine();
         }
+        return tagNumber;
+    }
+
+    private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
+
+        int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
 
         // for every Field
         Field[] fields = clazz.getDeclaredFields();
@@ -245,6 +251,10 @@ public class ProtobufSchemaGenerator {
                     tagNumber++;
                     writer.newLine();
                 }
+            }
+
+            else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
+
             }
 
             else if (ProtobufUtils.isPrimitiveType(fieldType)) {
