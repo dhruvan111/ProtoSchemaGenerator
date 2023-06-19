@@ -213,6 +213,7 @@ public class ProtobufSchemaGenerator {
                     complexMap(typeArguments2, field, writer, 1, cnt-1);
                 }
             }
+            writer.write("  }");
         }
         else if (typeArguments.length>0 && typeArguments[0] instanceof Class<?> innerClass){
 
@@ -224,12 +225,6 @@ public class ProtobufSchemaGenerator {
             writer.write("  ".repeat(Math.max(0, cnt)));
             writer.write("  repeated " + className + " " + elementName + " = " + (tagNumber) + ";");
             writer.newLine();
-
-            for (int i=cnt; i>0; i--){
-                writer.write("  ".repeat(i-1));
-                writer.write("  }");
-                writer.newLine();
-            }
         }
     }
 
@@ -252,8 +247,6 @@ public class ProtobufSchemaGenerator {
         writer.newLine();
         writer.newLine();
 
-//        cnt++;
-        // checking for first Arg
         if (firstArg instanceof ParameterizedType){
             Type[] typeArguments2 = ((ParameterizedType) firstArg).getActualTypeArguments();
             if (typeArguments2.length == 1){
@@ -306,13 +299,9 @@ public class ProtobufSchemaGenerator {
             writer.write("  ".repeat(Math.max(0, cnt)));
             writer.write("  " + keyName + " value = 2;");
             writer.newLine();
-
-//            for (int i=cnt; i>0; i--){
-//                writer.write("  ".repeat(i-1));
-                writer.write("  }");
-                writer.newLine();
-//            }
         }
+        writer.write("  }");
+        writer.newLine();
 
     }
 
@@ -368,74 +357,6 @@ public class ProtobufSchemaGenerator {
                 writer.write("  ".repeat(i-1));
                 writer.write("  }");
                 writer.newLine();
-            }
-        }
-    }
-
-
-    private Class<?> nestedMapFirstArg(Type typeArg){
-        Class<?> firstArgClass = (Class<?>) typeArg;
-        if (ProtobufUtils.isPrimitiveKeyType(firstArgClass)){
-            return ProtobufUtils.getProtoKeyType(firstArgClass);
-        }
-        throw new UnsupportedOperationException("Primitive type not supported: " + typeArg.getTypeName());
-    }
-
-    private void nestedMapSecondArg(BufferedWriter writer,Type typeArg,Class<?> firstArg,Field field, int tagNumber,int cnt) throws IOException {
-
-        if (typeArg instanceof Class<?> innerClass){
-
-            String secondPrimitiveClass = innerClass.getSimpleName();
-            if (ProtobufUtils.isPrimitiveType(innerClass)){
-                secondPrimitiveClass = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
-            }
-
-            writer.write("  ".repeat(Math.max(0, 2*cnt)));
-            writer.write("  map<" + firstArg.getSimpleName() + "," + secondPrimitiveClass + "> " + field.getName() + " = " + tagNumber + ";");
-            writer.newLine();
-        }
-        else if (typeArg instanceof ParameterizedType){
-
-            // here typeArg is of Parameterized, either List or Map
-            Type[] typeArguments2 = ((ParameterizedType) typeArg).getActualTypeArguments();
-
-            if (typeArguments2.length==1){
-                // List Type
-
-                if (typeArguments2[0] instanceof Class<?> innerClass){
-                    String secondArgName = innerClass.getSimpleName() + "List";
-                    writer.write("  map<" + firstArg.getSimpleName() + "," + secondArgName + "> " + field.getName() + " = " + tagNumber + ";");
-                    writer.newLine();
-                    writer.write("  message " + secondArgName + "{");
-                    writer.newLine();
-
-                    String innerClassType = innerClass.getSimpleName();
-                    if (ProtobufUtils.isPrimitiveType(innerClass)){
-                        innerClassType = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
-                    }
-
-                    writer.write("    repeated " + innerClassType + " id = 1;");
-                    writer.newLine();
-                    writer.write("  }");
-                    writer.newLine();
-                }
-                else {
-                    // nested list
-                    // Not configured yet;
-                }
-            }
-            else{
-                // Map Type
-                Class<?> firstArgClass = nestedMapFirstArg(typeArguments2[0]);
-                String innerMap = "innerMap";
-                writer.write("  map<" + firstArg.getSimpleName() + "," + innerMap + "> " + field.getName() + " = " + tagNumber + ";");
-                writer.newLine();
-
-                writer.write("  message " + innerMap + "{");
-                writer.newLine();
-                cnt++;
-                nestedMapSecondArg(writer, typeArguments2[1], firstArgClass, field, tagNumber, cnt);
-                writer.write("  }");
             }
         }
     }

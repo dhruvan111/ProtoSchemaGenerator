@@ -16,7 +16,5 @@ message People {
     message AnimalsList1 {
 
       repeated School animals2 = 1;
-    }
-  }
-
+  }  }
 }

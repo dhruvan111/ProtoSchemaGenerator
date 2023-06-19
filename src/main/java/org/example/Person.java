@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class Person {
 
-//    Map<List<School>, Map<Map<People, People>, Collage>> res;
+    Map<List<School>, Map<Map<People, People>, Collage>> res;
 
-    Map<School,Map<Map<People, People>, Collage>> res;
+    Map<School,Map<Map<People, People>, Collage>> res1;
 }
