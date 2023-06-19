@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package personData;
+
+option java_multiple_files = true;
+
+import "Universities.proto";
+
+message Collage {
+  Universities UniversitiesInstance = 1;
+  int32 marks = 2;
+}

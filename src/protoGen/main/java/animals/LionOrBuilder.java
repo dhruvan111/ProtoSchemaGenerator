@@ -74,38 +74,4 @@ public interface LionOrBuilder extends
 
   animals.Lion.IntegerList getPairsOrThrow(
       int key);
-
-  /**
-   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
-   */
-  int getPairsMCount();
-  /**
-   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
-   */
-  boolean containsPairsM(
-      int key);
-  /**
-   * Use {@link #getPairsMMap()} instead.
-   */
-  @java.lang.Deprecated
-  java.util.Map<java.lang.Integer, animals.Lion.AddressList>
-  getPairsM();
-  /**
-   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
-   */
-  java.util.Map<java.lang.Integer, animals.Lion.AddressList>
-  getPairsMMap();
-  /**
-   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
-   */
-
-  animals.Lion.AddressList getPairsMOrDefault(
-      int key,
-      animals.Lion.AddressList defaultValue);
-  /**
-   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
-   */
-
-  animals.Lion.AddressList getPairsMOrThrow(
-      int key);
 }

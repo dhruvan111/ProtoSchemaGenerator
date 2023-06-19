@@ -11,15 +11,16 @@ message Lion{
     repeated int32 id = 1;
   }
 
-  map<int32, AddressList> pairsM = 3;
-  message AddressList{
-    repeated Address id = 1;
+  message UserList{
+    User u1 = 1;
+    User u2 = 2;
+  }
+  message User{
+    repeated UserList userList = 1;
   }
 }
 
-message Address{
 
-}
 
 
 

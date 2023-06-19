@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package personData;
+
+option java_multiple_files = true;
+
+import "Collage.proto";
+import "People.proto";
+import "School.proto";
+
+message Person {
+  repeated resEntry res = 1;
+  message resEntry {
+
+  School key = 1;
+  repeated resEntry res = 2;
+  message resEntry {
+
+  repeated resEntry res = 1;
+  message resEntry {
+
+  People key = 1;
+  People value = 2;
+  }
+  Collage value = 2;
+  }
+
+}

@@ -35,20 +35,15 @@ public final class LionOuterClass {
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internal_static_animals_Lion_IntegerList_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_animals_Lion_PairsMEntry_descriptor;
+    internal_static_animals_Lion_UserList_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_animals_Lion_PairsMEntry_fieldAccessorTable;
+      internal_static_animals_Lion_UserList_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_animals_Lion_AddressList_descriptor;
+    internal_static_animals_Lion_User_descriptor;
   static final 
     com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_animals_Lion_AddressList_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_animals_Address_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
-      internal_static_animals_Address_fieldAccessorTable;
+      internal_static_animals_Lion_User_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -58,18 +53,17 @@ public final class LionOuterClass {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\nlion.proto\022\007animals\032\014animal.proto\"\206\003\n\004" +
+      "\n\nlion.proto\022\007animals\032\014animal.proto\"\342\002\n\004" +
       "Lion\022#\n\003map\030\001 \003(\0132\026.animals.Lion.MapEntr" +
       "y\022\'\n\005pairs\030\002 \003(\0132\030.animals.Lion.PairsEnt" +
-      "ry\022)\n\006pairsM\030\003 \003(\0132\031.animals.Lion.PairsM" +
-      "Entry\032*\n\010MapEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030" +
-      "\002 \001(\005:\0028\001\032G\n\nPairsEntry\022\013\n\003key\030\001 \001(\005\022(\n\005" +
-      "value\030\002 \001(\0132\031.animals.Lion.IntegerList:\002" +
-      "8\001\032\031\n\013IntegerList\022\n\n\002id\030\001 \003(\005\032H\n\013PairsME" +
-      "ntry\022\013\n\003key\030\001 \001(\005\022(\n\005value\030\002 \001(\0132\031.anima" +
-      "ls.Lion.AddressList:\0028\001\032+\n\013AddressList\022\034" +
-      "\n\002id\030\001 \003(\0132\020.animals.Address\"\t\n\007AddressB" +
-      "\002P\001b\006proto3"
+      "ry\032*\n\010MapEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001" +
+      "(\005:\0028\001\032G\n\nPairsEntry\022\013\n\003key\030\001 \001(\005\022(\n\005val" +
+      "ue\030\002 \001(\0132\031.animals.Lion.IntegerList:\0028\001\032" +
+      "\031\n\013IntegerList\022\n\n\002id\030\001 \003(\005\032J\n\010UserList\022\036" +
+      "\n\002u1\030\001 \001(\0132\022.animals.Lion.User\022\036\n\002u2\030\002 \001" +
+      "(\0132\022.animals.Lion.User\0320\n\004User\022(\n\010userLi" +
+      "st\030\001 \003(\0132\026.animals.Lion.UserListB\002P\001b\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -81,7 +75,7 @@ public final class LionOuterClass {
     internal_static_animals_Lion_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_animals_Lion_descriptor,
-        new java.lang.String[] { "Map", "Pairs", "PairsM", });
+        new java.lang.String[] { "Map", "Pairs", });
     internal_static_animals_Lion_MapEntry_descriptor =
       internal_static_animals_Lion_descriptor.getNestedTypes().get(0);
     internal_static_animals_Lion_MapEntry_fieldAccessorTable = new
@@ -100,24 +94,18 @@ public final class LionOuterClass {
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_animals_Lion_IntegerList_descriptor,
         new java.lang.String[] { "Id", });
-    internal_static_animals_Lion_PairsMEntry_descriptor =
+    internal_static_animals_Lion_UserList_descriptor =
       internal_static_animals_Lion_descriptor.getNestedTypes().get(3);
-    internal_static_animals_Lion_PairsMEntry_fieldAccessorTable = new
+    internal_static_animals_Lion_UserList_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_animals_Lion_PairsMEntry_descriptor,
-        new java.lang.String[] { "Key", "Value", });
-    internal_static_animals_Lion_AddressList_descriptor =
+        internal_static_animals_Lion_UserList_descriptor,
+        new java.lang.String[] { "U1", "U2", });
+    internal_static_animals_Lion_User_descriptor =
       internal_static_animals_Lion_descriptor.getNestedTypes().get(4);
-    internal_static_animals_Lion_AddressList_fieldAccessorTable = new
+    internal_static_animals_Lion_User_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_animals_Lion_AddressList_descriptor,
-        new java.lang.String[] { "Id", });
-    internal_static_animals_Address_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_animals_Address_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
-        internal_static_animals_Address_descriptor,
-        new java.lang.String[] { });
+        internal_static_animals_Lion_User_descriptor,
+        new java.lang.String[] { "UserList", });
     animals.AnimalOuterClass.getDescriptor();
   }
 

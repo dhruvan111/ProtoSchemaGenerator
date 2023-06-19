@@ -25,7 +25,65 @@ message Car1{
 
 message Car2{
 
-  // List<int32> pass;
+  // List<List<Map<List<User>, Integer>>> map;
 
-  repeated int32 pass = 1;
+  repeated mapList map = 1;
+  message mapList{
+
+    repeated mapList1 map = 1;
+    message mapList1{
+
+      repeated mapEntry pair = 1;
+      message mapEntry{
+        repeated User key = 1;
+        int32 val = 2;
+      }
+    }
+  }
+
+
+  // Map<List<User>, Course>> reg;
+  repeated regEntry reg = 2;
+  message regEntry{
+    repeated User key = 1;
+    message User{
+      int32 id = 1;
+    }
+    Course val = 2;
+    message Course{
+      int32 id = 1;
+    }
+  }
+
+}
+
+message User{
+
+  // Map<Map<Integer, String>, Car> cars;
+
+  repeated carsEntry cars = 1;
+  message carsEntry{
+
+    map<int32, string> key = 1;
+    Car val = 2;
+  }
+
+  // Map<User, List<Student>> res;
+
+  repeated resEntry res = 2;
+  message resEntry{
+    User key = 1;
+    repeated Student val = 2;
+  }
+}
+
+message Student{
+
+
+  // Map<Integer, List<User>> res;
+
+  map<int32, userList> res = 1;
+  message userList{
+    repeated User id = 1;
+  }
 }

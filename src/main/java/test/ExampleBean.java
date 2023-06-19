@@ -1,6 +1,4 @@
-package org.example.test;
-
-import org.example.test.OtherBean;
+package test;
 
 import java.util.List;
 import java.util.Map;
@@ -10,18 +8,29 @@ public class ExampleBean {
     private String name;
     private OtherBean otherBean;
     private List<String> stringList;
+    private Map<Integer, Address> locations;
 
     public ExampleBean() {
     }
 
-    public ExampleBean(int id, String name, OtherBean otherBean, List<String> stringList) {
+    public ExampleBean(int id, String name, OtherBean otherBean, List<String> stringList, Map<Integer, Address> locations) {
         this.id = id;
         this.name = name;
         this.otherBean = otherBean;
         this.stringList = stringList;
+        this.locations = locations;
     }
 
     // Getters and setters
+
+
+    public Map<Integer, Address> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Map<Integer, Address> locations) {
+        this.locations = locations;
+    }
 
     public int getId() {
         return id;

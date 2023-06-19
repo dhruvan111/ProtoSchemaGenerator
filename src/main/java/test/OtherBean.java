@@ -1,4 +1,4 @@
-package org.example.test;
+package test;
 
 public class OtherBean {
     private int otherId;

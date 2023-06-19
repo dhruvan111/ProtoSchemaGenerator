@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package personData;
+
+option java_multiple_files = true;
+
+import "LivingAnimals.proto";
+import "School.proto";
+
+message People {
+  LivingAnimals LivingAnimalsInstance = 1;
+  repeated AnimalsList animals = 2;
+  message AnimalsList {
+
+    repeated AnimalsList1 animals1 = 1;
+    message AnimalsList1 {
+
+      repeated School animals2 = 1;
+    }
+  }
+
+}
