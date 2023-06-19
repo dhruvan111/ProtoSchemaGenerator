@@ -68,11 +68,24 @@ private static final long serialVersionUID = 0L;
                   PairsDefaultEntryHolder.defaultEntry);
               mutable_bitField0_ |= 0x00000002;
             }
-            com.google.protobuf.MapEntry<java.lang.Integer, animals.FemaleLion>
+            com.google.protobuf.MapEntry<java.lang.Integer, animals.Lion.IntegerList>
             pairs__ = input.readMessage(
                 PairsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
             pairs_.getMutableMap().put(
                 pairs__.getKey(), pairs__.getValue());
+            break;
+          }
+          case 26: {
+            if (!((mutable_bitField0_ & 0x00000004) != 0)) {
+              pairsM_ = com.google.protobuf.MapField.newMapField(
+                  PairsMDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000004;
+            }
+            com.google.protobuf.MapEntry<java.lang.Integer, animals.Lion.AddressList>
+            pairsM__ = input.readMessage(
+                PairsMDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            pairsM_.getMutableMap().put(
+                pairsM__.getKey(), pairsM__.getValue());
             break;
           }
           default: {
@@ -108,6 +121,8 @@ private static final long serialVersionUID = 0L;
         return internalGetMap();
       case 2:
         return internalGetPairs();
+      case 3:
+        return internalGetPairsM();
       default:
         throw new RuntimeException(
             "Invalid map field number: " + number);
@@ -119,6 +134,1414 @@ private static final long serialVersionUID = 0L;
     return animals.LionOuterClass.internal_static_animals_Lion_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
             animals.Lion.class, animals.Lion.Builder.class);
+  }
+
+  public interface IntegerListOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:animals.Lion.IntegerList)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @return A list containing the id.
+     */
+    java.util.List<java.lang.Integer> getIdList();
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @return The count of id.
+     */
+    int getIdCount();
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @param index The index of the element to return.
+     * @return The id at the given index.
+     */
+    int getId(int index);
+  }
+  /**
+   * Protobuf type {@code animals.Lion.IntegerList}
+   */
+  public static final class IntegerList extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:animals.Lion.IntegerList)
+      IntegerListOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use IntegerList.newBuilder() to construct.
+    private IntegerList(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private IntegerList() {
+      id_ = emptyIntList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new IntegerList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private IntegerList(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 8: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                id_ = newIntList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              id_.addInt(input.readInt32());
+              break;
+            }
+            case 10: {
+              int length = input.readRawVarint32();
+              int limit = input.pushLimit(length);
+              if (!((mutable_bitField0_ & 0x00000001) != 0) && input.getBytesUntilLimit() > 0) {
+                id_ = newIntList();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              while (input.getBytesUntilLimit() > 0) {
+                id_.addInt(input.readInt32());
+              }
+              input.popLimit(limit);
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          id_.makeImmutable(); // C
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return animals.LionOuterClass.internal_static_animals_Lion_IntegerList_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return animals.LionOuterClass.internal_static_animals_Lion_IntegerList_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              animals.Lion.IntegerList.class, animals.Lion.IntegerList.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private com.google.protobuf.Internal.IntList id_;
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @return A list containing the id.
+     */
+    @java.lang.Override
+    public java.util.List<java.lang.Integer>
+        getIdList() {
+      return id_;
+    }
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @return The count of id.
+     */
+    public int getIdCount() {
+      return id_.size();
+    }
+    /**
+     * <code>repeated int32 id = 1;</code>
+     * @param index The index of the element to return.
+     * @return The id at the given index.
+     */
+    public int getId(int index) {
+      return id_.getInt(index);
+    }
+    private int idMemoizedSerializedSize = -1;
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (getIdList().size() > 0) {
+        output.writeUInt32NoTag(10);
+        output.writeUInt32NoTag(idMemoizedSerializedSize);
+      }
+      for (int i = 0; i < id_.size(); i++) {
+        output.writeInt32NoTag(id_.getInt(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      {
+        int dataSize = 0;
+        for (int i = 0; i < id_.size(); i++) {
+          dataSize += com.google.protobuf.CodedOutputStream
+            .computeInt32SizeNoTag(id_.getInt(i));
+        }
+        size += dataSize;
+        if (!getIdList().isEmpty()) {
+          size += 1;
+          size += com.google.protobuf.CodedOutputStream
+              .computeInt32SizeNoTag(dataSize);
+        }
+        idMemoizedSerializedSize = dataSize;
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof animals.Lion.IntegerList)) {
+        return super.equals(obj);
+      }
+      animals.Lion.IntegerList other = (animals.Lion.IntegerList) obj;
+
+      if (!getIdList()
+          .equals(other.getIdList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getIdCount() > 0) {
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + getIdList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static animals.Lion.IntegerList parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.IntegerList parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.IntegerList parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static animals.Lion.IntegerList parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static animals.Lion.IntegerList parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static animals.Lion.IntegerList parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(animals.Lion.IntegerList prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code animals.Lion.IntegerList}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:animals.Lion.IntegerList)
+        animals.Lion.IntegerListOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return animals.LionOuterClass.internal_static_animals_Lion_IntegerList_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return animals.LionOuterClass.internal_static_animals_Lion_IntegerList_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                animals.Lion.IntegerList.class, animals.Lion.IntegerList.Builder.class);
+      }
+
+      // Construct using animals.Lion.IntegerList.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        id_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return animals.LionOuterClass.internal_static_animals_Lion_IntegerList_descriptor;
+      }
+
+      @java.lang.Override
+      public animals.Lion.IntegerList getDefaultInstanceForType() {
+        return animals.Lion.IntegerList.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public animals.Lion.IntegerList build() {
+        animals.Lion.IntegerList result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public animals.Lion.IntegerList buildPartial() {
+        animals.Lion.IntegerList result = new animals.Lion.IntegerList(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) != 0)) {
+          id_.makeImmutable();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.id_ = id_;
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof animals.Lion.IntegerList) {
+          return mergeFrom((animals.Lion.IntegerList)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(animals.Lion.IntegerList other) {
+        if (other == animals.Lion.IntegerList.getDefaultInstance()) return this;
+        if (!other.id_.isEmpty()) {
+          if (id_.isEmpty()) {
+            id_ = other.id_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureIdIsMutable();
+            id_.addAll(other.id_);
+          }
+          onChanged();
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        animals.Lion.IntegerList parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (animals.Lion.IntegerList) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private com.google.protobuf.Internal.IntList id_ = emptyIntList();
+      private void ensureIdIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          id_ = mutableCopy(id_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @return A list containing the id.
+       */
+      public java.util.List<java.lang.Integer>
+          getIdList() {
+        return ((bitField0_ & 0x00000001) != 0) ?
+                 java.util.Collections.unmodifiableList(id_) : id_;
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @return The count of id.
+       */
+      public int getIdCount() {
+        return id_.size();
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @param index The index of the element to return.
+       * @return The id at the given index.
+       */
+      public int getId(int index) {
+        return id_.getInt(index);
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @param index The index to set the value at.
+       * @param value The id to set.
+       * @return This builder for chaining.
+       */
+      public Builder setId(
+          int index, int value) {
+        ensureIdIsMutable();
+        id_.setInt(index, value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @param value The id to add.
+       * @return This builder for chaining.
+       */
+      public Builder addId(int value) {
+        ensureIdIsMutable();
+        id_.addInt(value);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @param values The id to add.
+       * @return This builder for chaining.
+       */
+      public Builder addAllId(
+          java.lang.Iterable<? extends java.lang.Integer> values) {
+        ensureIdIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, id_);
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated int32 id = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearId() {
+        id_ = emptyIntList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        onChanged();
+        return this;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:animals.Lion.IntegerList)
+    }
+
+    // @@protoc_insertion_point(class_scope:animals.Lion.IntegerList)
+    private static final animals.Lion.IntegerList DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new animals.Lion.IntegerList();
+    }
+
+    public static animals.Lion.IntegerList getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<IntegerList>
+        PARSER = new com.google.protobuf.AbstractParser<IntegerList>() {
+      @java.lang.Override
+      public IntegerList parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new IntegerList(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<IntegerList> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<IntegerList> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public animals.Lion.IntegerList getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
+  }
+
+  public interface AddressListOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:animals.Lion.AddressList)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    java.util.List<animals.Address> 
+        getIdList();
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    animals.Address getId(int index);
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    int getIdCount();
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    java.util.List<? extends animals.AddressOrBuilder> 
+        getIdOrBuilderList();
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    animals.AddressOrBuilder getIdOrBuilder(
+        int index);
+  }
+  /**
+   * Protobuf type {@code animals.Lion.AddressList}
+   */
+  public static final class AddressList extends
+      com.google.protobuf.GeneratedMessageV3 implements
+      // @@protoc_insertion_point(message_implements:animals.Lion.AddressList)
+      AddressListOrBuilder {
+  private static final long serialVersionUID = 0L;
+    // Use AddressList.newBuilder() to construct.
+    private AddressList(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+      super(builder);
+    }
+    private AddressList() {
+      id_ = java.util.Collections.emptyList();
+    }
+
+    @java.lang.Override
+    @SuppressWarnings({"unused"})
+    protected java.lang.Object newInstance(
+        UnusedPrivateParameter unused) {
+      return new AddressList();
+    }
+
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+    getUnknownFields() {
+      return this.unknownFields;
+    }
+    private AddressList(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      this();
+      if (extensionRegistry == null) {
+        throw new java.lang.NullPointerException();
+      }
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+                id_ = new java.util.ArrayList<animals.Address>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              id_.add(
+                  input.readMessage(animals.Address.parser(), extensionRegistry));
+              break;
+            }
+            default: {
+              if (!parseUnknownField(
+                  input, unknownFields, extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) != 0)) {
+          id_ = java.util.Collections.unmodifiableList(id_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return animals.LionOuterClass.internal_static_animals_Lion_AddressList_descriptor;
+    }
+
+    @java.lang.Override
+    protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return animals.LionOuterClass.internal_static_animals_Lion_AddressList_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              animals.Lion.AddressList.class, animals.Lion.AddressList.Builder.class);
+    }
+
+    public static final int ID_FIELD_NUMBER = 1;
+    private java.util.List<animals.Address> id_;
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    @java.lang.Override
+    public java.util.List<animals.Address> getIdList() {
+      return id_;
+    }
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    @java.lang.Override
+    public java.util.List<? extends animals.AddressOrBuilder> 
+        getIdOrBuilderList() {
+      return id_;
+    }
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    @java.lang.Override
+    public int getIdCount() {
+      return id_.size();
+    }
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    @java.lang.Override
+    public animals.Address getId(int index) {
+      return id_.get(index);
+    }
+    /**
+     * <code>repeated .animals.Address id = 1;</code>
+     */
+    @java.lang.Override
+    public animals.AddressOrBuilder getIdOrBuilder(
+        int index) {
+      return id_.get(index);
+    }
+
+    private byte memoizedIsInitialized = -1;
+    @java.lang.Override
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    @java.lang.Override
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      for (int i = 0; i < id_.size(); i++) {
+        output.writeMessage(1, id_.get(i));
+      }
+      unknownFields.writeTo(output);
+    }
+
+    @java.lang.Override
+    public int getSerializedSize() {
+      int size = memoizedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < id_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, id_.get(i));
+      }
+      size += unknownFields.getSerializedSize();
+      memoizedSize = size;
+      return size;
+    }
+
+    @java.lang.Override
+    public boolean equals(final java.lang.Object obj) {
+      if (obj == this) {
+       return true;
+      }
+      if (!(obj instanceof animals.Lion.AddressList)) {
+        return super.equals(obj);
+      }
+      animals.Lion.AddressList other = (animals.Lion.AddressList) obj;
+
+      if (!getIdList()
+          .equals(other.getIdList())) return false;
+      if (!unknownFields.equals(other.unknownFields)) return false;
+      return true;
+    }
+
+    @java.lang.Override
+    public int hashCode() {
+      if (memoizedHashCode != 0) {
+        return memoizedHashCode;
+      }
+      int hash = 41;
+      hash = (19 * hash) + getDescriptor().hashCode();
+      if (getIdCount() > 0) {
+        hash = (37 * hash) + ID_FIELD_NUMBER;
+        hash = (53 * hash) + getIdList().hashCode();
+      }
+      hash = (29 * hash) + unknownFields.hashCode();
+      memoizedHashCode = hash;
+      return hash;
+    }
+
+    public static animals.Lion.AddressList parseFrom(
+        java.nio.ByteBuffer data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        java.nio.ByteBuffer data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.AddressList parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static animals.Lion.AddressList parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static animals.Lion.AddressList parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input);
+    }
+    public static animals.Lion.AddressList parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input);
+    }
+    public static animals.Lion.AddressList parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return com.google.protobuf.GeneratedMessageV3
+          .parseWithIOException(PARSER, input, extensionRegistry);
+    }
+
+    @java.lang.Override
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder() {
+      return DEFAULT_INSTANCE.toBuilder();
+    }
+    public static Builder newBuilder(animals.Lion.AddressList prototype) {
+      return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
+    }
+    @java.lang.Override
+    public Builder toBuilder() {
+      return this == DEFAULT_INSTANCE
+          ? new Builder() : new Builder().mergeFrom(this);
+    }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code animals.Lion.AddressList}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:animals.Lion.AddressList)
+        animals.Lion.AddressListOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return animals.LionOuterClass.internal_static_animals_Lion_AddressList_descriptor;
+      }
+
+      @java.lang.Override
+      protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return animals.LionOuterClass.internal_static_animals_Lion_AddressList_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                animals.Lion.AddressList.class, animals.Lion.AddressList.Builder.class);
+      }
+
+      // Construct using animals.Lion.AddressList.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessageV3.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessageV3
+                .alwaysUseFieldBuilders) {
+          getIdFieldBuilder();
+        }
+      }
+      @java.lang.Override
+      public Builder clear() {
+        super.clear();
+        if (idBuilder_ == null) {
+          id_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          idBuilder_.clear();
+        }
+        return this;
+      }
+
+      @java.lang.Override
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return animals.LionOuterClass.internal_static_animals_Lion_AddressList_descriptor;
+      }
+
+      @java.lang.Override
+      public animals.Lion.AddressList getDefaultInstanceForType() {
+        return animals.Lion.AddressList.getDefaultInstance();
+      }
+
+      @java.lang.Override
+      public animals.Lion.AddressList build() {
+        animals.Lion.AddressList result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      @java.lang.Override
+      public animals.Lion.AddressList buildPartial() {
+        animals.Lion.AddressList result = new animals.Lion.AddressList(this);
+        int from_bitField0_ = bitField0_;
+        if (idBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) != 0)) {
+            id_ = java.util.Collections.unmodifiableList(id_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.id_ = id_;
+        } else {
+          result.id_ = idBuilder_.build();
+        }
+        onBuilt();
+        return result;
+      }
+
+      @java.lang.Override
+      public Builder clone() {
+        return super.clone();
+      }
+      @java.lang.Override
+      public Builder setField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.setField(field, value);
+      }
+      @java.lang.Override
+      public Builder clearField(
+          com.google.protobuf.Descriptors.FieldDescriptor field) {
+        return super.clearField(field);
+      }
+      @java.lang.Override
+      public Builder clearOneof(
+          com.google.protobuf.Descriptors.OneofDescriptor oneof) {
+        return super.clearOneof(oneof);
+      }
+      @java.lang.Override
+      public Builder setRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          int index, java.lang.Object value) {
+        return super.setRepeatedField(field, index, value);
+      }
+      @java.lang.Override
+      public Builder addRepeatedField(
+          com.google.protobuf.Descriptors.FieldDescriptor field,
+          java.lang.Object value) {
+        return super.addRepeatedField(field, value);
+      }
+      @java.lang.Override
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof animals.Lion.AddressList) {
+          return mergeFrom((animals.Lion.AddressList)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(animals.Lion.AddressList other) {
+        if (other == animals.Lion.AddressList.getDefaultInstance()) return this;
+        if (idBuilder_ == null) {
+          if (!other.id_.isEmpty()) {
+            if (id_.isEmpty()) {
+              id_ = other.id_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensureIdIsMutable();
+              id_.addAll(other.id_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.id_.isEmpty()) {
+            if (idBuilder_.isEmpty()) {
+              idBuilder_.dispose();
+              idBuilder_ = null;
+              id_ = other.id_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              idBuilder_ = 
+                com.google.protobuf.GeneratedMessageV3.alwaysUseFieldBuilders ?
+                   getIdFieldBuilder() : null;
+            } else {
+              idBuilder_.addAllMessages(other.id_);
+            }
+          }
+        }
+        this.mergeUnknownFields(other.unknownFields);
+        onChanged();
+        return this;
+      }
+
+      @java.lang.Override
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      @java.lang.Override
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        animals.Lion.AddressList parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (animals.Lion.AddressList) e.getUnfinishedMessage();
+          throw e.unwrapIOException();
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<animals.Address> id_ =
+        java.util.Collections.emptyList();
+      private void ensureIdIsMutable() {
+        if (!((bitField0_ & 0x00000001) != 0)) {
+          id_ = new java.util.ArrayList<animals.Address>(id_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          animals.Address, animals.Address.Builder, animals.AddressOrBuilder> idBuilder_;
+
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public java.util.List<animals.Address> getIdList() {
+        if (idBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(id_);
+        } else {
+          return idBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public int getIdCount() {
+        if (idBuilder_ == null) {
+          return id_.size();
+        } else {
+          return idBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public animals.Address getId(int index) {
+        if (idBuilder_ == null) {
+          return id_.get(index);
+        } else {
+          return idBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder setId(
+          int index, animals.Address value) {
+        if (idBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureIdIsMutable();
+          id_.set(index, value);
+          onChanged();
+        } else {
+          idBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder setId(
+          int index, animals.Address.Builder builderForValue) {
+        if (idBuilder_ == null) {
+          ensureIdIsMutable();
+          id_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          idBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder addId(animals.Address value) {
+        if (idBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureIdIsMutable();
+          id_.add(value);
+          onChanged();
+        } else {
+          idBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder addId(
+          int index, animals.Address value) {
+        if (idBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensureIdIsMutable();
+          id_.add(index, value);
+          onChanged();
+        } else {
+          idBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder addId(
+          animals.Address.Builder builderForValue) {
+        if (idBuilder_ == null) {
+          ensureIdIsMutable();
+          id_.add(builderForValue.build());
+          onChanged();
+        } else {
+          idBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder addId(
+          int index, animals.Address.Builder builderForValue) {
+        if (idBuilder_ == null) {
+          ensureIdIsMutable();
+          id_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          idBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder addAllId(
+          java.lang.Iterable<? extends animals.Address> values) {
+        if (idBuilder_ == null) {
+          ensureIdIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, id_);
+          onChanged();
+        } else {
+          idBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder clearId() {
+        if (idBuilder_ == null) {
+          id_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          idBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public Builder removeId(int index) {
+        if (idBuilder_ == null) {
+          ensureIdIsMutable();
+          id_.remove(index);
+          onChanged();
+        } else {
+          idBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public animals.Address.Builder getIdBuilder(
+          int index) {
+        return getIdFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public animals.AddressOrBuilder getIdOrBuilder(
+          int index) {
+        if (idBuilder_ == null) {
+          return id_.get(index);  } else {
+          return idBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public java.util.List<? extends animals.AddressOrBuilder> 
+           getIdOrBuilderList() {
+        if (idBuilder_ != null) {
+          return idBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(id_);
+        }
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public animals.Address.Builder addIdBuilder() {
+        return getIdFieldBuilder().addBuilder(
+            animals.Address.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public animals.Address.Builder addIdBuilder(
+          int index) {
+        return getIdFieldBuilder().addBuilder(
+            index, animals.Address.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .animals.Address id = 1;</code>
+       */
+      public java.util.List<animals.Address.Builder> 
+           getIdBuilderList() {
+        return getIdFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilderV3<
+          animals.Address, animals.Address.Builder, animals.AddressOrBuilder> 
+          getIdFieldBuilder() {
+        if (idBuilder_ == null) {
+          idBuilder_ = new com.google.protobuf.RepeatedFieldBuilderV3<
+              animals.Address, animals.Address.Builder, animals.AddressOrBuilder>(
+                  id_,
+                  ((bitField0_ & 0x00000001) != 0),
+                  getParentForChildren(),
+                  isClean());
+          id_ = null;
+        }
+        return idBuilder_;
+      }
+      @java.lang.Override
+      public final Builder setUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.setUnknownFields(unknownFields);
+      }
+
+      @java.lang.Override
+      public final Builder mergeUnknownFields(
+          final com.google.protobuf.UnknownFieldSet unknownFields) {
+        return super.mergeUnknownFields(unknownFields);
+      }
+
+
+      // @@protoc_insertion_point(builder_scope:animals.Lion.AddressList)
+    }
+
+    // @@protoc_insertion_point(class_scope:animals.Lion.AddressList)
+    private static final animals.Lion.AddressList DEFAULT_INSTANCE;
+    static {
+      DEFAULT_INSTANCE = new animals.Lion.AddressList();
+    }
+
+    public static animals.Lion.AddressList getDefaultInstance() {
+      return DEFAULT_INSTANCE;
+    }
+
+    private static final com.google.protobuf.Parser<AddressList>
+        PARSER = new com.google.protobuf.AbstractParser<AddressList>() {
+      @java.lang.Override
+      public AddressList parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new AddressList(input, extensionRegistry);
+      }
+    };
+
+    public static com.google.protobuf.Parser<AddressList> parser() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<AddressList> getParserForType() {
+      return PARSER;
+    }
+
+    @java.lang.Override
+    public animals.Lion.AddressList getDefaultInstanceForType() {
+      return DEFAULT_INSTANCE;
+    }
+
   }
 
   public static final int MAP_FIELD_NUMBER = 1;
@@ -205,18 +1628,18 @@ private static final long serialVersionUID = 0L;
   public static final int PAIRS_FIELD_NUMBER = 2;
   private static final class PairsDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
-        java.lang.Integer, animals.FemaleLion> defaultEntry =
+        java.lang.Integer, animals.Lion.IntegerList> defaultEntry =
             com.google.protobuf.MapEntry
-            .<java.lang.Integer, animals.FemaleLion>newDefaultInstance(
+            .<java.lang.Integer, animals.Lion.IntegerList>newDefaultInstance(
                 animals.LionOuterClass.internal_static_animals_Lion_PairsEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.INT32,
                 0,
                 com.google.protobuf.WireFormat.FieldType.MESSAGE,
-                animals.FemaleLion.getDefaultInstance());
+                animals.Lion.IntegerList.getDefaultInstance());
   }
   private com.google.protobuf.MapField<
-      java.lang.Integer, animals.FemaleLion> pairs_;
-  private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+      java.lang.Integer, animals.Lion.IntegerList> pairs_;
+  private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.IntegerList>
   internalGetPairs() {
     if (pairs_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
@@ -229,7 +1652,7 @@ private static final long serialVersionUID = 0L;
     return internalGetPairs().getMap().size();
   }
   /**
-   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
    */
 
   @java.lang.Override
@@ -243,40 +1666,121 @@ private static final long serialVersionUID = 0L;
    */
   @java.lang.Override
   @java.lang.Deprecated
-  public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairs() {
+  public java.util.Map<java.lang.Integer, animals.Lion.IntegerList> getPairs() {
     return getPairsMap();
   }
   /**
-   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
    */
   @java.lang.Override
 
-  public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairsMap() {
+  public java.util.Map<java.lang.Integer, animals.Lion.IntegerList> getPairsMap() {
     return internalGetPairs().getMap();
   }
   /**
-   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
    */
   @java.lang.Override
 
-  public animals.FemaleLion getPairsOrDefault(
+  public animals.Lion.IntegerList getPairsOrDefault(
       int key,
-      animals.FemaleLion defaultValue) {
+      animals.Lion.IntegerList defaultValue) {
     
-    java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+    java.util.Map<java.lang.Integer, animals.Lion.IntegerList> map =
         internalGetPairs().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
    */
   @java.lang.Override
 
-  public animals.FemaleLion getPairsOrThrow(
+  public animals.Lion.IntegerList getPairsOrThrow(
       int key) {
     
-    java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+    java.util.Map<java.lang.Integer, animals.Lion.IntegerList> map =
         internalGetPairs().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
+  }
+
+  public static final int PAIRSM_FIELD_NUMBER = 3;
+  private static final class PairsMDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.Integer, animals.Lion.AddressList> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.Integer, animals.Lion.AddressList>newDefaultInstance(
+                animals.LionOuterClass.internal_static_animals_Lion_PairsMEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0,
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                animals.Lion.AddressList.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.Integer, animals.Lion.AddressList> pairsM_;
+  private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.AddressList>
+  internalGetPairsM() {
+    if (pairsM_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          PairsMDefaultEntryHolder.defaultEntry);
+    }
+    return pairsM_;
+  }
+
+  public int getPairsMCount() {
+    return internalGetPairsM().getMap().size();
+  }
+  /**
+   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsPairsM(
+      int key) {
+    
+    return internalGetPairsM().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getPairsMMap()} instead.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, animals.Lion.AddressList> getPairsM() {
+    return getPairsMMap();
+  }
+  /**
+   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.Integer, animals.Lion.AddressList> getPairsMMap() {
+    return internalGetPairsM().getMap();
+  }
+  /**
+   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+   */
+  @java.lang.Override
+
+  public animals.Lion.AddressList getPairsMOrDefault(
+      int key,
+      animals.Lion.AddressList defaultValue) {
+    
+    java.util.Map<java.lang.Integer, animals.Lion.AddressList> map =
+        internalGetPairsM().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+   */
+  @java.lang.Override
+
+  public animals.Lion.AddressList getPairsMOrThrow(
+      int key) {
+    
+    java.util.Map<java.lang.Integer, animals.Lion.AddressList> map =
+        internalGetPairsM().getMap();
     if (!map.containsKey(key)) {
       throw new java.lang.IllegalArgumentException();
     }
@@ -309,6 +1813,12 @@ private static final long serialVersionUID = 0L;
         internalGetPairs(),
         PairsDefaultEntryHolder.defaultEntry,
         2);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeIntegerMapTo(
+        output,
+        internalGetPairsM(),
+        PairsMDefaultEntryHolder.defaultEntry,
+        3);
     unknownFields.writeTo(output);
   }
 
@@ -328,15 +1838,25 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(1, map__);
     }
-    for (java.util.Map.Entry<java.lang.Integer, animals.FemaleLion> entry
+    for (java.util.Map.Entry<java.lang.Integer, animals.Lion.IntegerList> entry
          : internalGetPairs().getMap().entrySet()) {
-      com.google.protobuf.MapEntry<java.lang.Integer, animals.FemaleLion>
+      com.google.protobuf.MapEntry<java.lang.Integer, animals.Lion.IntegerList>
       pairs__ = PairsDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(2, pairs__);
+    }
+    for (java.util.Map.Entry<java.lang.Integer, animals.Lion.AddressList> entry
+         : internalGetPairsM().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.Integer, animals.Lion.AddressList>
+      pairsM__ = PairsMDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
+      size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(3, pairsM__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -357,6 +1877,8 @@ private static final long serialVersionUID = 0L;
         other.internalGetMap())) return false;
     if (!internalGetPairs().equals(
         other.internalGetPairs())) return false;
+    if (!internalGetPairsM().equals(
+        other.internalGetPairsM())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -375,6 +1897,10 @@ private static final long serialVersionUID = 0L;
     if (!internalGetPairs().getMap().isEmpty()) {
       hash = (37 * hash) + PAIRS_FIELD_NUMBER;
       hash = (53 * hash) + internalGetPairs().hashCode();
+    }
+    if (!internalGetPairsM().getMap().isEmpty()) {
+      hash = (37 * hash) + PAIRSM_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetPairsM().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -491,6 +2017,8 @@ private static final long serialVersionUID = 0L;
           return internalGetMap();
         case 2:
           return internalGetPairs();
+        case 3:
+          return internalGetPairsM();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -504,6 +2032,8 @@ private static final long serialVersionUID = 0L;
           return internalGetMutableMap();
         case 2:
           return internalGetMutablePairs();
+        case 3:
+          return internalGetMutablePairsM();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -537,6 +2067,7 @@ private static final long serialVersionUID = 0L;
       super.clear();
       internalGetMutableMap().clear();
       internalGetMutablePairs().clear();
+      internalGetMutablePairsM().clear();
       return this;
     }
 
@@ -568,6 +2099,8 @@ private static final long serialVersionUID = 0L;
       result.map_.makeImmutable();
       result.pairs_ = internalGetPairs();
       result.pairs_.makeImmutable();
+      result.pairsM_ = internalGetPairsM();
+      result.pairsM_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -620,6 +2153,8 @@ private static final long serialVersionUID = 0L;
           other.internalGetMap());
       internalGetMutablePairs().mergeFrom(
           other.internalGetPairs());
+      internalGetMutablePairsM().mergeFrom(
+          other.internalGetPairsM());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -779,8 +2314,8 @@ private static final long serialVersionUID = 0L;
     }
 
     private com.google.protobuf.MapField<
-        java.lang.Integer, animals.FemaleLion> pairs_;
-    private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+        java.lang.Integer, animals.Lion.IntegerList> pairs_;
+    private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.IntegerList>
     internalGetPairs() {
       if (pairs_ == null) {
         return com.google.protobuf.MapField.emptyMapField(
@@ -788,7 +2323,7 @@ private static final long serialVersionUID = 0L;
       }
       return pairs_;
     }
-    private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+    private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.IntegerList>
     internalGetMutablePairs() {
       onChanged();;
       if (pairs_ == null) {
@@ -805,7 +2340,7 @@ private static final long serialVersionUID = 0L;
       return internalGetPairs().getMap().size();
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
 
     @java.lang.Override
@@ -819,39 +2354,39 @@ private static final long serialVersionUID = 0L;
      */
     @java.lang.Override
     @java.lang.Deprecated
-    public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairs() {
+    public java.util.Map<java.lang.Integer, animals.Lion.IntegerList> getPairs() {
       return getPairsMap();
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
     @java.lang.Override
 
-    public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairsMap() {
+    public java.util.Map<java.lang.Integer, animals.Lion.IntegerList> getPairsMap() {
       return internalGetPairs().getMap();
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
     @java.lang.Override
 
-    public animals.FemaleLion getPairsOrDefault(
+    public animals.Lion.IntegerList getPairsOrDefault(
         int key,
-        animals.FemaleLion defaultValue) {
+        animals.Lion.IntegerList defaultValue) {
       
-      java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+      java.util.Map<java.lang.Integer, animals.Lion.IntegerList> map =
           internalGetPairs().getMap();
       return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
     @java.lang.Override
 
-    public animals.FemaleLion getPairsOrThrow(
+    public animals.Lion.IntegerList getPairsOrThrow(
         int key) {
       
-      java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+      java.util.Map<java.lang.Integer, animals.Lion.IntegerList> map =
           internalGetPairs().getMap();
       if (!map.containsKey(key)) {
         throw new java.lang.IllegalArgumentException();
@@ -865,7 +2400,7 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
 
     public Builder removePairs(
@@ -879,16 +2414,16 @@ private static final long serialVersionUID = 0L;
      * Use alternate mutation accessors instead.
      */
     @java.lang.Deprecated
-    public java.util.Map<java.lang.Integer, animals.FemaleLion>
+    public java.util.Map<java.lang.Integer, animals.Lion.IntegerList>
     getMutablePairs() {
       return internalGetMutablePairs().getMutableMap();
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
     public Builder putPairs(
         int key,
-        animals.FemaleLion value) {
+        animals.Lion.IntegerList value) {
       
       if (value == null) {
   throw new NullPointerException("map value");
@@ -899,12 +2434,143 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     /**
-     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     * <code>map&lt;int32, .animals.Lion.IntegerList&gt; pairs = 2;</code>
      */
 
     public Builder putAllPairs(
-        java.util.Map<java.lang.Integer, animals.FemaleLion> values) {
+        java.util.Map<java.lang.Integer, animals.Lion.IntegerList> values) {
       internalGetMutablePairs().getMutableMap()
+          .putAll(values);
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.Integer, animals.Lion.AddressList> pairsM_;
+    private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.AddressList>
+    internalGetPairsM() {
+      if (pairsM_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            PairsMDefaultEntryHolder.defaultEntry);
+      }
+      return pairsM_;
+    }
+    private com.google.protobuf.MapField<java.lang.Integer, animals.Lion.AddressList>
+    internalGetMutablePairsM() {
+      onChanged();;
+      if (pairsM_ == null) {
+        pairsM_ = com.google.protobuf.MapField.newMapField(
+            PairsMDefaultEntryHolder.defaultEntry);
+      }
+      if (!pairsM_.isMutable()) {
+        pairsM_ = pairsM_.copy();
+      }
+      return pairsM_;
+    }
+
+    public int getPairsMCount() {
+      return internalGetPairsM().getMap().size();
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsPairsM(
+        int key) {
+      
+      return internalGetPairsM().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getPairsMMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, animals.Lion.AddressList> getPairsM() {
+      return getPairsMMap();
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+    @java.lang.Override
+
+    public java.util.Map<java.lang.Integer, animals.Lion.AddressList> getPairsMMap() {
+      return internalGetPairsM().getMap();
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+    @java.lang.Override
+
+    public animals.Lion.AddressList getPairsMOrDefault(
+        int key,
+        animals.Lion.AddressList defaultValue) {
+      
+      java.util.Map<java.lang.Integer, animals.Lion.AddressList> map =
+          internalGetPairsM().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+    @java.lang.Override
+
+    public animals.Lion.AddressList getPairsMOrThrow(
+        int key) {
+      
+      java.util.Map<java.lang.Integer, animals.Lion.AddressList> map =
+          internalGetPairsM().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearPairsM() {
+      internalGetMutablePairsM().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+
+    public Builder removePairsM(
+        int key) {
+      
+      internalGetMutablePairsM().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, animals.Lion.AddressList>
+    getMutablePairsM() {
+      return internalGetMutablePairsM().getMutableMap();
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+    public Builder putPairsM(
+        int key,
+        animals.Lion.AddressList value) {
+      
+      if (value == null) {
+  throw new NullPointerException("map value");
+}
+
+      internalGetMutablePairsM().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, .animals.Lion.AddressList&gt; pairsM = 3;</code>
+     */
+
+    public Builder putAllPairsM(
+        java.util.Map<java.lang.Integer, animals.Lion.AddressList> values) {
+      internalGetMutablePairsM().getMutableMap()
           .putAll(values);
       return this;
     }

@@ -4,25 +4,25 @@
 package animals;
 
 /**
- * Protobuf type {@code animals.FemaleLion}
+ * Protobuf type {@code animals.Address}
  */
-public final class FemaleLion extends
+public final class Address extends
     com.google.protobuf.GeneratedMessageV3 implements
-    // @@protoc_insertion_point(message_implements:animals.FemaleLion)
-    FemaleLionOrBuilder {
+    // @@protoc_insertion_point(message_implements:animals.Address)
+    AddressOrBuilder {
 private static final long serialVersionUID = 0L;
-  // Use FemaleLion.newBuilder() to construct.
-  private FemaleLion(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
+  // Use Address.newBuilder() to construct.
+  private Address(com.google.protobuf.GeneratedMessageV3.Builder<?> builder) {
     super(builder);
   }
-  private FemaleLion() {
+  private Address() {
   }
 
   @java.lang.Override
   @SuppressWarnings({"unused"})
   protected java.lang.Object newInstance(
       UnusedPrivateParameter unused) {
-    return new FemaleLion();
+    return new Address();
   }
 
   @java.lang.Override
@@ -30,7 +30,7 @@ private static final long serialVersionUID = 0L;
   getUnknownFields() {
     return this.unknownFields;
   }
-  private FemaleLion(
+  private Address(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
@@ -48,11 +48,6 @@ private static final long serialVersionUID = 0L;
           case 0:
             done = true;
             break;
-          case 8: {
-
-            id_ = input.readInt32();
-            break;
-          }
           default: {
             if (!parseUnknownField(
                 input, unknownFields, extensionRegistry, tag)) {
@@ -74,26 +69,15 @@ private static final long serialVersionUID = 0L;
   }
   public static final com.google.protobuf.Descriptors.Descriptor
       getDescriptor() {
-    return animals.LionOuterClass.internal_static_animals_FemaleLion_descriptor;
+    return animals.LionOuterClass.internal_static_animals_Address_descriptor;
   }
 
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
-    return animals.LionOuterClass.internal_static_animals_FemaleLion_fieldAccessorTable
+    return animals.LionOuterClass.internal_static_animals_Address_fieldAccessorTable
         .ensureFieldAccessorsInitialized(
-            animals.FemaleLion.class, animals.FemaleLion.Builder.class);
-  }
-
-  public static final int ID_FIELD_NUMBER = 1;
-  private int id_;
-  /**
-   * <code>int32 id = 1;</code>
-   * @return The id.
-   */
-  @java.lang.Override
-  public int getId() {
-    return id_;
+            animals.Address.class, animals.Address.Builder.class);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -110,9 +94,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (id_ != 0) {
-      output.writeInt32(1, id_);
-    }
     unknownFields.writeTo(output);
   }
 
@@ -122,10 +103,6 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (id_ != 0) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(1, id_);
-    }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
     return size;
@@ -136,13 +113,11 @@ private static final long serialVersionUID = 0L;
     if (obj == this) {
      return true;
     }
-    if (!(obj instanceof animals.FemaleLion)) {
+    if (!(obj instanceof animals.Address)) {
       return super.equals(obj);
     }
-    animals.FemaleLion other = (animals.FemaleLion) obj;
+    animals.Address other = (animals.Address) obj;
 
-    if (getId()
-        != other.getId()) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -154,76 +129,74 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId();
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
     return hash;
   }
 
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       java.nio.ByteBuffer data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       java.nio.ByteBuffer data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       com.google.protobuf.ByteString data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       com.google.protobuf.ByteString data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static animals.FemaleLion parseFrom(byte[] data)
+  public static animals.Address parseFrom(byte[] data)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       byte[] data,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws com.google.protobuf.InvalidProtocolBufferException {
     return PARSER.parseFrom(data, extensionRegistry);
   }
-  public static animals.FemaleLion parseFrom(java.io.InputStream input)
+  public static animals.Address parseFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input, extensionRegistry);
   }
-  public static animals.FemaleLion parseDelimitedFrom(java.io.InputStream input)
+  public static animals.Address parseDelimitedFrom(java.io.InputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input);
   }
-  public static animals.FemaleLion parseDelimitedFrom(
+  public static animals.Address parseDelimitedFrom(
       java.io.InputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseDelimitedWithIOException(PARSER, input, extensionRegistry);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       com.google.protobuf.CodedInputStream input)
       throws java.io.IOException {
     return com.google.protobuf.GeneratedMessageV3
         .parseWithIOException(PARSER, input);
   }
-  public static animals.FemaleLion parseFrom(
+  public static animals.Address parseFrom(
       com.google.protobuf.CodedInputStream input,
       com.google.protobuf.ExtensionRegistryLite extensionRegistry)
       throws java.io.IOException {
@@ -236,7 +209,7 @@ private static final long serialVersionUID = 0L;
   public static Builder newBuilder() {
     return DEFAULT_INSTANCE.toBuilder();
   }
-  public static Builder newBuilder(animals.FemaleLion prototype) {
+  public static Builder newBuilder(animals.Address prototype) {
     return DEFAULT_INSTANCE.toBuilder().mergeFrom(prototype);
   }
   @java.lang.Override
@@ -252,26 +225,26 @@ private static final long serialVersionUID = 0L;
     return builder;
   }
   /**
-   * Protobuf type {@code animals.FemaleLion}
+   * Protobuf type {@code animals.Address}
    */
   public static final class Builder extends
       com.google.protobuf.GeneratedMessageV3.Builder<Builder> implements
-      // @@protoc_insertion_point(builder_implements:animals.FemaleLion)
-      animals.FemaleLionOrBuilder {
+      // @@protoc_insertion_point(builder_implements:animals.Address)
+      animals.AddressOrBuilder {
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return animals.LionOuterClass.internal_static_animals_FemaleLion_descriptor;
+      return animals.LionOuterClass.internal_static_animals_Address_descriptor;
     }
 
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return animals.LionOuterClass.internal_static_animals_FemaleLion_fieldAccessorTable
+      return animals.LionOuterClass.internal_static_animals_Address_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              animals.FemaleLion.class, animals.FemaleLion.Builder.class);
+              animals.Address.class, animals.Address.Builder.class);
     }
 
-    // Construct using animals.FemaleLion.newBuilder()
+    // Construct using animals.Address.newBuilder()
     private Builder() {
       maybeForceBuilderInitialization();
     }
@@ -289,25 +262,23 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      id_ = 0;
-
       return this;
     }
 
     @java.lang.Override
     public com.google.protobuf.Descriptors.Descriptor
         getDescriptorForType() {
-      return animals.LionOuterClass.internal_static_animals_FemaleLion_descriptor;
+      return animals.LionOuterClass.internal_static_animals_Address_descriptor;
     }
 
     @java.lang.Override
-    public animals.FemaleLion getDefaultInstanceForType() {
-      return animals.FemaleLion.getDefaultInstance();
+    public animals.Address getDefaultInstanceForType() {
+      return animals.Address.getDefaultInstance();
     }
 
     @java.lang.Override
-    public animals.FemaleLion build() {
-      animals.FemaleLion result = buildPartial();
+    public animals.Address build() {
+      animals.Address result = buildPartial();
       if (!result.isInitialized()) {
         throw newUninitializedMessageException(result);
       }
@@ -315,9 +286,8 @@ private static final long serialVersionUID = 0L;
     }
 
     @java.lang.Override
-    public animals.FemaleLion buildPartial() {
-      animals.FemaleLion result = new animals.FemaleLion(this);
-      result.id_ = id_;
+    public animals.Address buildPartial() {
+      animals.Address result = new animals.Address(this);
       onBuilt();
       return result;
     }
@@ -356,19 +326,16 @@ private static final long serialVersionUID = 0L;
     }
     @java.lang.Override
     public Builder mergeFrom(com.google.protobuf.Message other) {
-      if (other instanceof animals.FemaleLion) {
-        return mergeFrom((animals.FemaleLion)other);
+      if (other instanceof animals.Address) {
+        return mergeFrom((animals.Address)other);
       } else {
         super.mergeFrom(other);
         return this;
       }
     }
 
-    public Builder mergeFrom(animals.FemaleLion other) {
-      if (other == animals.FemaleLion.getDefaultInstance()) return this;
-      if (other.getId() != 0) {
-        setId(other.getId());
-      }
+    public Builder mergeFrom(animals.Address other) {
+      if (other == animals.Address.getDefaultInstance()) return this;
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -384,48 +351,17 @@ private static final long serialVersionUID = 0L;
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
-      animals.FemaleLion parsedMessage = null;
+      animals.Address parsedMessage = null;
       try {
         parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-        parsedMessage = (animals.FemaleLion) e.getUnfinishedMessage();
+        parsedMessage = (animals.Address) e.getUnfinishedMessage();
         throw e.unwrapIOException();
       } finally {
         if (parsedMessage != null) {
           mergeFrom(parsedMessage);
         }
       }
-      return this;
-    }
-
-    private int id_ ;
-    /**
-     * <code>int32 id = 1;</code>
-     * @return The id.
-     */
-    @java.lang.Override
-    public int getId() {
-      return id_;
-    }
-    /**
-     * <code>int32 id = 1;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
-     */
-    public Builder setId(int value) {
-      
-      id_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 id = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearId() {
-      
-      id_ = 0;
-      onChanged();
       return this;
     }
     @java.lang.Override
@@ -441,41 +377,41 @@ private static final long serialVersionUID = 0L;
     }
 
 
-    // @@protoc_insertion_point(builder_scope:animals.FemaleLion)
+    // @@protoc_insertion_point(builder_scope:animals.Address)
   }
 
-  // @@protoc_insertion_point(class_scope:animals.FemaleLion)
-  private static final animals.FemaleLion DEFAULT_INSTANCE;
+  // @@protoc_insertion_point(class_scope:animals.Address)
+  private static final animals.Address DEFAULT_INSTANCE;
   static {
-    DEFAULT_INSTANCE = new animals.FemaleLion();
+    DEFAULT_INSTANCE = new animals.Address();
   }
 
-  public static animals.FemaleLion getDefaultInstance() {
+  public static animals.Address getDefaultInstance() {
     return DEFAULT_INSTANCE;
   }
 
-  private static final com.google.protobuf.Parser<FemaleLion>
-      PARSER = new com.google.protobuf.AbstractParser<FemaleLion>() {
+  private static final com.google.protobuf.Parser<Address>
+      PARSER = new com.google.protobuf.AbstractParser<Address>() {
     @java.lang.Override
-    public FemaleLion parsePartialFrom(
+    public Address parsePartialFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
-      return new FemaleLion(input, extensionRegistry);
+      return new Address(input, extensionRegistry);
     }
   };
 
-  public static com.google.protobuf.Parser<FemaleLion> parser() {
+  public static com.google.protobuf.Parser<Address> parser() {
     return PARSER;
   }
 
   @java.lang.Override
-  public com.google.protobuf.Parser<FemaleLion> getParserForType() {
+  public com.google.protobuf.Parser<Address> getParserForType() {
     return PARSER;
   }
 
   @java.lang.Override
-  public animals.FemaleLion getDefaultInstanceForType() {
+  public animals.Address getDefaultInstanceForType() {
     return DEFAULT_INSTANCE;
   }
 
