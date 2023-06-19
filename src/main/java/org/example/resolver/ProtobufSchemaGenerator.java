@@ -208,14 +208,69 @@ public class ProtobufSchemaGenerator {
         }
     }
 
-    private void nestedMapFirstArg(BufferedWriter writer, Type typeArg, String nestedListName, Field field, int tagNumber, int cnt){
-
-
+    private Class<?> nestedMapFirstArg(Type typeArg){
+        if (ProtobufUtils.isPrimitiveKeyType(typeArg.getTypeName().getClass())){
+            return ProtobufUtils.getProtoKeyType(typeArg.getTypeName().getClass());
+        }
+        throw new UnsupportedOperationException("Primitive type not supported: " + typeArg.getTypeName());
     }
 
-    private void nestedMapSecondArg(BufferedWriter writer, Type typeArg, String nestedListName, Field field, int tagNumber, int cnt){
+    private void nestedMapSecondArg(BufferedWriter writer,Type typeArg,Class<?> firstArg,Field field, int tagNumber) throws IOException {
 
+        Class<?> secondArg = typeArg.getTypeName().getClass();
 
+        if (ProtobufUtils.isPrimitiveType(typeArg.getTypeName().getClass())){
+            Class<?> secondPrimitiveClass = ProtobufUtils.getProtobufType(secondArg);
+            writer.write("  map<" + firstArg.getSimpleName() + "," + secondPrimitiveClass.getSimpleName() + "> " + field.getName() + " = " + tagNumber + ";");
+            writer.newLine();
+        }
+        else if (typeArg instanceof Class<?> innerClass){
+            writer.write("  map<" + firstArg.getSimpleName() + "," + innerClass.getSimpleName() + "> " + field.getName() + " = " + tagNumber + ";");
+            writer.newLine();
+        }
+        else{
+            // here typeArg is of Parameterized, either List or Map
+            if (ProtobufUtils.isPrimitiveListType(secondArg)){
+                // List Type
+                Type[] typeArguments2 = ((ParameterizedType) typeArg).getActualTypeArguments();
+                if (typeArguments2[0] instanceof Class<?> innerClass){
+                    String secondArgName = innerClass.getSimpleName() + "List";
+                    writer.write("  map<" + firstArg.getSimpleName() + "," + secondArgName + "> " + field.getName() + " = " + tagNumber + ";");
+                    writer.newLine();
+                    writer.write("  message " + secondArgName + "{");
+                    writer.newLine();
+
+                    String innerClassType = null;
+                    if (ProtobufUtils.isPrimitiveType(innerClass)){
+                        innerClassType = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
+                    }
+                    else {
+                        innerClassType = innerClass.getSimpleName();
+                    }
+                    writer.write("    repeated " + innerClassType + " id = 1;");
+                    writer.newLine();
+                    writer.write("  }");
+                    writer.newLine();
+                }
+                else {
+                    // nested list
+                    // Not configured yet;
+                }
+            }
+            else if (ProtobufUtils.isPrimitiveMapType(secondArg)){
+                // Map Type
+                Type[] typeArguments2 = ((ParameterizedType) typeArg).getActualTypeArguments();
+                Class<?> firstArgClass = nestedMapFirstArg(typeArguments2[0]);
+                String innerMap = "innerMap";
+                writer.write("  map<" + firstArg.getSimpleName() + "," + innerMap + "> " + field.getName() + " = " + tagNumber + ";");
+                writer.newLine();
+
+                writer.write("  message " + innerMap + "{");
+                writer.newLine();
+                nestedMapSecondArg(writer, typeArguments2[1], firstArgClass, field, tagNumber);
+                writer.write("}");
+            }
+        }
     }
 
     private int schemaDependency(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
@@ -265,14 +320,12 @@ public class ProtobufSchemaGenerator {
 
             else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
                 Type genericType = field.getGenericType();
-                System.out.println(genericType);
 
                 if (genericType instanceof ParameterizedType){
                     Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-
-
+                    Class<?> firstArgClass = nestedMapFirstArg(typeArguments[0]);
+                    nestedMapSecondArg(writer, typeArguments[1], firstArgClass, field, tagNumber);
                 }
-
             }
 
             else if (ProtobufUtils.isPrimitiveType(fieldType)) {

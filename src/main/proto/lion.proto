@@ -6,15 +6,21 @@ option java_multiple_files = true;
 message Lion{
 
   map<string, int32> map = 1;
-  map<int32, FemaleLion> pairs = 2;
+  map<int32, IntegerList> pairs = 2;
+  message IntegerList{
+    repeated int32 id = 1;
+  }
+
+  map<int32, AddressList> pairsM = 3;
+  message AddressList{
+    repeated Address id = 1;
+  }
+}
+
+message Address{
 
 }
 
-message MaleLion{
-  int32 id = 1;
-}
 
-message FemaleLion{
-  int32 id = 1;
-}
+
 

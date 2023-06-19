@@ -8,41 +8,70 @@ public interface LionOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string type = 1;</code>
-   * @return The type.
+   * <code>map&lt;string, int32&gt; map = 1;</code>
    */
-  java.lang.String getType();
+  int getMapCount();
   /**
-   * <code>string type = 1;</code>
-   * @return The bytes for type.
+   * <code>map&lt;string, int32&gt; map = 1;</code>
    */
-  com.google.protobuf.ByteString
-      getTypeBytes();
+  boolean containsMap(
+      java.lang.String key);
+  /**
+   * Use {@link #getMapMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.String, java.lang.Integer>
+  getMap();
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+  java.util.Map<java.lang.String, java.lang.Integer>
+  getMapMap();
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+
+  int getMapOrDefault(
+      java.lang.String key,
+      int defaultValue);
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+
+  int getMapOrThrow(
+      java.lang.String key);
 
   /**
-   * <code>int32 capacity = 2;</code>
-   * @return The capacity.
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
    */
-  int getCapacity();
+  int getPairsCount();
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
+  boolean containsPairs(
+      int key);
+  /**
+   * Use {@link #getPairsMap()} instead.
+   */
+  @java.lang.Deprecated
+  java.util.Map<java.lang.Integer, animals.FemaleLion>
+  getPairs();
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
+  java.util.Map<java.lang.Integer, animals.FemaleLion>
+  getPairsMap();
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
 
+  animals.FemaleLion getPairsOrDefault(
+      int key,
+      animals.FemaleLion defaultValue);
   /**
-   * <code>int32 id = 3;</code>
-   * @return The id.
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
    */
-  int getId();
 
-  /**
-   * <code>.animals.Animal animalObject = 4;</code>
-   * @return Whether the animalObject field is set.
-   */
-  boolean hasAnimalObject();
-  /**
-   * <code>.animals.Animal animalObject = 4;</code>
-   * @return The animalObject.
-   */
-  animals.Animal getAnimalObject();
-  /**
-   * <code>.animals.Animal animalObject = 4;</code>
-   */
-  animals.AnimalOrBuilder getAnimalObjectOrBuilder();
+  animals.FemaleLion getPairsOrThrow(
+      int key);
 }

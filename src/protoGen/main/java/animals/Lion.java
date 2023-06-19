@@ -16,7 +16,6 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private Lion() {
-    type_ = "";
   }
 
   @java.lang.Override
@@ -39,6 +38,7 @@ private static final long serialVersionUID = 0L;
     if (extensionRegistry == null) {
       throw new java.lang.NullPointerException();
     }
+    int mutable_bitField0_ = 0;
     com.google.protobuf.UnknownFieldSet.Builder unknownFields =
         com.google.protobuf.UnknownFieldSet.newBuilder();
     try {
@@ -50,32 +50,29 @@ private static final long serialVersionUID = 0L;
             done = true;
             break;
           case 10: {
-            java.lang.String s = input.readStringRequireUtf8();
-
-            type_ = s;
-            break;
-          }
-          case 16: {
-
-            capacity_ = input.readInt32();
-            break;
-          }
-          case 24: {
-
-            id_ = input.readInt32();
-            break;
-          }
-          case 34: {
-            animals.Animal.Builder subBuilder = null;
-            if (animalObject_ != null) {
-              subBuilder = animalObject_.toBuilder();
+            if (!((mutable_bitField0_ & 0x00000001) != 0)) {
+              map_ = com.google.protobuf.MapField.newMapField(
+                  MapDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000001;
             }
-            animalObject_ = input.readMessage(animals.Animal.parser(), extensionRegistry);
-            if (subBuilder != null) {
-              subBuilder.mergeFrom(animalObject_);
-              animalObject_ = subBuilder.buildPartial();
+            com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
+            map__ = input.readMessage(
+                MapDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            map_.getMutableMap().put(
+                map__.getKey(), map__.getValue());
+            break;
+          }
+          case 18: {
+            if (!((mutable_bitField0_ & 0x00000002) != 0)) {
+              pairs_ = com.google.protobuf.MapField.newMapField(
+                  PairsDefaultEntryHolder.defaultEntry);
+              mutable_bitField0_ |= 0x00000002;
             }
-
+            com.google.protobuf.MapEntry<java.lang.Integer, animals.FemaleLion>
+            pairs__ = input.readMessage(
+                PairsDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+            pairs_.getMutableMap().put(
+                pairs__.getKey(), pairs__.getValue());
             break;
           }
           default: {
@@ -102,6 +99,20 @@ private static final long serialVersionUID = 0L;
     return animals.LionOuterClass.internal_static_animals_Lion_descriptor;
   }
 
+  @SuppressWarnings({"rawtypes"})
+  @java.lang.Override
+  protected com.google.protobuf.MapField internalGetMapField(
+      int number) {
+    switch (number) {
+      case 1:
+        return internalGetMap();
+      case 2:
+        return internalGetPairs();
+      default:
+        throw new RuntimeException(
+            "Invalid map field number: " + number);
+    }
+  }
   @java.lang.Override
   protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
       internalGetFieldAccessorTable() {
@@ -110,90 +121,166 @@ private static final long serialVersionUID = 0L;
             animals.Lion.class, animals.Lion.Builder.class);
   }
 
-  public static final int TYPE_FIELD_NUMBER = 1;
-  private volatile java.lang.Object type_;
-  /**
-   * <code>string type = 1;</code>
-   * @return The type.
-   */
-  @java.lang.Override
-  public java.lang.String getType() {
-    java.lang.Object ref = type_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      type_ = s;
-      return s;
+  public static final int MAP_FIELD_NUMBER = 1;
+  private static final class MapDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.String, java.lang.Integer> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.String, java.lang.Integer>newDefaultInstance(
+                animals.LionOuterClass.internal_static_animals_Lion_MapEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.STRING,
+                "",
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0);
+  }
+  private com.google.protobuf.MapField<
+      java.lang.String, java.lang.Integer> map_;
+  private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+  internalGetMap() {
+    if (map_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          MapDefaultEntryHolder.defaultEntry);
     }
+    return map_;
+  }
+
+  public int getMapCount() {
+    return internalGetMap().getMap().size();
   }
   /**
-   * <code>string type = 1;</code>
-   * @return The bytes for type.
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+
+  @java.lang.Override
+  public boolean containsMap(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    return internalGetMap().getMap().containsKey(key);
+  }
+  /**
+   * Use {@link #getMapMap()} instead.
    */
   @java.lang.Override
-  public com.google.protobuf.ByteString
-      getTypeBytes() {
-    java.lang.Object ref = type_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      type_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.String, java.lang.Integer> getMap() {
+    return getMapMap();
+  }
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+  @java.lang.Override
+
+  public java.util.Map<java.lang.String, java.lang.Integer> getMapMap() {
+    return internalGetMap().getMap();
+  }
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+  @java.lang.Override
+
+  public int getMapOrDefault(
+      java.lang.String key,
+      int defaultValue) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.Integer> map =
+        internalGetMap().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;string, int32&gt; map = 1;</code>
+   */
+  @java.lang.Override
+
+  public int getMapOrThrow(
+      java.lang.String key) {
+    if (key == null) { throw new NullPointerException("map key"); }
+    java.util.Map<java.lang.String, java.lang.Integer> map =
+        internalGetMap().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
     }
+    return map.get(key);
   }
 
-  public static final int CAPACITY_FIELD_NUMBER = 2;
-  private int capacity_;
-  /**
-   * <code>int32 capacity = 2;</code>
-   * @return The capacity.
-   */
-  @java.lang.Override
-  public int getCapacity() {
-    return capacity_;
+  public static final int PAIRS_FIELD_NUMBER = 2;
+  private static final class PairsDefaultEntryHolder {
+    static final com.google.protobuf.MapEntry<
+        java.lang.Integer, animals.FemaleLion> defaultEntry =
+            com.google.protobuf.MapEntry
+            .<java.lang.Integer, animals.FemaleLion>newDefaultInstance(
+                animals.LionOuterClass.internal_static_animals_Lion_PairsEntry_descriptor, 
+                com.google.protobuf.WireFormat.FieldType.INT32,
+                0,
+                com.google.protobuf.WireFormat.FieldType.MESSAGE,
+                animals.FemaleLion.getDefaultInstance());
+  }
+  private com.google.protobuf.MapField<
+      java.lang.Integer, animals.FemaleLion> pairs_;
+  private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+  internalGetPairs() {
+    if (pairs_ == null) {
+      return com.google.protobuf.MapField.emptyMapField(
+          PairsDefaultEntryHolder.defaultEntry);
+    }
+    return pairs_;
   }
 
-  public static final int ID_FIELD_NUMBER = 3;
-  private int id_;
-  /**
-   * <code>int32 id = 3;</code>
-   * @return The id.
-   */
-  @java.lang.Override
-  public int getId() {
-    return id_;
+  public int getPairsCount() {
+    return internalGetPairs().getMap().size();
   }
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
 
-  public static final int ANIMALOBJECT_FIELD_NUMBER = 4;
-  private animals.Animal animalObject_;
-  /**
-   * <code>.animals.Animal animalObject = 4;</code>
-   * @return Whether the animalObject field is set.
-   */
   @java.lang.Override
-  public boolean hasAnimalObject() {
-    return animalObject_ != null;
+  public boolean containsPairs(
+      int key) {
+    
+    return internalGetPairs().getMap().containsKey(key);
   }
   /**
-   * <code>.animals.Animal animalObject = 4;</code>
-   * @return The animalObject.
+   * Use {@link #getPairsMap()} instead.
    */
   @java.lang.Override
-  public animals.Animal getAnimalObject() {
-    return animalObject_ == null ? animals.Animal.getDefaultInstance() : animalObject_;
+  @java.lang.Deprecated
+  public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairs() {
+    return getPairsMap();
   }
   /**
-   * <code>.animals.Animal animalObject = 4;</code>
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
    */
   @java.lang.Override
-  public animals.AnimalOrBuilder getAnimalObjectOrBuilder() {
-    return getAnimalObject();
+
+  public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairsMap() {
+    return internalGetPairs().getMap();
+  }
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
+  @java.lang.Override
+
+  public animals.FemaleLion getPairsOrDefault(
+      int key,
+      animals.FemaleLion defaultValue) {
+    
+    java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+        internalGetPairs().getMap();
+    return map.containsKey(key) ? map.get(key) : defaultValue;
+  }
+  /**
+   * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+   */
+  @java.lang.Override
+
+  public animals.FemaleLion getPairsOrThrow(
+      int key) {
+    
+    java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+        internalGetPairs().getMap();
+    if (!map.containsKey(key)) {
+      throw new java.lang.IllegalArgumentException();
+    }
+    return map.get(key);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -210,18 +297,18 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(type_)) {
-      com.google.protobuf.GeneratedMessageV3.writeString(output, 1, type_);
-    }
-    if (capacity_ != 0) {
-      output.writeInt32(2, capacity_);
-    }
-    if (id_ != 0) {
-      output.writeInt32(3, id_);
-    }
-    if (animalObject_ != null) {
-      output.writeMessage(4, getAnimalObject());
-    }
+    com.google.protobuf.GeneratedMessageV3
+      .serializeStringMapTo(
+        output,
+        internalGetMap(),
+        MapDefaultEntryHolder.defaultEntry,
+        1);
+    com.google.protobuf.GeneratedMessageV3
+      .serializeIntegerMapTo(
+        output,
+        internalGetPairs(),
+        PairsDefaultEntryHolder.defaultEntry,
+        2);
     unknownFields.writeTo(output);
   }
 
@@ -231,20 +318,25 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    if (!com.google.protobuf.GeneratedMessageV3.isStringEmpty(type_)) {
-      size += com.google.protobuf.GeneratedMessageV3.computeStringSize(1, type_);
-    }
-    if (capacity_ != 0) {
+    for (java.util.Map.Entry<java.lang.String, java.lang.Integer> entry
+         : internalGetMap().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.String, java.lang.Integer>
+      map__ = MapDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(2, capacity_);
+          .computeMessageSize(1, map__);
     }
-    if (id_ != 0) {
+    for (java.util.Map.Entry<java.lang.Integer, animals.FemaleLion> entry
+         : internalGetPairs().getMap().entrySet()) {
+      com.google.protobuf.MapEntry<java.lang.Integer, animals.FemaleLion>
+      pairs__ = PairsDefaultEntryHolder.defaultEntry.newBuilderForType()
+          .setKey(entry.getKey())
+          .setValue(entry.getValue())
+          .build();
       size += com.google.protobuf.CodedOutputStream
-        .computeInt32Size(3, id_);
-    }
-    if (animalObject_ != null) {
-      size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(4, getAnimalObject());
+          .computeMessageSize(2, pairs__);
     }
     size += unknownFields.getSerializedSize();
     memoizedSize = size;
@@ -261,17 +353,10 @@ private static final long serialVersionUID = 0L;
     }
     animals.Lion other = (animals.Lion) obj;
 
-    if (!getType()
-        .equals(other.getType())) return false;
-    if (getCapacity()
-        != other.getCapacity()) return false;
-    if (getId()
-        != other.getId()) return false;
-    if (hasAnimalObject() != other.hasAnimalObject()) return false;
-    if (hasAnimalObject()) {
-      if (!getAnimalObject()
-          .equals(other.getAnimalObject())) return false;
-    }
+    if (!internalGetMap().equals(
+        other.internalGetMap())) return false;
+    if (!internalGetPairs().equals(
+        other.internalGetPairs())) return false;
     if (!unknownFields.equals(other.unknownFields)) return false;
     return true;
   }
@@ -283,15 +368,13 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    hash = (37 * hash) + TYPE_FIELD_NUMBER;
-    hash = (53 * hash) + getType().hashCode();
-    hash = (37 * hash) + CAPACITY_FIELD_NUMBER;
-    hash = (53 * hash) + getCapacity();
-    hash = (37 * hash) + ID_FIELD_NUMBER;
-    hash = (53 * hash) + getId();
-    if (hasAnimalObject()) {
-      hash = (37 * hash) + ANIMALOBJECT_FIELD_NUMBER;
-      hash = (53 * hash) + getAnimalObject().hashCode();
+    if (!internalGetMap().getMap().isEmpty()) {
+      hash = (37 * hash) + MAP_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetMap().hashCode();
+    }
+    if (!internalGetPairs().getMap().isEmpty()) {
+      hash = (37 * hash) + PAIRS_FIELD_NUMBER;
+      hash = (53 * hash) + internalGetPairs().hashCode();
     }
     hash = (29 * hash) + unknownFields.hashCode();
     memoizedHashCode = hash;
@@ -400,6 +483,32 @@ private static final long serialVersionUID = 0L;
       return animals.LionOuterClass.internal_static_animals_Lion_descriptor;
     }
 
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMapField(
+        int number) {
+      switch (number) {
+        case 1:
+          return internalGetMap();
+        case 2:
+          return internalGetPairs();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
+    @SuppressWarnings({"rawtypes"})
+    protected com.google.protobuf.MapField internalGetMutableMapField(
+        int number) {
+      switch (number) {
+        case 1:
+          return internalGetMutableMap();
+        case 2:
+          return internalGetMutablePairs();
+        default:
+          throw new RuntimeException(
+              "Invalid map field number: " + number);
+      }
+    }
     @java.lang.Override
     protected com.google.protobuf.GeneratedMessageV3.FieldAccessorTable
         internalGetFieldAccessorTable() {
@@ -426,18 +535,8 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public Builder clear() {
       super.clear();
-      type_ = "";
-
-      capacity_ = 0;
-
-      id_ = 0;
-
-      if (animalObjectBuilder_ == null) {
-        animalObject_ = null;
-      } else {
-        animalObject_ = null;
-        animalObjectBuilder_ = null;
-      }
+      internalGetMutableMap().clear();
+      internalGetMutablePairs().clear();
       return this;
     }
 
@@ -464,14 +563,11 @@ private static final long serialVersionUID = 0L;
     @java.lang.Override
     public animals.Lion buildPartial() {
       animals.Lion result = new animals.Lion(this);
-      result.type_ = type_;
-      result.capacity_ = capacity_;
-      result.id_ = id_;
-      if (animalObjectBuilder_ == null) {
-        result.animalObject_ = animalObject_;
-      } else {
-        result.animalObject_ = animalObjectBuilder_.build();
-      }
+      int from_bitField0_ = bitField0_;
+      result.map_ = internalGetMap();
+      result.map_.makeImmutable();
+      result.pairs_ = internalGetPairs();
+      result.pairs_.makeImmutable();
       onBuilt();
       return result;
     }
@@ -520,19 +616,10 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(animals.Lion other) {
       if (other == animals.Lion.getDefaultInstance()) return this;
-      if (!other.getType().isEmpty()) {
-        type_ = other.type_;
-        onChanged();
-      }
-      if (other.getCapacity() != 0) {
-        setCapacity(other.getCapacity());
-      }
-      if (other.getId() != 0) {
-        setId(other.getId());
-      }
-      if (other.hasAnimalObject()) {
-        mergeAnimalObject(other.getAnimalObject());
-      }
+      internalGetMutableMap().mergeFrom(
+          other.internalGetMap());
+      internalGetMutablePairs().mergeFrom(
+          other.internalGetPairs());
       this.mergeUnknownFields(other.unknownFields);
       onChanged();
       return this;
@@ -561,262 +648,265 @@ private static final long serialVersionUID = 0L;
       }
       return this;
     }
+    private int bitField0_;
 
-    private java.lang.Object type_ = "";
-    /**
-     * <code>string type = 1;</code>
-     * @return The type.
-     */
-    public java.lang.String getType() {
-      java.lang.Object ref = type_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        type_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
+    private com.google.protobuf.MapField<
+        java.lang.String, java.lang.Integer> map_;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+    internalGetMap() {
+      if (map_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            MapDefaultEntryHolder.defaultEntry);
       }
+      return map_;
     }
-    /**
-     * <code>string type = 1;</code>
-     * @return The bytes for type.
-     */
-    public com.google.protobuf.ByteString
-        getTypeBytes() {
-      java.lang.Object ref = type_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        type_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
+    private com.google.protobuf.MapField<java.lang.String, java.lang.Integer>
+    internalGetMutableMap() {
+      onChanged();;
+      if (map_ == null) {
+        map_ = com.google.protobuf.MapField.newMapField(
+            MapDefaultEntryHolder.defaultEntry);
       }
-    }
-    /**
-     * <code>string type = 1;</code>
-     * @param value The type to set.
-     * @return This builder for chaining.
-     */
-    public Builder setType(
-        java.lang.String value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  
-      type_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string type = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearType() {
-      
-      type_ = getDefaultInstance().getType();
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string type = 1;</code>
-     * @param value The bytes for type to set.
-     * @return This builder for chaining.
-     */
-    public Builder setTypeBytes(
-        com.google.protobuf.ByteString value) {
-      if (value == null) {
-    throw new NullPointerException();
-  }
-  checkByteStringIsUtf8(value);
-      
-      type_ = value;
-      onChanged();
-      return this;
+      if (!map_.isMutable()) {
+        map_ = map_.copy();
+      }
+      return map_;
     }
 
-    private int capacity_ ;
+    public int getMapCount() {
+      return internalGetMap().getMap().size();
+    }
     /**
-     * <code>int32 capacity = 2;</code>
-     * @return The capacity.
+     * <code>map&lt;string, int32&gt; map = 1;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsMap(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      return internalGetMap().getMap().containsKey(key);
+    }
+    /**
+     * Use {@link #getMapMap()} instead.
      */
     @java.lang.Override
-    public int getCapacity() {
-      return capacity_;
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.Integer> getMap() {
+      return getMapMap();
     }
     /**
-     * <code>int32 capacity = 2;</code>
-     * @param value The capacity to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCapacity(int value) {
-      
-      capacity_ = value;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 capacity = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearCapacity() {
-      
-      capacity_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private int id_ ;
-    /**
-     * <code>int32 id = 3;</code>
-     * @return The id.
+     * <code>map&lt;string, int32&gt; map = 1;</code>
      */
     @java.lang.Override
-    public int getId() {
-      return id_;
+
+    public java.util.Map<java.lang.String, java.lang.Integer> getMapMap() {
+      return internalGetMap().getMap();
     }
     /**
-     * <code>int32 id = 3;</code>
-     * @param value The id to set.
-     * @return This builder for chaining.
+     * <code>map&lt;string, int32&gt; map = 1;</code>
      */
-    public Builder setId(int value) {
+    @java.lang.Override
+
+    public int getMapOrDefault(
+        java.lang.String key,
+        int defaultValue) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.Integer> map =
+          internalGetMap().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
+    }
+    /**
+     * <code>map&lt;string, int32&gt; map = 1;</code>
+     */
+    @java.lang.Override
+
+    public int getMapOrThrow(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      java.util.Map<java.lang.String, java.lang.Integer> map =
+          internalGetMap().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
+      }
+      return map.get(key);
+    }
+
+    public Builder clearMap() {
+      internalGetMutableMap().getMutableMap()
+          .clear();
+      return this;
+    }
+    /**
+     * <code>map&lt;string, int32&gt; map = 1;</code>
+     */
+
+    public Builder removeMap(
+        java.lang.String key) {
+      if (key == null) { throw new NullPointerException("map key"); }
+      internalGetMutableMap().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.String, java.lang.Integer>
+    getMutableMap() {
+      return internalGetMutableMap().getMutableMap();
+    }
+    /**
+     * <code>map&lt;string, int32&gt; map = 1;</code>
+     */
+    public Builder putMap(
+        java.lang.String key,
+        int value) {
+      if (key == null) { throw new NullPointerException("map key"); }
       
-      id_ = value;
-      onChanged();
+      internalGetMutableMap().getMutableMap()
+          .put(key, value);
       return this;
     }
     /**
-     * <code>int32 id = 3;</code>
-     * @return This builder for chaining.
+     * <code>map&lt;string, int32&gt; map = 1;</code>
      */
-    public Builder clearId() {
+
+    public Builder putAllMap(
+        java.util.Map<java.lang.String, java.lang.Integer> values) {
+      internalGetMutableMap().getMutableMap()
+          .putAll(values);
+      return this;
+    }
+
+    private com.google.protobuf.MapField<
+        java.lang.Integer, animals.FemaleLion> pairs_;
+    private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+    internalGetPairs() {
+      if (pairs_ == null) {
+        return com.google.protobuf.MapField.emptyMapField(
+            PairsDefaultEntryHolder.defaultEntry);
+      }
+      return pairs_;
+    }
+    private com.google.protobuf.MapField<java.lang.Integer, animals.FemaleLion>
+    internalGetMutablePairs() {
+      onChanged();;
+      if (pairs_ == null) {
+        pairs_ = com.google.protobuf.MapField.newMapField(
+            PairsDefaultEntryHolder.defaultEntry);
+      }
+      if (!pairs_.isMutable()) {
+        pairs_ = pairs_.copy();
+      }
+      return pairs_;
+    }
+
+    public int getPairsCount() {
+      return internalGetPairs().getMap().size();
+    }
+    /**
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     */
+
+    @java.lang.Override
+    public boolean containsPairs(
+        int key) {
       
-      id_ = 0;
-      onChanged();
-      return this;
+      return internalGetPairs().getMap().containsKey(key);
     }
+    /**
+     * Use {@link #getPairsMap()} instead.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairs() {
+      return getPairsMap();
+    }
+    /**
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     */
+    @java.lang.Override
 
-    private animals.Animal animalObject_;
-    private com.google.protobuf.SingleFieldBuilderV3<
-        animals.Animal, animals.Animal.Builder, animals.AnimalOrBuilder> animalObjectBuilder_;
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     * @return Whether the animalObject field is set.
-     */
-    public boolean hasAnimalObject() {
-      return animalObjectBuilder_ != null || animalObject_ != null;
+    public java.util.Map<java.lang.Integer, animals.FemaleLion> getPairsMap() {
+      return internalGetPairs().getMap();
     }
     /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     * @return The animalObject.
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
      */
-    public animals.Animal getAnimalObject() {
-      if (animalObjectBuilder_ == null) {
-        return animalObject_ == null ? animals.Animal.getDefaultInstance() : animalObject_;
-      } else {
-        return animalObjectBuilder_.getMessage();
-      }
-    }
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     */
-    public Builder setAnimalObject(animals.Animal value) {
-      if (animalObjectBuilder_ == null) {
-        if (value == null) {
-          throw new NullPointerException();
-        }
-        animalObject_ = value;
-        onChanged();
-      } else {
-        animalObjectBuilder_.setMessage(value);
-      }
+    @java.lang.Override
 
-      return this;
-    }
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     */
-    public Builder setAnimalObject(
-        animals.Animal.Builder builderForValue) {
-      if (animalObjectBuilder_ == null) {
-        animalObject_ = builderForValue.build();
-        onChanged();
-      } else {
-        animalObjectBuilder_.setMessage(builderForValue.build());
-      }
-
-      return this;
-    }
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     */
-    public Builder mergeAnimalObject(animals.Animal value) {
-      if (animalObjectBuilder_ == null) {
-        if (animalObject_ != null) {
-          animalObject_ =
-            animals.Animal.newBuilder(animalObject_).mergeFrom(value).buildPartial();
-        } else {
-          animalObject_ = value;
-        }
-        onChanged();
-      } else {
-        animalObjectBuilder_.mergeFrom(value);
-      }
-
-      return this;
-    }
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     */
-    public Builder clearAnimalObject() {
-      if (animalObjectBuilder_ == null) {
-        animalObject_ = null;
-        onChanged();
-      } else {
-        animalObject_ = null;
-        animalObjectBuilder_ = null;
-      }
-
-      return this;
-    }
-    /**
-     * <code>.animals.Animal animalObject = 4;</code>
-     */
-    public animals.Animal.Builder getAnimalObjectBuilder() {
+    public animals.FemaleLion getPairsOrDefault(
+        int key,
+        animals.FemaleLion defaultValue) {
       
-      onChanged();
-      return getAnimalObjectFieldBuilder().getBuilder();
+      java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+          internalGetPairs().getMap();
+      return map.containsKey(key) ? map.get(key) : defaultValue;
     }
     /**
-     * <code>.animals.Animal animalObject = 4;</code>
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
      */
-    public animals.AnimalOrBuilder getAnimalObjectOrBuilder() {
-      if (animalObjectBuilder_ != null) {
-        return animalObjectBuilder_.getMessageOrBuilder();
-      } else {
-        return animalObject_ == null ?
-            animals.Animal.getDefaultInstance() : animalObject_;
+    @java.lang.Override
+
+    public animals.FemaleLion getPairsOrThrow(
+        int key) {
+      
+      java.util.Map<java.lang.Integer, animals.FemaleLion> map =
+          internalGetPairs().getMap();
+      if (!map.containsKey(key)) {
+        throw new java.lang.IllegalArgumentException();
       }
+      return map.get(key);
+    }
+
+    public Builder clearPairs() {
+      internalGetMutablePairs().getMutableMap()
+          .clear();
+      return this;
     }
     /**
-     * <code>.animals.Animal animalObject = 4;</code>
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
      */
-    private com.google.protobuf.SingleFieldBuilderV3<
-        animals.Animal, animals.Animal.Builder, animals.AnimalOrBuilder> 
-        getAnimalObjectFieldBuilder() {
-      if (animalObjectBuilder_ == null) {
-        animalObjectBuilder_ = new com.google.protobuf.SingleFieldBuilderV3<
-            animals.Animal, animals.Animal.Builder, animals.AnimalOrBuilder>(
-                getAnimalObject(),
-                getParentForChildren(),
-                isClean());
-        animalObject_ = null;
-      }
-      return animalObjectBuilder_;
+
+    public Builder removePairs(
+        int key) {
+      
+      internalGetMutablePairs().getMutableMap()
+          .remove(key);
+      return this;
+    }
+    /**
+     * Use alternate mutation accessors instead.
+     */
+    @java.lang.Deprecated
+    public java.util.Map<java.lang.Integer, animals.FemaleLion>
+    getMutablePairs() {
+      return internalGetMutablePairs().getMutableMap();
+    }
+    /**
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     */
+    public Builder putPairs(
+        int key,
+        animals.FemaleLion value) {
+      
+      if (value == null) {
+  throw new NullPointerException("map value");
+}
+
+      internalGetMutablePairs().getMutableMap()
+          .put(key, value);
+      return this;
+    }
+    /**
+     * <code>map&lt;int32, .animals.FemaleLion&gt; pairs = 2;</code>
+     */
+
+    public Builder putAllPairs(
+        java.util.Map<java.lang.Integer, animals.FemaleLion> values) {
+      internalGetMutablePairs().getMutableMap()
+          .putAll(values);
+      return this;
     }
     @java.lang.Override
     public final Builder setUnknownFields(
