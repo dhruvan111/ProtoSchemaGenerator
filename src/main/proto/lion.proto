@@ -4,9 +4,17 @@ package animals;
 option java_multiple_files = true;
 
 message Lion{
-  string type = 1;
-  int32 capacity = 2;
-  int32 id = 3;
-  Animal animalObject = 4;
+
+  map<string, int32> map = 1;
+  map<int32, FemaleLion> pairs = 2;
+
+}
+
+message MaleLion{
+  int32 id = 1;
+}
+
+message FemaleLion{
+  int32 id = 1;
 }
 

@@ -10,6 +10,7 @@ public class ProtobufUtils {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_MAPPING = new HashMap<>();
     private static final Map<Class<?>, Class<?>> PRIMITIVE_LIST_MAPPING = new HashMap<>();
     private static final Map<Class<?>, Class<?>> PRIMITIVE_MAP_MAPPING = new HashMap<>();
+    private static final Map<Class<?>, Class<?>> PRIMITIVE_KEY_MAPPING = new HashMap<>();
 
     static {
         PRIMITIVE_TYPE_MAPPING.put(boolean.class, int32.class);
@@ -45,11 +46,24 @@ public class ProtobufUtils {
     }
 
     static {
+        //for Map types
         PRIMITIVE_MAP_MAPPING.put(Map.class, map.class);
         PRIMITIVE_MAP_MAPPING.put(SortedMap.class, map.class);
         PRIMITIVE_MAP_MAPPING.put(TreeMap.class, map.class);
         PRIMITIVE_MAP_MAPPING.put(HashMap.class, map.class);
         PRIMITIVE_MAP_MAPPING.put(LinkedHashMap.class, map.class);
+    }
+
+    static {
+        // primitive key types
+        PRIMITIVE_KEY_MAPPING.put(boolean.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(byte.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(short.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(int.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(long.class, int64.class);
+        PRIMITIVE_KEY_MAPPING.put(java.lang.String.class, string.class);
+        PRIMITIVE_KEY_MAPPING.put(java.lang.Integer.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(java.lang.Long.class, int64.class);
     }
 
     public static boolean isPrimitiveType(Class<?> clazz) {
@@ -74,5 +88,13 @@ public class ProtobufUtils {
 
     public static Class<?> getProtoMapType(Class<?> clazz){
         return PRIMITIVE_MAP_MAPPING.get(clazz);
+    }
+
+    public static boolean isPrimitiveKeyType(Class<?> clazz){
+        return PRIMITIVE_KEY_MAPPING.containsKey(clazz);
+    }
+
+    public static Class<?> getProtoKeyType(Class<?> clazz){
+        return PRIMITIVE_KEY_MAPPING.get(clazz);
     }
 }

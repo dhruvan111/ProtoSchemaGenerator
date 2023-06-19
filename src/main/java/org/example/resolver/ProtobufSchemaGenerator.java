@@ -208,6 +208,16 @@ public class ProtobufSchemaGenerator {
         }
     }
 
+    private void nestedMapFirstArg(BufferedWriter writer, Type typeArg, String nestedListName, Field field, int tagNumber, int cnt){
+
+
+    }
+
+    private void nestedMapSecondArg(BufferedWriter writer, Type typeArg, String nestedListName, Field field, int tagNumber, int cnt){
+
+
+    }
+
     private int schemaDependency(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         writer.newLine();
@@ -254,6 +264,14 @@ public class ProtobufSchemaGenerator {
             }
 
             else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
+                Type genericType = field.getGenericType();
+                System.out.println(genericType);
+
+                if (genericType instanceof ParameterizedType){
+                    Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+
+
+                }
 
             }
 
