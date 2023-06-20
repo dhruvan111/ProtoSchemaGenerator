@@ -12,7 +12,7 @@ public class ProtobufUtils {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_KEY_MAPPING = new HashMap<>();
 
     static {
-        PRIMITIVE_TYPE_MAPPING.put(boolean.class, int32.class);
+        PRIMITIVE_TYPE_MAPPING.put(boolean.class, bool.class);
         PRIMITIVE_TYPE_MAPPING.put(byte.class, int32.class);
         PRIMITIVE_TYPE_MAPPING.put(short.class, int32.class);
         PRIMITIVE_TYPE_MAPPING.put(int.class, int32.class);
@@ -55,7 +55,7 @@ public class ProtobufUtils {
 
     static {
         // primitive key types
-        PRIMITIVE_KEY_MAPPING.put(boolean.class, int32.class);
+        PRIMITIVE_KEY_MAPPING.put(boolean.class, bool.class);
         PRIMITIVE_KEY_MAPPING.put(byte.class, int32.class);
         PRIMITIVE_KEY_MAPPING.put(short.class, int32.class);
         PRIMITIVE_KEY_MAPPING.put(int.class, int32.class);
