@@ -450,6 +450,7 @@ public class ProtobufSchemaGenerator {
                 tagNumber = mapScan(field, tagNumber, writer);
             }
 
+            // Checking for generic classes and Primitive types
             else if (ProtobufUtils.isPrimitiveType(fieldType)) {
 
                 Class<?> protobufType = ProtobufUtils.getProtobufType(fieldType);
