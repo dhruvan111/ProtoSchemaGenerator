@@ -1,4 +1,4 @@
-package org.example.livinglife;
+package test.livinglife;
 
 public class LivingAnimals implements Human{
 }

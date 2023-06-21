@@ -1,7 +1,7 @@
-package org.example.edu;
+package test.edu;
 
-import org.example.edu.edusrc.Collage;
-import org.example.edu.edusrc.School;
+import test.edu.edusrc.Collage;
+import test.edu.edusrc.School;
 
 import java.util.List;
 

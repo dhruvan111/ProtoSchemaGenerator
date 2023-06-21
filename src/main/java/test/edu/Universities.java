@@ -1,4 +1,4 @@
-package org.example.edu;
+package test.edu;
 
 public class Universities {
 }

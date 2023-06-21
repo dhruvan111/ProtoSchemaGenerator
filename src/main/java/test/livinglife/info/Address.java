@@ -1,6 +1,6 @@
-package org.example.livinglife.info;
+package test.livinglife.info;
 
-import org.example.Person;
+import test.Person;
 
 public class Address {
     String cityName;

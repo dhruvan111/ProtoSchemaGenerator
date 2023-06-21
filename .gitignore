@@ -40,3 +40,10 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+## Generated .proto files and test java beans #
+protofiles/
+src/main/java/test/
+
+# Generated java codes from protoc #
+src/main/protoGen/

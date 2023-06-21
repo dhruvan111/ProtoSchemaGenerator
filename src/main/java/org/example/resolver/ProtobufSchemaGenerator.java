@@ -495,3 +495,5 @@ public class ProtobufSchemaGenerator {
         writeMessage(writer, clazz, interfaces, superClass);
     }
 }
+
+
