@@ -42,8 +42,9 @@ bin/
 .DS_Store
 
 ## Generated .proto files and test java beans #
-protofiles/
-src/main/java/test/
+protofiles
+src/main/java/test
+src/main/proto
 
 # Generated java codes from protoc #
-src/main/protoGen/
+src/protoGen
