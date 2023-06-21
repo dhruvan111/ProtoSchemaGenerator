@@ -6,7 +6,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.*;
 
-public class ProtobufSchemaGenerator {
+public class ProtoSchemaGenerator {
 
     private Set<Class<?>> schemaGen;
     private static final String IMPORT = "import";
@@ -501,7 +501,7 @@ public class ProtobufSchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName().toLowerCase() + PROTOEXT;
+        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + PROTOEXT;
         File file = new File(fileName);
         if (!file.exists()){
             boolean fileCreated =  file.createNewFile();
