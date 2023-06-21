@@ -9,6 +9,22 @@ import java.util.*;
 public class ProtobufSchemaGenerator {
 
     private Set<Class<?>> schemaGen;
+    private static final String IMPORT = "import";
+    private static final String PROTOEXT = ".proto";
+    private static final String JAVAEXT = "java.";
+    private static final String PROTOVERSION = "syntax = \"proto3\";";
+    private static final String PACKAGE = "package Data;";
+    private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
+    private static final String LIST = "List";
+    private static final String REPEATED = "  repeated ";
+    private static final String MSG = "  message ";
+    private static final String ENTRY = "Entry";
+    private static final String MAP = "map";
+    private static final String KEY = " key = 1;";
+    private static final String VAL = " value = 2;";
+    private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
+
+
     private int factor;
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
@@ -24,7 +40,7 @@ public class ProtobufSchemaGenerator {
         if (!outputDirectory.exists()) {
             boolean dirCreated = outputDirectory.mkdirs();
             if (!dirCreated){
-                throw new IOException("Unable to create file at specified path. It already exists");
+                throw new IOException(FILE_CREATE_ERR);
             }
         }
     }
@@ -48,7 +64,7 @@ public class ProtobufSchemaGenerator {
                 dependencies.addAll(analyzeNestedDependency(genericType));
             }
 
-            else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
+            else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith(JAVAEXT)) {
                 dependencies.add(fieldType);
             }
         }
@@ -78,12 +94,12 @@ public class ProtobufSchemaGenerator {
     private Set<Class<?>> analyzeImports(Class<?>[] interfaces) {
         Set<Class<?>> dependencies;
         dependencies = new HashSet<>();
-        for (Class<?> iface : interfaces) {
-            if (iface == null){
+        for (Class<?> face : interfaces) {
+            if (face == null){
                 continue;
             }
-            if (!iface.isPrimitive() && !iface.getPackage().getName().startsWith("java.")) {
-                dependencies.add(iface);
+            if (!face.isPrimitive() && !face.getPackage().getName().startsWith(JAVAEXT)) {
+                dependencies.add(face);
             }
         }
         return dependencies;
@@ -98,12 +114,12 @@ public class ProtobufSchemaGenerator {
     }
 
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer) throws IOException {
-        writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+        writer.write( IMPORT + " \"" + fieldType.getSimpleName() +  PROTOEXT + "\";");
         writer.newLine();
     }
 
     private void importWithCall(Class<?> fieldType,BufferedWriter writer, String outputDirectoryPath) throws IOException {
-        writer.write("import \"" + fieldType.getSimpleName() + ".proto\";");
+        writer.write(IMPORT + " \"" + fieldType.getSimpleName() + PROTOEXT + "\";");
         writer.newLine();
         // recursively making .proto files for all non-primitive files
         writeProtobufSchema(fieldType, outputDirectoryPath);
@@ -118,15 +134,15 @@ public class ProtobufSchemaGenerator {
 
 
     private void hardCodeHeaders(BufferedWriter writer) throws IOException {
-        writer.write("syntax = \"proto3\";");
+        writer.write(PROTOVERSION);
         writer.newLine();
         writer.newLine();
 
-        writer.write("package personData;");
+        writer.write(PACKAGE);
         writer.newLine();
         writer.newLine();
 
-        writer.write("option java_multiple_files = true;");
+        writer.write(MULTIPLE_FILES_OPN);
         writer.newLine();
         writer.newLine();
     }
@@ -178,27 +194,31 @@ public class ProtobufSchemaGenerator {
         }
     }
 
+    private void listHeader(BufferedWriter writer,String nestedListName, Field field, int cnt, int tagNumber) throws IOException {
+        String currListName = nestedListName;
+        String elementName = field.getName();
+        if (factor != 0){
+            currListName += factor;
+            elementName += factor;
+        }
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write( REPEATED + currListName + " " + elementName + " = " + (tagNumber) + ";");
+        writer.newLine();
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write(MSG + currListName + " {");
+        writer.newLine();
+        writer.newLine();
+    }
+
     private int createList(BufferedWriter writer, Type[] typeArguments, Field field, int tagNumber, int cnt) throws IOException {
 
-        String nestedListName = capitalize(field.getName()) + "List";
+        String nestedListName = capitalize(field.getName()) + LIST;
         if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
 
             Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
-            String currListName = nestedListName;
-            String elementName = field.getName();
-            if (factor != 0){
-                currListName += factor;
-                elementName += factor;
-            }
-
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  repeated " + currListName + " " + elementName + " = " + (tagNumber) + ";");
-            writer.newLine();
-
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  message " + currListName + " {");
-            writer.newLine();
-            writer.newLine();
+            listHeader(writer, nestedListName, field, cnt, tagNumber);
 
             cnt++;
             factor++;
@@ -228,32 +248,36 @@ public class ProtobufSchemaGenerator {
             }
             String elementName = field.getName() + cnt;
             writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  repeated " + className + " " + elementName + " = " + (tagNumber) + ";");
+            writer.write(REPEATED + className + " " + elementName + " = " + (tagNumber) + ";");
             writer.newLine();
             return cnt;
         }
         return 0;
     }
 
-    private int complexMap(Type[] typeArguments, Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
-        Type firstArg = typeArguments[0];
-        Type secondArg = typeArguments[1];
-        String schemaName = field.getName() + "Entry";
+    private void complexMapHeader(BufferedWriter writer, Field field, int cnt, int tagNumber) throws IOException {
+        String schemaName = field.getName() + ENTRY;
         String mapName = field.getName();
         if (factor != 0){
-            mapName = "map" + factor;
+            mapName = MAP + factor;
             schemaName += factor;
         }
 
         writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write("  repeated " + schemaName + " " + mapName + " = " + tagNumber + ";");
+        writer.write(REPEATED + schemaName + " " + mapName + " = " + tagNumber + ";");
         writer.newLine();
 
         writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write("  message " + schemaName + " {");
+        writer.write(MSG + schemaName + " {");
         writer.newLine();
         writer.newLine();
+    }
 
+    private int complexMap(Type[] typeArguments, Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
+        Type firstArg = typeArguments[0];
+        Type secondArg = typeArguments[1];
+
+        complexMapHeader(writer, field, cnt, tagNumber);
         cnt++;
         factor++;
         if (firstArg instanceof ParameterizedType){
@@ -279,7 +303,7 @@ public class ProtobufSchemaGenerator {
                 keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
             }
             writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  " + keyName + " key = 1;");
+            writer.write("  " + keyName + KEY);
             writer.newLine();
         }
 
@@ -306,7 +330,7 @@ public class ProtobufSchemaGenerator {
                 keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
             }
             writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  " + keyName + " value = 2;");
+            writer.write("  " + keyName + VAL);
             writer.newLine();
         }
         writer.write("  ".repeat(Math.max(0, cnt)));
@@ -323,6 +347,22 @@ public class ProtobufSchemaGenerator {
         return false;
     }
 
+    private void simpleMapHeader(BufferedWriter writer, Field field, Class<?> firstArgClass, int cnt, int tagNumber) throws IOException {
+        String secondClass = field.getName() + ENTRY;
+        String mapName = MAP;
+        if (factor != 0){
+            mapName += factor;
+        }
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write(  "  " + MAP + "<"  + firstArgClass.getSimpleName() + "," + secondClass + "> " + mapName + " = " + tagNumber +  ";");
+        writer.newLine();
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write(MSG + secondClass + "{");
+        writer.newLine();
+    }
+
     private int simpleMap(Type[] typeArguments, Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
         Type firstArg = typeArguments[0];
         Type secondArg = typeArguments[1];
@@ -333,19 +373,7 @@ public class ProtobufSchemaGenerator {
         // here firstArg is primitive for Map
         if (secondArg instanceof ParameterizedType){
             Type[] typeArguments2 = ((ParameterizedType) secondArg).getActualTypeArguments();
-            String secondClass = field.getName() + "Entry";
-            String mapName = "map";
-            if (factor != 0){
-                mapName += factor;
-            }
-
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  map<" + firstArgClass.getSimpleName() + "," + secondClass + "> " + mapName + " = " + tagNumber +  ";");
-            writer.newLine();
-
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  message " + secondClass + "{");
-            writer.newLine();
+            simpleMapHeader(writer, field, firstArgClass, cnt, tagNumber);
 
             cnt++;
             factor++;
@@ -369,9 +397,9 @@ public class ProtobufSchemaGenerator {
         }
         else if (secondArg instanceof Class<?> secondArgClass){
 
-            String mapName = "map" + cnt;
+            String mapName = MAP + cnt;
             writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  map<" + firstArgClass.getSimpleName() + "," + secondArgClass + "> " + mapName + " = " + tagNumber +  ";");
+            writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass + "> " + mapName + " = " + tagNumber +  ";");
             writer.newLine();
             return cnt;
         }
@@ -457,7 +485,7 @@ public class ProtobufSchemaGenerator {
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
 
-            } else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith("java.")) {
+            } else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith(JAVAEXT)) {
 
                 writer.write("  " + fieldType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
@@ -473,12 +501,12 @@ public class ProtobufSchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName().toLowerCase() + ".proto";
+        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName().toLowerCase() + PROTOEXT;
         File file = new File(fileName);
         if (!file.exists()){
             boolean fileCreated =  file.createNewFile();
             if (!fileCreated){
-              throw new IOException("Unable to create file at specified path. It already exists");
+              throw new IOException(FILE_CREATE_ERR);
             }
         }
         clearFile(fileName);
