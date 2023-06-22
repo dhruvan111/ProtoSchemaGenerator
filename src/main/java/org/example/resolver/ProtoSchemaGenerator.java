@@ -23,6 +23,7 @@ public class ProtoSchemaGenerator {
     private static final String KEY = " key = 1;";
     private static final String VAL = " value = 2;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
+    private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
 
 
     private int factor;
@@ -497,17 +498,25 @@ public class ProtoSchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-//        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + PROTOEXT;
-        String packageName = clazz.getPackage().getName();
-        String fileName = outputDirectoryPath + "/" + packageName.replace(".", "/") + "/" + clazz.getSimpleName() + PROTOEXT;
-
-        File file = new File(fileName);
-        if (!file.exists()){
-            boolean fileCreated =  file.createNewFile();
-            if (!fileCreated){
-              throw new IOException(FILE_CREATE_ERR);
+        String packageName = clazz.getPackageName();
+        String packagePath = outputDirectoryPath + "/" + packageName.replace(".", "/");
+        File packageDir = new File(packagePath);
+        if (!packageDir.exists()) {
+            boolean dirCreated = packageDir.mkdirs();
+            if (!dirCreated) {
+                throw new IOException(PACKAGE_CREATE_ERR);
             }
         }
+
+        String fileName = packagePath + "/" + clazz.getSimpleName() + PROTOEXT;
+        File file = new File(fileName);
+        if (!file.exists()) {
+            boolean fileCreated = file.createNewFile();
+            if (!fileCreated) {
+                throw new IOException(FILE_CREATE_ERR);
+            }
+        }
+
         clearFile(fileName);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));

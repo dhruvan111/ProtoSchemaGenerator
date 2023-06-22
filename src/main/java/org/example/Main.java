@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.resolver.ProtoSchemaGenerator;
-import test.Person;
+import test.people.Person;
 
 import java.io.IOException;
 
