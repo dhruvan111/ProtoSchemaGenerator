@@ -20,6 +20,7 @@ public class ProtoSchemaGenerator {
     private static final String MSG = "  message ";
     private static final String ENTRY = "Entry";
     private static final String MAP = "map";
+    private static final String ENUM = "enum";
     private static final String KEY = " key = 1;";
     private static final String VAL = " value = 2;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
@@ -52,6 +53,11 @@ public class ProtoSchemaGenerator {
 
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
+
+            //checking for Enum Type
+            if (fieldType.isEnum()){
+                continue;
+            }
 
             // checking for nestedList Type
             if (ProtobufUtils.isPrimitiveListType(fieldType)) {
@@ -452,6 +458,32 @@ public class ProtoSchemaGenerator {
         return tagNumber;
     }
 
+    private int enumScan(Field field,Class<?> fieldType, int tagNumber, BufferedWriter writer) throws IOException {
+
+        String fieldName = field.getName();
+        String enumName = fieldType.getSimpleName();
+        writer.write("  " + enumName + " " + fieldName + " = " + tagNumber + ";");
+        writer.newLine();
+        tagNumber++;
+
+        writer.write("  " + ENUM + " " + enumName + "{");
+        writer.newLine();
+
+        Object[] enumConstants = fieldType.getEnumConstants();
+        int enumTagNo = 0;
+        for (Object enumConstant:enumConstants){
+            writer.write("    ");
+            writer.write(enumConstant.toString() + " = " + enumTagNo + ";");
+            enumTagNo++;
+            writer.newLine();
+        }
+        writer.write("  }");
+        writer.newLine();
+        writer.newLine();
+
+        return tagNumber;
+    }
+
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
@@ -470,6 +502,11 @@ public class ProtoSchemaGenerator {
             // Checking for Map Type
             else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
                 tagNumber = mapScan(field, tagNumber, writer);
+            }
+
+            // Checking for Enum type
+            else if (fieldType.isEnum()){
+                tagNumber = enumScan(field, fieldType, tagNumber, writer);
             }
 
             // Checking for generic classes and Primitive types
