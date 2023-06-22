@@ -115,12 +115,16 @@ public class ProtoSchemaGenerator {
     }
 
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer) throws IOException {
-        writer.write( IMPORT + " \"" + fieldType.getSimpleName() +  PROTOEXT + "\";");
+        String packageName = fieldType.getPackageName();
+        String importPackage = packageName.replace(".", "/");
+        writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
         writer.newLine();
     }
 
     private void importWithCall(Class<?> fieldType,BufferedWriter writer, String outputDirectoryPath) throws IOException {
-        writer.write(IMPORT + " \"" + fieldType.getSimpleName() + PROTOEXT + "\";");
+        String packageName = fieldType.getPackageName();
+        String importPackage = packageName.replace(".", "/");
+        writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
         writer.newLine();
         // recursively making .proto files for all non-primitive files
         writeProtobufSchema(fieldType, outputDirectoryPath);
@@ -196,12 +200,8 @@ public class ProtoSchemaGenerator {
     }
 
     private void listHeader(BufferedWriter writer,String nestedListName, Field field, int cnt, int tagNumber) throws IOException {
-        String currListName = nestedListName;
-        String elementName = field.getName();
-        if (factor != 0){
-            currListName += factor;
-            elementName += factor;
-        }
+        String currListName = nestedListName + factor;
+        String elementName = field.getName() + factor;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write( REPEATED + currListName + " " + elementName + " = " + (tagNumber) + ";");
@@ -247,7 +247,8 @@ public class ProtoSchemaGenerator {
             if (ProtobufUtils.isPrimitiveType(innerClass)){
                 className = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
             }
-            String elementName = field.getName() + cnt;
+            String elementName = field.getName() + factor;
+            factor++;
             writer.write("  ".repeat(Math.max(0, cnt)));
             writer.write(REPEATED + className + " " + elementName + " = " + (tagNumber) + ";");
             writer.newLine();
@@ -257,12 +258,8 @@ public class ProtoSchemaGenerator {
     }
 
     private void complexMapHeader(BufferedWriter writer, Field field, int cnt, int tagNumber) throws IOException {
-        String schemaName = field.getName() + ENTRY;
-        String mapName = field.getName();
-        if (factor != 0){
-            mapName = MAP + factor;
-            schemaName += factor;
-        }
+        String schemaName = field.getName() + ENTRY + factor;
+        String mapName = field.getName() + MAP + factor;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(REPEATED + schemaName + " " + mapName + " = " + tagNumber + ";");
@@ -348,8 +345,8 @@ public class ProtoSchemaGenerator {
     }
 
     private void simpleMapHeader(BufferedWriter writer, Field field, Class<?> firstArgClass, int cnt, int tagNumber) throws IOException {
-        String secondClass = field.getName() + ENTRY;
-        String mapName = MAP + factor;
+        String secondClass = field.getName() + ENTRY + factor;
+        String mapName = field.getName() + MAP + factor;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(  "  " + MAP + "<"  + firstArgClass.getSimpleName() + "," + secondClass + "> " + mapName + " = " + tagNumber +  ";");
@@ -394,7 +391,7 @@ public class ProtoSchemaGenerator {
         }
         else if (secondArg instanceof Class<?> secondArgClass){
 
-            String mapName = MAP + cnt;
+            String mapName = field.getName();
             writer.write("  ".repeat(Math.max(0, cnt)));
             writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass + "> " + mapName + " = " + tagNumber +  ";");
             writer.newLine();

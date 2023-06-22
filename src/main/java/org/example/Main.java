@@ -1,13 +1,15 @@
 package org.example;
 
 import org.example.resolver.ProtoSchemaGenerator;
-import test.people.Person;
+import org.example.test.Person;
+import org.example.test.people.Female;
+import org.example.test.people.Male;
 
 import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
         ProtoSchemaGenerator generator = new ProtoSchemaGenerator();
-        generator.generateProtobufSchema(Person.class, "protofiles");
+        generator.generateProtobufSchema(Female.class, "protofiles");
     }
 }
