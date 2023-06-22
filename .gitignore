@@ -48,3 +48,5 @@ src/main/proto/
 
 # Generated java codes from protoc #
 src/protoGen/
+beans.jar
+

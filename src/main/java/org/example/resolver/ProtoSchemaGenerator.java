@@ -13,7 +13,7 @@ public class ProtoSchemaGenerator {
     private static final String PROTOEXT = ".proto";
     private static final String JAVAEXT = "java.";
     private static final String PROTOVERSION = "syntax = \"proto3\";";
-    private static final String PACKAGE = "package Data;";
+    private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
     private static final String LIST = "List";
     private static final String REPEATED = "  repeated ";
@@ -133,12 +133,12 @@ public class ProtoSchemaGenerator {
     }
 
 
-    private void hardCodeHeaders(BufferedWriter writer) throws IOException {
+    private void hardCodeHeaders(BufferedWriter writer,String packageName) throws IOException {
         writer.write(PROTOVERSION);
         writer.newLine();
         writer.newLine();
 
-        writer.write(PACKAGE);
+        writer.write(JAVA_PKG + "\"" + packageName + "\";");
         writer.newLine();
         writer.newLine();
 
@@ -154,7 +154,7 @@ public class ProtoSchemaGenerator {
         importDone = new HashSet<>();
         fields = analyzeFields(clazz.getDeclaredFields());
 
-        hardCodeHeaders(writer);
+        hardCodeHeaders(writer, clazz.getPackageName());
 
         // Import for interfaces & Parent class
         for (Class<?> dependency:interfaces){
@@ -341,7 +341,6 @@ public class ProtoSchemaGenerator {
 
     private boolean checkSimpleMap(Type[] typeArguments){
         if (typeArguments[0] instanceof Class<?> nestedClass){
-            System.out.println(nestedClass);
             return ProtobufUtils.isPrimitiveKeyType(nestedClass);
         }
         return false;
@@ -349,10 +348,7 @@ public class ProtoSchemaGenerator {
 
     private void simpleMapHeader(BufferedWriter writer, Field field, Class<?> firstArgClass, int cnt, int tagNumber) throws IOException {
         String secondClass = field.getName() + ENTRY;
-        String mapName = MAP;
-        if (factor != 0){
-            mapName += factor;
-        }
+        String mapName = MAP + factor;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(  "  " + MAP + "<"  + firstArgClass.getSimpleName() + "," + secondClass + "> " + mapName + " = " + tagNumber +  ";");
@@ -501,7 +497,10 @@ public class ProtoSchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + PROTOEXT;
+//        String fileName = outputDirectoryPath + "/" + clazz.getSimpleName() + PROTOEXT;
+        String packageName = clazz.getPackage().getName();
+        String fileName = outputDirectoryPath + "/" + packageName.replace(".", "/") + "/" + clazz.getSimpleName() + PROTOEXT;
+
         File file = new File(fileName);
         if (!file.exists()){
             boolean fileCreated =  file.createNewFile();

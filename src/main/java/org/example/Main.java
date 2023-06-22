@@ -11,4 +11,3 @@ public class Main {
         generator.generateProtobufSchema(Person.class, "protofiles");
     }
 }
-
