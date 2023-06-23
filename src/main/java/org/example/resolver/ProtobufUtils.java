@@ -1,5 +1,6 @@
 package org.example.resolver;
 
+import org.apache.naming.java.javaURLContextFactory;
 import org.example.resolver.prototypes.*;
 
 import java.util.*;

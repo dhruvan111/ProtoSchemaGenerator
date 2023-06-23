@@ -13,6 +13,7 @@ public class ProtoSchemaGenerator {
     private static final String PROTOEXT = ".proto";
     private static final String JAVAEXT = "java.";
     private static final String PROTOVERSION = "syntax = \"proto3\";";
+    private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
     private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
     private static final String LIST = "List";
@@ -21,6 +22,7 @@ public class ProtoSchemaGenerator {
     private static final String ENTRY = "Entry";
     private static final String MAP = "map";
     private static final String ENUM = "enum";
+    private static final String ANY = "google.protobuf.Any";
     private static final String KEY = " key = 1;";
     private static final String VAL = " value = 2;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
@@ -69,6 +71,11 @@ public class ProtoSchemaGenerator {
             else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
                 Type genericType = field.getGenericType();
                 dependencies.addAll(analyzeNestedDependency(genericType));
+            }
+
+            else if (fieldType.equals(Object.class)){
+                System.out.println("Yes object");
+                dependencies.add(fieldType);
             }
 
             else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith(JAVAEXT)) {
@@ -121,6 +128,11 @@ public class ProtoSchemaGenerator {
     }
 
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer) throws IOException {
+        if (fieldType.equals(Object.class)){
+            writer.write(IMPORT_ANY);
+            writer.newLine();
+            return;
+        }
         String packageName = fieldType.getPackageName();
         String importPackage = packageName.replace(".", "/");
         writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
@@ -194,7 +206,11 @@ public class ProtoSchemaGenerator {
             if (ProtobufUtils.isPrimitiveType(dependency)){
                 continue;
             }
-            if (!schemaGen.contains(dependency)){
+            if (dependency.equals(Object.class)){
+                importWithoutCall(dependency, writer);
+                importDone.add(dependency);
+            }
+            else if (!schemaGen.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath);
                 importDone.add(dependency);
             }
@@ -253,6 +269,9 @@ public class ProtoSchemaGenerator {
             if (ProtobufUtils.isPrimitiveType(innerClass)){
                 className = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
             }
+            else if (innerClass.equals(Object.class)){
+                className = ANY;
+            }
             String elementName = field.getName() + factor;
             factor++;
             writer.write("  ".repeat(Math.max(0, cnt)));
@@ -302,13 +321,19 @@ public class ProtoSchemaGenerator {
         }
 
         else if (firstArg instanceof Class<?> innerClass){
-            String keyName = innerClass.getSimpleName();
-            if (ProtobufUtils.isPrimitiveMapType(innerClass)){
-                keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+            if (innerClass.equals(Object.class)){
+                objectScan(field, writer, 1, cnt);
+                factor++;
             }
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  " + keyName + KEY);
-            writer.newLine();
+            else {
+                String keyName = innerClass.getSimpleName();
+                if (ProtobufUtils.isPrimitiveMapType(innerClass)){
+                    keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+                }
+                writer.write("  ".repeat(Math.max(0, cnt)));
+                writer.write("  " + keyName + KEY);
+                writer.newLine();
+            }
         }
 
         // checking for second Arg
@@ -329,13 +354,19 @@ public class ProtoSchemaGenerator {
             }
         }
         else if (secondArg instanceof Class<?> innerClass){
-            String keyName = innerClass.getSimpleName();
-            if (ProtobufUtils.isPrimitiveMapType(innerClass)){
-                keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+            if (innerClass.equals(Object.class)){
+                objectScan(field, writer, 1, cnt);
+                factor++;
             }
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  " + keyName + VAL);
-            writer.newLine();
+            else {
+                String keyName = innerClass.getSimpleName();
+                if (ProtobufUtils.isPrimitiveMapType(innerClass)){
+                    keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+                }
+                writer.write("  ".repeat(Math.max(0, cnt)));
+                writer.write("  " + keyName + VAL);
+                writer.newLine();
+            }
         }
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write("  }");
@@ -397,10 +428,22 @@ public class ProtoSchemaGenerator {
         }
         else if (secondArg instanceof Class<?> secondArgClass){
 
-            String mapName = field.getName();
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass + "> " + mapName + " = " + tagNumber +  ";");
-            writer.newLine();
+            if (secondArgClass.equals(Object.class)){
+                simpleMapHeader(writer, field, firstArgClass, cnt, tagNumber);
+                cnt++;
+                factor++;
+                objectScan(field, writer, tagNumber, cnt);
+                writer.write("  ".repeat(Math.max(0, cnt)));
+                writer.write("  }");
+                writer.newLine();
+                return cnt-1;
+            }
+            else {
+                String mapName = field.getName();
+                writer.write("  ".repeat(Math.max(0, cnt)));
+                writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass.getSimpleName() + "> " + mapName + " = " + tagNumber +  ";");
+                writer.newLine();
+            }
             return cnt;
         }
         return 0;
@@ -484,6 +527,20 @@ public class ProtoSchemaGenerator {
         return tagNumber;
     }
 
+    private int objectScan(Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
+        String fieldName = field.getName();
+        if (factor != 0){
+            fieldName += factor;
+        }
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write(ANY + " " + fieldName + "  = " + tagNumber + ";");
+        writer.newLine();
+        tagNumber++;
+
+        return tagNumber;
+    }
+
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
@@ -507,6 +564,10 @@ public class ProtoSchemaGenerator {
             // Checking for Enum type
             else if (fieldType.isEnum()){
                 tagNumber = enumScan(field, fieldType, tagNumber, writer);
+            }
+
+            else if (fieldType.equals(Object.class)){
+                tagNumber = objectScan(field, writer, tagNumber, 1);
             }
 
             // Checking for generic classes and Primitive types
