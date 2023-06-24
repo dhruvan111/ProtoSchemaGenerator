@@ -50,3 +50,6 @@ src/main/proto/
 src/protoGen/
 beans.jar
 
+generate_proto.sh
+
+

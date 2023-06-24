@@ -4,7 +4,8 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ProtoSchemaGenerator {
 
@@ -27,7 +28,6 @@ public class ProtoSchemaGenerator {
     private static final String VAL = " value = 2;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
     private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
-
 
     private int factor;
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
