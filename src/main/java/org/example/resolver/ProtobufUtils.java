@@ -7,9 +7,9 @@ import java.util.*;
 public class ProtobufUtils {
 
     private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_MAPPING = new HashMap<>();
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_LIST_MAPPING = new HashMap<>();
-    private static final Map<Class<?>, Class<?>> PRIMITIVE_MAP_MAPPING = new HashMap<>();
+    private static final Set<Class<?>> PRIMITIVE_MAP_MAPPING = new HashSet<>();
     private static final Map<Class<?>, Class<?>> PRIMITIVE_KEY_MAPPING = new HashMap<>();
+    private static final Set<Class<?>> PRIMITIVE_LIST_MAPPING = new HashSet<>();
 
     static {
         PRIMITIVE_TYPE_MAPPING.put(boolean.class, bool.class);
@@ -26,31 +26,32 @@ public class ProtobufUtils {
 
     static {
         // for Collection types
-        PRIMITIVE_LIST_MAPPING.put(List.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(ArrayList.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(LinkedList.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(Vector.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(Stack.class, repeated.class);
+        PRIMITIVE_LIST_MAPPING.add(List.class);
+        PRIMITIVE_LIST_MAPPING.add(ArrayList.class);
+        PRIMITIVE_LIST_MAPPING.add(LinkedList.class);
+        PRIMITIVE_LIST_MAPPING.add(Vector.class);
+        PRIMITIVE_LIST_MAPPING.add(Stack.class);
 
-        PRIMITIVE_LIST_MAPPING.put(Queue.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(Deque.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(PriorityQueue.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(ArrayDeque.class, repeated.class);
+        PRIMITIVE_LIST_MAPPING.add(Queue.class);
+        PRIMITIVE_LIST_MAPPING.add(Deque.class);
+        PRIMITIVE_LIST_MAPPING.add(PriorityQueue.class);
+        PRIMITIVE_LIST_MAPPING.add(ArrayDeque.class);
 
-        PRIMITIVE_LIST_MAPPING.put(Set.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(HashSet.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(LinkedHashSet.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(SortedSet.class, repeated.class);
-        PRIMITIVE_LIST_MAPPING.put(TreeSet.class, repeated.class);
+        PRIMITIVE_LIST_MAPPING.add(Set.class);
+        PRIMITIVE_LIST_MAPPING.add(HashSet.class);
+        PRIMITIVE_LIST_MAPPING.add(LinkedHashSet.class);
+        PRIMITIVE_LIST_MAPPING.add(SortedSet.class);
+        PRIMITIVE_LIST_MAPPING.add(TreeSet.class);
     }
 
     static {
         //for Map types
-        PRIMITIVE_MAP_MAPPING.put(Map.class, map.class);
-        PRIMITIVE_MAP_MAPPING.put(SortedMap.class, map.class);
-        PRIMITIVE_MAP_MAPPING.put(TreeMap.class, map.class);
-        PRIMITIVE_MAP_MAPPING.put(HashMap.class, map.class);
-        PRIMITIVE_MAP_MAPPING.put(LinkedHashMap.class, map.class);
+        PRIMITIVE_MAP_MAPPING.add(Map.class);
+        PRIMITIVE_MAP_MAPPING.add(SortedMap.class);
+        PRIMITIVE_MAP_MAPPING.add(TreeMap.class);
+        PRIMITIVE_MAP_MAPPING.add(HashMap.class);
+        PRIMITIVE_MAP_MAPPING.add(LinkedHashMap.class);
+
     }
 
     static {
@@ -65,6 +66,8 @@ public class ProtobufUtils {
         PRIMITIVE_KEY_MAPPING.put(java.lang.Long.class, int64.class);
     }
 
+    private ProtobufUtils(){}
+
     public static boolean isPrimitiveType(Class<?> clazz) {
         return PRIMITIVE_TYPE_MAPPING.containsKey(clazz);
     }
@@ -74,19 +77,19 @@ public class ProtobufUtils {
     }
 
     public static boolean isPrimitiveListType(Class<?> clazz){
-        return PRIMITIVE_LIST_MAPPING.containsKey(clazz);
+        return PRIMITIVE_LIST_MAPPING.contains(clazz);
     }
 
-    public static Class<?> getProtoListType(Class<?> clazz){
-        return PRIMITIVE_LIST_MAPPING.get(clazz);
+    public static Class<?> getProtoListType(){
+        return (repeated.class);
     }
 
     public static boolean isPrimitiveMapType(Class<?> clazz){
-        return PRIMITIVE_MAP_MAPPING.containsKey(clazz);
+        return PRIMITIVE_MAP_MAPPING.contains(clazz);
     }
 
-    public static Class<?> getProtoMapType(Class<?> clazz){
-        return PRIMITIVE_MAP_MAPPING.get(clazz);
+    public static Class<?> getProtoMapType(){
+        return (map.class);
     }
 
     public static boolean isPrimitiveKeyType(Class<?> clazz){

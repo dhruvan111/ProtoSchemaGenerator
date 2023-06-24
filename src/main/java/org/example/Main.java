@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.resolver.ProtoGenerator;
+import test.People.Person;
 
 import java.io.IOException;
 
@@ -10,5 +11,7 @@ public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         ProtoGenerator generator = new ProtoGenerator();
         generator.generateAll(inputDir, outputDir);
+
+        generator.generateFile(Person.class, outputDir);
     }
 }

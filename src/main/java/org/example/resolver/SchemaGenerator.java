@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ProtoSchemaGenerator {
+public class SchemaGenerator {
 
     private Set<Class<?>> schemaGen;
     private static final String IMPORT = "import";
@@ -328,7 +328,7 @@ public class ProtoSchemaGenerator {
             else {
                 String keyName = innerClass.getSimpleName();
                 if (ProtobufUtils.isPrimitiveMapType(innerClass)){
-                    keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+                    keyName = ProtobufUtils.getProtoMapType().getSimpleName();
                 }
                 writer.write("  ".repeat(Math.max(0, cnt)));
                 writer.write("  " + keyName + KEY);
@@ -361,7 +361,7 @@ public class ProtoSchemaGenerator {
             else {
                 String keyName = innerClass.getSimpleName();
                 if (ProtobufUtils.isPrimitiveMapType(innerClass)){
-                    keyName = ProtobufUtils.getProtoMapType(innerClass).getSimpleName();
+                    keyName = ProtobufUtils.getProtoMapType().getSimpleName();
                 }
                 writer.write("  ".repeat(Math.max(0, cnt)));
                 writer.write("  " + keyName + VAL);
