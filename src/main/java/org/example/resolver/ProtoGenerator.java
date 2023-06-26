@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class ProtoGenerator {
     private static final String JAVA_EXT = ".java";
-    public void generateAll(String inputDir , String outputDir) throws IOException, ClassNotFoundException {
+    public void generateAllFiles(String inputDir , String outputDir) throws IOException, ClassNotFoundException {
         SchemaGenerator generator = new SchemaGenerator();
         File currDir = new File(inputDir);
         File[] files = currDir.listFiles();
@@ -17,7 +17,7 @@ public class ProtoGenerator {
         iterateAllFiles(files, generator, outputDir);
     }
 
-    public void generateFile(Class<?> clazz, String outputDir) throws IOException {
+    public void generateOneFile(Class<?> clazz, String outputDir) throws IOException {
         SchemaGenerator generator = new SchemaGenerator();
         generator.generateProtobufSchema(clazz, outputDir);
     }

@@ -74,7 +74,6 @@ public class SchemaGenerator {
             }
 
             else if (fieldType.equals(Object.class)){
-                System.out.println("Yes object");
                 dependencies.add(fieldType);
             }
 
