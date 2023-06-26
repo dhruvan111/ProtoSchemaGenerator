@@ -18,6 +18,7 @@ public class SchemaGenerator {
     private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
     private static final String LIST = "List";
+    private static final String ARRAY = "array";
     private static final String REPEATED = "  repeated ";
     private static final String MSG = "  message ";
     private static final String ENTRY = "Entry";
@@ -73,15 +74,33 @@ public class SchemaGenerator {
                 dependencies.addAll(analyzeNestedDependency(genericType));
             }
 
+            else if (fieldType.isArray()){
+                Class<?> componentType = fieldType.getComponentType();
+                while (componentType.isArray()){
+                    componentType = componentType.getComponentType();
+                }
+                if (checkNonPrimitive(componentType)){
+                    dependencies.add(componentType);
+                }
+            }
+
             else if (fieldType.equals(Object.class)){
                 dependencies.add(fieldType);
             }
 
-            else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith(JAVAEXT)) {
+            else if (checkNonPrimitive(fieldType)){
                 dependencies.add(fieldType);
             }
         }
         return dependencies;
+    }
+
+    private boolean checkNonPrimitive(Class<?> fieldType){
+        if (!ProtobufUtils.isPrimitiveType(fieldType)) {
+            Package fieldPackage = fieldType.getPackage();
+            return fieldPackage != null && !fieldPackage.getName().startsWith(JAVAEXT);
+        }
+        return false;
     }
 
     private Set<Class<?>> analyzeNestedDependency(Type type){
@@ -236,9 +255,9 @@ public class SchemaGenerator {
 
     private int createList(BufferedWriter writer, Type[] typeArguments, Field field, int tagNumber, int cnt) throws IOException {
 
-        String nestedListName = capitalize(field.getName()) + LIST;
         if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType){
 
+            String nestedListName = capitalize(field.getName()) + LIST;
             Type[] typeArguments2 = ((ParameterizedType) typeArguments[0]).getActualTypeArguments();
             listHeader(writer, nestedListName, field, cnt, tagNumber);
 
@@ -279,6 +298,19 @@ public class SchemaGenerator {
             return cnt;
         }
         return 0;
+    }
+
+    private int listScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
+        Type genericType = field.getGenericType();
+
+        if (genericType instanceof ParameterizedType) {
+
+            Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+            createList(writer, typeArguments,field, tagNumber, 0);
+            tagNumber++;
+            writer.newLine();
+        }
+        return tagNumber;
     }
 
     private void complexMapHeader(BufferedWriter writer, Field field, int cnt, int tagNumber) throws IOException {
@@ -470,19 +502,6 @@ public class SchemaGenerator {
         return tagNumber;
     }
 
-    private int listScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
-        Type genericType = field.getGenericType();
-
-        if (genericType instanceof ParameterizedType) {
-
-            Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
-            createList(writer, typeArguments,field, tagNumber, 0);
-            tagNumber++;
-            writer.newLine();
-        }
-        return tagNumber;
-    }
-
     private int mapScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
         Type genericType = field.getGenericType();
 
@@ -497,6 +516,56 @@ public class SchemaGenerator {
             tagNumber++;
             writer.newLine();
         }
+        return tagNumber;
+    }
+
+    private void arrayHeader(BufferedWriter writer, String nestedListName, Field field, int tagNumber, int cnt) throws IOException {
+        String currListName = nestedListName + factor;
+        String elementName = field.getName() + factor;
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write( REPEATED + currListName + " " + elementName + " = " + (tagNumber) + ";");
+        writer.newLine();
+
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write(MSG + currListName + " {");
+        writer.newLine();
+        writer.newLine();
+    }
+
+    private int createArray(Field field,Class<?> argument, int tagNumber, int cnt, BufferedWriter writer) throws IOException {
+        if (argument.isArray()){
+            // nested array
+            String nestedListName = capitalize(field.getName()) + ARRAY;
+            cnt++;
+            factor++;
+            argument = argument.getComponentType();
+            arrayHeader(writer, nestedListName, field, tagNumber, cnt);
+
+            cnt = createArray(field, argument, tagNumber, cnt, writer);
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write("  }");
+            writer.newLine();
+            return cnt-1;
+        }
+        else {
+            String innerClassName = argument.getSimpleName();
+            if (ProtobufUtils.isPrimitiveType(argument)) {
+                innerClassName = ProtobufUtils.getProtobufType(argument).getSimpleName();
+            }
+            factor++;
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write(REPEATED + innerClassName + " " + field.getName() + " = " + tagNumber + ";");
+            writer.newLine();
+            return cnt;
+        }
+    }
+
+    private int arrayScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
+        Class<?> fieldType = field.getType();
+        Class<?> componentType = fieldType.getComponentType();
+        createArray(field, componentType, tagNumber, 0, writer);
+        tagNumber++;
         return tagNumber;
     }
 
@@ -560,6 +629,10 @@ public class SchemaGenerator {
                 tagNumber = mapScan(field, tagNumber, writer);
             }
 
+            else if (fieldType.isArray()){
+                tagNumber = arrayScan(field, tagNumber, writer);
+            }
+
             // Checking for Enum type
             else if (fieldType.isEnum()){
                 tagNumber = enumScan(field, fieldType, tagNumber, writer);
@@ -569,14 +642,14 @@ public class SchemaGenerator {
                 tagNumber = objectScan(field, writer, tagNumber, 1);
             }
 
-            // Checking for generic classes and Primitive types
+            // Checking for Proto Primitive types
             else if (ProtobufUtils.isPrimitiveType(fieldType)) {
 
                 Class<?> protobufType = ProtobufUtils.getProtobufType(fieldType);
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
 
-            } else if (!fieldType.isPrimitive() && !fieldType.getPackage().getName().startsWith(JAVAEXT)) {
+            } else if (checkNonPrimitive(fieldType)) {
 
                 writer.write("  " + fieldType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
