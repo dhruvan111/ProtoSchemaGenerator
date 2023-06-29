@@ -9,7 +9,9 @@ public class FileCreator {
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
     private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
     private static final String PROTOEXT = ".proto";
+
     private FileCreator(){}
+
     public static void clearFile(String fileName) throws IOException {
         FileWriter fwOb = new FileWriter(fileName, false);
         PrintWriter pwOb = new PrintWriter(fwOb, false);
