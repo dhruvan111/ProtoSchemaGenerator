@@ -1,6 +1,7 @@
 package org.example.resolver.generator;
 
 import org.example.resolver.arrayUtils.ArrayProcessor;
+import org.example.resolver.enumUtils.EnumProcessor;
 import org.example.resolver.fileScan.FileScanner;
 import org.example.resolver.listUtils.ListProcessor;
 import org.example.resolver.mapUtils.MapProcessor;
@@ -21,7 +22,6 @@ public class SchemaGenerator {
     private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
     private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
-    private static final String ENUM = "enum";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
     private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
 
@@ -174,32 +174,6 @@ public class SchemaGenerator {
         return tagNumber;
     }
 
-    private int enumScan(Field field,Class<?> fieldType, int tagNumber, BufferedWriter writer) throws IOException {
-
-        String fieldName = field.getName();
-        String enumName = fieldType.getSimpleName();
-        writer.write("  " + enumName + " " + fieldName + " = " + tagNumber + ";");
-        writer.newLine();
-        tagNumber++;
-
-        writer.write("  " + ENUM + " " + enumName + "{");
-        writer.newLine();
-
-        Object[] enumConstants = fieldType.getEnumConstants();
-        int enumTagNo = 0;
-        for (Object enumConstant:enumConstants){
-            writer.write("    ");
-            writer.write(enumConstant.toString() + " = " + enumTagNo + ";");
-            enumTagNo++;
-            writer.newLine();
-        }
-        writer.write("  }");
-        writer.newLine();
-        writer.newLine();
-
-        return tagNumber;
-    }
-
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
@@ -226,7 +200,7 @@ public class SchemaGenerator {
 
             // Checking for Enum type
             else if (fieldType.isEnum()){
-                tagNumber = enumScan(field, fieldType, tagNumber, writer);
+                tagNumber = EnumProcessor.enumScan(field, fieldType, tagNumber, writer);
             }
 
             else if (fieldType.equals(Object.class)){
