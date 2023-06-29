@@ -145,20 +145,26 @@ public class SchemaGenerator {
         fwOb.close();
     }
 
-    private void importWithoutCall(Class<?> fieldType, BufferedWriter writer) throws IOException {
+    private void importWithoutCall(Class<?> fieldType, BufferedWriter writer, Class<?> clazz) throws IOException {
         if (fieldType.equals(Object.class)){
             writer.write(IMPORT_ANY);
             writer.newLine();
             return;
         }
         String packageName = fieldType.getPackageName();
+        if (fieldType == clazz){
+            return;
+        }
         String importPackage = packageName.replace(".", "/");
         writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
         writer.newLine();
     }
 
-    private void importWithCall(Class<?> fieldType,BufferedWriter writer, String outputDirectoryPath) throws IOException {
+    private void importWithCall(Class<?> fieldType,BufferedWriter writer, String outputDirectoryPath, Class<?> clazz) throws IOException {
         String packageName = fieldType.getPackageName();
+        if (fieldType == clazz){
+            return;
+        }
         String importPackage = packageName.replace(".", "/");
         writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
         writer.newLine();
@@ -200,21 +206,21 @@ public class SchemaGenerator {
         // Import for interfaces & Parent class
         for (Class<?> dependency:interfaces){
             if (!schemaGen.contains(dependency)){
-                importWithCall(dependency, writer, outputDirectoryPath);
+                importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
             else if (!importDone.contains(dependency)){
-                importWithoutCall(dependency, writer);
+                importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }
         for (Class<?> dependency:superClass){
             if (!schemaGen.contains(dependency)){
-                importWithCall(dependency, writer, outputDirectoryPath);
+                importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
             else if (!importDone.contains(dependency)){
-                importWithoutCall(dependency, writer);
+                importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }
@@ -225,15 +231,15 @@ public class SchemaGenerator {
                 continue;
             }
             if (dependency.equals(Object.class)){
-                importWithoutCall(dependency, writer);
+                importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
             else if (!schemaGen.contains(dependency)){
-                importWithCall(dependency, writer, outputDirectoryPath);
+                importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
             else if (!importDone.contains(dependency)){
-                importWithoutCall(dependency, writer);
+                importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }

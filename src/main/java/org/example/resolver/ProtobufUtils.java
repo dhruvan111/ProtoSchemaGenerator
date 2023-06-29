@@ -13,15 +13,15 @@ public class ProtobufUtils {
 
     static {
         PRIMITIVE_TYPE_MAPPING.put(boolean.class, bool.class);
-        PRIMITIVE_TYPE_MAPPING.put(byte.class, int32.class);
-        PRIMITIVE_TYPE_MAPPING.put(short.class, int32.class);
-        PRIMITIVE_TYPE_MAPPING.put(int.class, int32.class);
-        PRIMITIVE_TYPE_MAPPING.put(long.class, int64.class);
+        PRIMITIVE_TYPE_MAPPING.put(byte.class, sint32.class);
+        PRIMITIVE_TYPE_MAPPING.put(short.class, sint32.class);
+        PRIMITIVE_TYPE_MAPPING.put(int.class, sint32.class);
+        PRIMITIVE_TYPE_MAPPING.put(long.class, sint64.class);
         PRIMITIVE_TYPE_MAPPING.put(float.class, float.class);
         PRIMITIVE_TYPE_MAPPING.put(double.class, double.class);
         PRIMITIVE_TYPE_MAPPING.put(java.lang.String.class, string.class);
-        PRIMITIVE_TYPE_MAPPING.put(java.lang.Integer.class, int32.class);
-        PRIMITIVE_TYPE_MAPPING.put(java.lang.Long.class, int64.class);
+        PRIMITIVE_TYPE_MAPPING.put(java.lang.Integer.class, sint32.class);
+        PRIMITIVE_TYPE_MAPPING.put(java.lang.Long.class, sint64.class);
     }
 
     static {
@@ -57,13 +57,13 @@ public class ProtobufUtils {
     static {
         // primitive key types
         PRIMITIVE_KEY_MAPPING.put(boolean.class, bool.class);
-        PRIMITIVE_KEY_MAPPING.put(byte.class, int32.class);
-        PRIMITIVE_KEY_MAPPING.put(short.class, int32.class);
-        PRIMITIVE_KEY_MAPPING.put(int.class, int32.class);
-        PRIMITIVE_KEY_MAPPING.put(long.class, int64.class);
+        PRIMITIVE_KEY_MAPPING.put(byte.class, sint32.class);
+        PRIMITIVE_KEY_MAPPING.put(short.class, sint32.class);
+        PRIMITIVE_KEY_MAPPING.put(int.class, sint32.class);
+        PRIMITIVE_KEY_MAPPING.put(long.class, sint64.class);
         PRIMITIVE_KEY_MAPPING.put(java.lang.String.class, string.class);
-        PRIMITIVE_KEY_MAPPING.put(java.lang.Integer.class, int32.class);
-        PRIMITIVE_KEY_MAPPING.put(java.lang.Long.class, int64.class);
+        PRIMITIVE_KEY_MAPPING.put(java.lang.Integer.class, sint32.class);
+        PRIMITIVE_KEY_MAPPING.put(java.lang.Long.class, sint64.class);
     }
 
     private ProtobufUtils(){}

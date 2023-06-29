@@ -1,4 +1,5 @@
 package org.example.resolver.prototypes;
 
-public class int64 {
+public class sint32 {
+
 }
