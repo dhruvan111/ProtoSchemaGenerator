@@ -1,4 +1,4 @@
-package org.example.resolver.objectUtils;
+package org.example.resolver.processor;
 
 import org.example.resolver.generator.SchemaGenerator;
 

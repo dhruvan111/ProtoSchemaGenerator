@@ -1,4 +1,4 @@
-package org.example.resolver.arrayUtils;
+package org.example.resolver.processor;
 
 import org.example.resolver.generator.SchemaGenerator;
 import org.example.resolver.protoUtils.ProtobufUtils;

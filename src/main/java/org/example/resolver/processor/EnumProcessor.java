@@ -1,4 +1,4 @@
-package org.example.resolver.enumUtils;
+package org.example.resolver.processor;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

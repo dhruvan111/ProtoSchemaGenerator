@@ -1,12 +1,12 @@
 package org.example.resolver.generator;
 
-import org.example.resolver.arrayUtils.ArrayProcessor;
-import org.example.resolver.enumUtils.EnumProcessor;
+import org.example.resolver.processor.ArrayProcessor;
+import org.example.resolver.processor.EnumProcessor;
 import org.example.resolver.fileScan.FileCreator;
 import org.example.resolver.fileScan.FileScanner;
-import org.example.resolver.listUtils.ListProcessor;
-import org.example.resolver.mapUtils.MapProcessor;
-import org.example.resolver.objectUtils.ObjectProcessor;
+import org.example.resolver.processor.ListProcessor;
+import org.example.resolver.processor.MapProcessor;
+import org.example.resolver.processor.ObjectProcessor;
 import org.example.resolver.protoUtils.ProtobufUtils;
 
 import java.io.*;
@@ -16,7 +16,7 @@ import java.util.Set;
 
 public class SchemaGenerator {
 
-    private Set<Class<?>> schemaGen;
+    private static final Set<Class<?>> isFileGenerated = new HashSet<>();
     private static final String IMPORT = "import";
     private static final String PROTOEXT = ".proto";
     private static final String PROTOVERSION = "syntax = \"proto3\";";
@@ -28,7 +28,6 @@ public class SchemaGenerator {
     public static int factor;
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
-        schemaGen = new HashSet<>();
         makeDir(outputDirectoryPath);
         // creating .proto file for rootClass
         writeProtobufSchema(rootClass, outputDirectoryPath);
@@ -104,7 +103,7 @@ public class SchemaGenerator {
 
         // Import for interfaces & Parent class
         for (Class<?> dependency:interfaces){
-            if (!schemaGen.contains(dependency)){
+            if (!isFileGenerated.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
@@ -114,7 +113,7 @@ public class SchemaGenerator {
             }
         }
         for (Class<?> dependency:superClass){
-            if (!schemaGen.contains(dependency)){
+            if (!isFileGenerated.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
@@ -133,7 +132,7 @@ public class SchemaGenerator {
                 importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
-            else if (!schemaGen.contains(dependency)){
+            else if (!isFileGenerated.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
@@ -220,7 +219,7 @@ public class SchemaGenerator {
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
         // adding to created files
-        schemaGen.add(clazz);
+        isFileGenerated.add(clazz);
 
         File file = FileCreator.createFile(clazz, outputDirectoryPath);
 

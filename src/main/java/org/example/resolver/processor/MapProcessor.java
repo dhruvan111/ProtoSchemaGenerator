@@ -1,8 +1,6 @@
-package org.example.resolver.mapUtils;
+package org.example.resolver.processor;
 
 import org.example.resolver.generator.SchemaGenerator;
-import org.example.resolver.listUtils.ListProcessor;
-import org.example.resolver.objectUtils.ObjectProcessor;
 import org.example.resolver.protoUtils.ProtobufUtils;
 
 import java.io.BufferedWriter;
