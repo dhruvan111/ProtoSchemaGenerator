@@ -1,6 +1,6 @@
-package org.example.resolver;
+package org.example.resolver.protoUtils;
 
-import org.example.resolver.prototypes.*;
+import org.example.resolver.protoDatatypes.*;
 
 import java.util.*;
 

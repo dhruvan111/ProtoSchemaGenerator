@@ -1,5 +1,7 @@
 package org.example.resolver;
 
+import org.example.resolver.generator.SchemaGenerator;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;

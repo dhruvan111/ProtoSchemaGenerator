@@ -1,4 +1,7 @@
-package org.example.resolver;
+package org.example.resolver.generator;
+
+import org.example.resolver.fileScan.FileScanner;
+import org.example.resolver.protoUtils.ProtobufUtils;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -12,7 +15,6 @@ public class SchemaGenerator {
     private Set<Class<?>> schemaGen;
     private static final String IMPORT = "import";
     private static final String PROTOEXT = ".proto";
-    private static final String JAVAEXT = "java.";
     private static final String PROTOVERSION = "syntax = \"proto3\";";
     private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
     private static final String JAVA_PKG = "option java_package = ";
@@ -48,93 +50,6 @@ public class SchemaGenerator {
                 throw new IOException(FILE_CREATE_ERR);
             }
         }
-    }
-
-    private Set<Class<?>> analyzeFields(Field[] fields) {
-        Set<Class<?>> dependencies;
-        dependencies = new HashSet<>();
-
-        for (Field field : fields) {
-            Class<?> fieldType = field.getType();
-
-            //checking for Enum Type
-            if (fieldType.isEnum()){
-                continue;
-            }
-
-            // checking for nestedList Type
-            if (ProtobufUtils.isPrimitiveListType(fieldType)) {
-                Type genericType = field.getGenericType();
-                dependencies.addAll(analyzeNestedDependency(genericType));
-            }
-
-            // checking for nestedMap Type
-            else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
-                Type genericType = field.getGenericType();
-                dependencies.addAll(analyzeNestedDependency(genericType));
-            }
-
-            else if (fieldType.isArray()){
-                Class<?> componentType = fieldType.getComponentType();
-                while (componentType.isArray()){
-                    componentType = componentType.getComponentType();
-                }
-                if (checkNonPrimitive(componentType)){
-                    dependencies.add(componentType);
-                }
-            }
-
-            else if (fieldType.equals(Object.class)){
-                dependencies.add(fieldType);
-            }
-
-            else if (checkNonPrimitive(fieldType)){
-                dependencies.add(fieldType);
-            }
-        }
-        return dependencies;
-    }
-
-    private boolean checkNonPrimitive(Class<?> fieldType){
-        if (!ProtobufUtils.isPrimitiveType(fieldType)) {
-            Package fieldPackage = fieldType.getPackage();
-            return fieldPackage != null && !fieldPackage.getName().startsWith(JAVAEXT);
-        }
-        return false;
-    }
-
-    private Set<Class<?>> analyzeNestedDependency(Type type){
-        Set<Class<?>> currSet = new HashSet<>();
-        if (type instanceof ParameterizedType){
-            Type[] typeArgument = ((ParameterizedType) type).getActualTypeArguments();
-            if (typeArgument.length == 1){
-                // List Type
-                currSet.addAll(analyzeNestedDependency(typeArgument[0]));
-            }
-            else {
-                // Map Type
-                currSet.addAll(analyzeNestedDependency(typeArgument[0]));
-                currSet.addAll(analyzeNestedDependency(typeArgument[1]));
-            }
-        }
-        else if (type instanceof Class<?> innerClass) {
-            currSet.add(innerClass);
-        }
-        return currSet;
-    }
-
-    private Set<Class<?>> analyzeImports(Class<?>[] interfaces) {
-        Set<Class<?>> dependencies;
-        dependencies = new HashSet<>();
-        for (Class<?> face : interfaces) {
-            if (face == null){
-                continue;
-            }
-            if (!face.isPrimitive() && !face.getPackage().getName().startsWith(JAVAEXT)) {
-                dependencies.add(face);
-            }
-        }
-        return dependencies;
     }
 
     public static void clearFile(String fileName) throws IOException {
@@ -199,7 +114,7 @@ public class SchemaGenerator {
 
         Set<Class<?>> importDone, fields;
         importDone = new HashSet<>();
-        fields = analyzeFields(clazz.getDeclaredFields());
+        fields = FileScanner.analyzeFields(clazz.getDeclaredFields());
 
         hardCodeHeaders(writer, clazz.getPackageName());
 
@@ -655,7 +570,7 @@ public class SchemaGenerator {
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
 
-            } else if (checkNonPrimitive(fieldType)) {
+            } else if (FileScanner.checkNonPrimitive(fieldType)) {
 
                 writer.write("  " + fieldType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
@@ -694,8 +609,8 @@ public class SchemaGenerator {
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         Set<Class<?>> interfaces, superClass;
-        interfaces = analyzeImports(clazz.getInterfaces());
-        superClass = analyzeImports(new Class[]{clazz.getSuperclass()});
+        interfaces = FileScanner.analyzeImports(clazz.getInterfaces());
+        superClass = FileScanner.analyzeImports(new Class[]{clazz.getSuperclass()});
 
         // All Imports
         writeHeaders(writer, outputDirectoryPath, clazz, interfaces, superClass);
