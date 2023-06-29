@@ -5,7 +5,6 @@ import org.example.resolver.listUtils.ListProcessor;
 import org.example.resolver.objectUtils.ObjectProcessor;
 import org.example.resolver.protoUtils.ProtobufUtils;
 
-import javax.xml.validation.Schema;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;

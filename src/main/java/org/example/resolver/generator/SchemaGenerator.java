@@ -1,5 +1,6 @@
 package org.example.resolver.generator;
 
+import org.example.resolver.arrayUtils.ArrayProcessor;
 import org.example.resolver.fileScan.FileScanner;
 import org.example.resolver.listUtils.ListProcessor;
 import org.example.resolver.mapUtils.MapProcessor;
@@ -8,8 +9,6 @@ import org.example.resolver.protoUtils.ProtobufUtils;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,11 +21,6 @@ public class SchemaGenerator {
     private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
     private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
-    private static final String ARRAY = "array";
-    private static final String REPEATED = "  repeated ";
-    private static final String MSG = "  message ";
-    private static final String ENTRY = "Entry";
-    private static final String MAP = "map";
     private static final String ENUM = "enum";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
     private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
@@ -180,56 +174,6 @@ public class SchemaGenerator {
         return tagNumber;
     }
 
-    private void arrayHeader(BufferedWriter writer, String nestedListName, Field field, int tagNumber, int cnt) throws IOException {
-        String currListName = nestedListName + factor;
-        String elementName = field.getName() + factor;
-
-        writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write( REPEATED + currListName + " " + elementName + " = " + (tagNumber) + ";");
-        writer.newLine();
-
-        writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write(MSG + currListName + " {");
-        writer.newLine();
-        writer.newLine();
-    }
-
-    private int createArray(Field field,Class<?> argument, int tagNumber, int cnt, BufferedWriter writer) throws IOException {
-        if (argument.isArray()){
-            // nested array
-            String nestedListName = capitalize(field.getName()) + ARRAY;
-            cnt++;
-            factor++;
-            argument = argument.getComponentType();
-            arrayHeader(writer, nestedListName, field, tagNumber, cnt);
-
-            cnt = createArray(field, argument, tagNumber, cnt, writer);
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  }");
-            writer.newLine();
-            return cnt-1;
-        }
-        else {
-            String innerClassName = argument.getSimpleName();
-            if (ProtobufUtils.isPrimitiveType(argument)) {
-                innerClassName = ProtobufUtils.getProtobufType(argument).getSimpleName();
-            }
-            factor++;
-            writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write(REPEATED + innerClassName + " " + field.getName() + " = " + tagNumber + ";");
-            writer.newLine();
-            return cnt;
-        }
-    }
-
-    private int arrayScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
-        Class<?> fieldType = field.getType();
-        Class<?> componentType = fieldType.getComponentType();
-        createArray(field, componentType, tagNumber, 0, writer);
-        tagNumber++;
-        return tagNumber;
-    }
-
     private int enumScan(Field field,Class<?> fieldType, int tagNumber, BufferedWriter writer) throws IOException {
 
         String fieldName = field.getName();
@@ -277,7 +221,7 @@ public class SchemaGenerator {
             }
 
             else if (fieldType.isArray()){
-                tagNumber = arrayScan(field, tagNumber, writer);
+                tagNumber = ArrayProcessor.arrayScan(field, tagNumber, writer);
             }
 
             // Checking for Enum type
