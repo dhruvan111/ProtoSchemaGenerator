@@ -2,6 +2,7 @@ package org.example.resolver.generator;
 
 import org.example.resolver.arrayUtils.ArrayProcessor;
 import org.example.resolver.enumUtils.EnumProcessor;
+import org.example.resolver.fileScan.FileCreator;
 import org.example.resolver.fileScan.FileScanner;
 import org.example.resolver.listUtils.ListProcessor;
 import org.example.resolver.mapUtils.MapProcessor;
@@ -23,7 +24,6 @@ public class SchemaGenerator {
     private static final String JAVA_PKG = "option java_package = ";
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
-    private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
 
     public static int factor;
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
@@ -43,14 +43,6 @@ public class SchemaGenerator {
                 throw new IOException(FILE_CREATE_ERR);
             }
         }
-    }
-
-    public static void clearFile(String fileName) throws IOException {
-        FileWriter fwOb = new FileWriter(fileName, false);
-        PrintWriter pwOb = new PrintWriter(fwOb, false);
-        pwOb.flush();
-        pwOb.close();
-        fwOb.close();
     }
 
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer, Class<?> clazz) throws IOException {
@@ -230,26 +222,7 @@ public class SchemaGenerator {
         // adding to created files
         schemaGen.add(clazz);
 
-        String packageName = clazz.getPackageName();
-        String packagePath = outputDirectoryPath + "/" + packageName.replace(".", "/");
-        File packageDir = new File(packagePath);
-        if (!packageDir.exists()) {
-            boolean dirCreated = packageDir.mkdirs();
-            if (!dirCreated) {
-                throw new IOException(PACKAGE_CREATE_ERR);
-            }
-        }
-
-        String fileName = packagePath + "/" + clazz.getSimpleName() + PROTOEXT;
-        File file = new File(fileName);
-        if (!file.exists()) {
-            boolean fileCreated = file.createNewFile();
-            if (!fileCreated) {
-                throw new IOException(FILE_CREATE_ERR);
-            }
-        }
-
-        clearFile(fileName);
+        File file = FileCreator.createFile(clazz, outputDirectoryPath);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         Set<Class<?>> interfaces, superClass;

@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-
 public class FileScanner {
     private static final String JAVAEXT = "java.";
     private FileScanner(){}
