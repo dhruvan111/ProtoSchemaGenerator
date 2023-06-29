@@ -3,6 +3,7 @@ package org.example.resolver.generator;
 import org.example.resolver.fileScan.FileScanner;
 import org.example.resolver.listUtils.ListProcessor;
 import org.example.resolver.mapUtils.MapProcessor;
+import org.example.resolver.objectUtils.ObjectProcessor;
 import org.example.resolver.protoUtils.ProtobufUtils;
 
 import java.io.*;
@@ -27,7 +28,6 @@ public class SchemaGenerator {
     private static final String ENTRY = "Entry";
     private static final String MAP = "map";
     private static final String ENUM = "enum";
-    private static final String ANY = "google.protobuf.Any";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
     private static final String PACKAGE_CREATE_ERR = "Unable to create package at specified path.";
 
@@ -256,20 +256,6 @@ public class SchemaGenerator {
         return tagNumber;
     }
 
-    private int objectScan(Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
-        String fieldName = field.getName();
-        if (factor != 0){
-            fieldName += factor;
-        }
-
-        writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write(ANY + " " + fieldName + "  = " + tagNumber + ";");
-        writer.newLine();
-        tagNumber++;
-
-        return tagNumber;
-    }
-
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
@@ -300,7 +286,7 @@ public class SchemaGenerator {
             }
 
             else if (fieldType.equals(Object.class)){
-                tagNumber = objectScan(field, writer, tagNumber, 1);
+                tagNumber = ObjectProcessor.objectScan(field, writer, tagNumber, 1);
             }
 
             // Checking for Proto Primitive types

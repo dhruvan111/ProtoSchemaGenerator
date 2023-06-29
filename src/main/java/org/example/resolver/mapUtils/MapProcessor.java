@@ -2,6 +2,7 @@ package org.example.resolver.mapUtils;
 
 import org.example.resolver.generator.SchemaGenerator;
 import org.example.resolver.listUtils.ListProcessor;
+import org.example.resolver.objectUtils.ObjectProcessor;
 import org.example.resolver.protoUtils.ProtobufUtils;
 
 import javax.xml.validation.Schema;
@@ -77,7 +78,7 @@ public class MapProcessor {
             }
         } else if (firstArg instanceof Class<?> innerClass) {
             if (innerClass.equals(Object.class)) {
-                objectScan(field, writer, 1, cnt);
+                ObjectProcessor.objectScan(field, writer, 1, cnt);
                 SchemaGenerator.factor++;
             } else {
                 String keyName = innerClass.getSimpleName();
@@ -106,7 +107,7 @@ public class MapProcessor {
             }
         } else if (secondArg instanceof Class<?> innerClass) {
             if (innerClass.equals(Object.class)) {
-                objectScan(field, writer, 1, cnt);
+                ObjectProcessor.objectScan(field, writer, 1, cnt);
                 SchemaGenerator.factor++;
             } else {
                 String keyName = innerClass.getSimpleName();
@@ -162,7 +163,7 @@ public class MapProcessor {
                 simpleMapHeader(writer, field, firstArgClass, cnt, tagNumber);
                 cnt++;
                 SchemaGenerator.factor++;
-                objectScan(field, writer, tagNumber, cnt);
+                ObjectProcessor.objectScan(field, writer, tagNumber, cnt);
                 writer.write("  ".repeat(Math.max(0, cnt)));
                 writer.write("  }");
                 writer.newLine();
