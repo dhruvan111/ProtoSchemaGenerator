@@ -9,6 +9,6 @@ public class Main {
         String path = "/Users/dhruvankadavala/Documents/Protobuf2/src/main/java/test/bean1";
 
         ProtoGenerator generator = new ProtoGenerator();
-        generator.generateAllFiles(path, "ProtoFiles");
+        generator.generateAllFiles(path, "ProtoFiles", 4);
     }
 }

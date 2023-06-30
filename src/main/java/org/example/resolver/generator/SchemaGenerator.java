@@ -10,18 +10,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Logger;
 
 public class SchemaGenerator {
 
-    private static final Set<Class<?>> isFileGenerated = new HashSet<>();
+    private static final Set<Class<?>> isFileGenerated = Collections.synchronizedSet(new HashSet<>());
     private static final String IMPORT = "import";
     private static final String PROTOEXT = ".proto";
     private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
-    private static final ConcurrentHashMap<Class<?>, Object> fileLocks = new ConcurrentHashMap<>();
-
+    private static final Logger logger = Logger.getLogger(SchemaGenerator.class.getName());
 
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
@@ -149,15 +149,12 @@ public class SchemaGenerator {
     }
 
 
-    private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
+    private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) {
 
-        Object fileLock = fileLocks.putIfAbsent(clazz, new Object());
-        if (fileLock != null) {
+        if (isFileGenerated.contains(clazz)){
             return;
         }
-
         try {
-            // object acquired lock on file clazz
             isFileGenerated.add(clazz);
             File file = FileCreator.createFile(clazz, outputDirectoryPath);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
@@ -171,8 +168,12 @@ public class SchemaGenerator {
                 // message body
                 writeMessage(writer, clazz, interfaces, superClass);
             }
-        }finally {
-            fileLocks.remove(clazz);
+        }catch (IOException e) {
+            // Handle the case where file creation fails
+            logger.severe("Error: File not created for Class " + clazz);
+        } catch (Error error) {
+            // Handle other errors if needed
+            logger.severe("Error while creating file " + clazz);
         }
     }
 }

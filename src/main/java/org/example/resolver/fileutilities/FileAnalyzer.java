@@ -2,6 +2,9 @@ package org.example.resolver.fileutilities;
 
 import org.example.resolver.protoutils.ProtobufUtils;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -90,5 +93,18 @@ public class FileAnalyzer {
             }
         }
         return dependencies;
+    }
+
+    public static String extractPackageName(String filePath) throws IOException {
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("package ")) {
+                    return line.substring("package ".length(), line.indexOf(';')).trim();
+                }
+            }
+        }
+        return "";
     }
 }

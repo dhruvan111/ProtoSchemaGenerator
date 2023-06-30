@@ -1,7 +1,6 @@
 package org.example.resolver.processor;
 
 import org.example.resolver.fileutilities.FileCreator;
-import org.example.resolver.generator.SchemaGenerator;
 import org.example.resolver.protoutils.ProtobufUtils;
 
 import java.io.BufferedWriter;
