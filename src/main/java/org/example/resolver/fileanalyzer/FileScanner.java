@@ -1,6 +1,6 @@
-package org.example.resolver.fileScan;
+package org.example.resolver.fileanalyzer;
 
-import org.example.resolver.protoUtils.ProtobufUtils;
+import org.example.resolver.protoutils.ProtobufUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -27,8 +27,8 @@ public class FileScanner {
 
     private static Set<Class<?>> analyzeNestedDependency(Type type){
         Set<Class<?>> currSet = new HashSet<>();
-        if (type instanceof ParameterizedType){
-            Type[] typeArgument = ((ParameterizedType) type).getActualTypeArguments();
+        if (type instanceof ParameterizedType parameterizedType){
+            Type[] typeArgument = (parameterizedType).getActualTypeArguments();
             if (typeArgument.length == 1){
                 // List Type
                 currSet.addAll(analyzeNestedDependency(typeArgument[0]));
@@ -65,14 +65,8 @@ public class FileScanner {
                 continue;
             }
 
-            // checking for nestedList Type
-            if (ProtobufUtils.isPrimitiveListType(fieldType)) {
-                Type genericType = field.getGenericType();
-                dependencies.addAll(analyzeNestedDependency(genericType));
-            }
-
-            // checking for nestedMap Type
-            else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
+            // checking for nestedList & nestedMap Type
+            if (ProtobufUtils.isPrimitiveListType(fieldType) || ProtobufUtils.isPrimitiveMapType(fieldType)) {
                 Type genericType = field.getGenericType();
                 dependencies.addAll(analyzeNestedDependency(genericType));
             }

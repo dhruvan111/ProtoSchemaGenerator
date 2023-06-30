@@ -1,7 +1,6 @@
 package org.example.resolver.processor;
 
-import org.example.resolver.generator.SchemaGenerator;
-import org.example.resolver.protoUtils.ProtobufUtils;
+import org.example.resolver.protoutils.ProtobufUtils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -26,9 +25,9 @@ public class MapProcessor {
         return false;
     }
 
-    private static void complexMapHeader(BufferedWriter writer, Field field, int cnt, int tagNumber) throws IOException {
-        String schemaName = field.getName() + ENTRY + SchemaGenerator.factor;
-        String mapName = field.getName() + MAP + SchemaGenerator.factor;
+    private static void complexMapHeader(BufferedWriter writer, Field field,SharedVariables variables, int cnt, int tagNumber) throws IOException {
+        String schemaName = field.getName() + ENTRY + variables.nestedCnt;
+        String mapName = field.getName() + MAP + variables.nestedCnt;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(REPEATED + schemaName + " " + mapName + " = " + tagNumber + ";");
@@ -40,9 +39,9 @@ public class MapProcessor {
         writer.newLine();
     }
 
-    private static void simpleMapHeader(BufferedWriter writer, Field field, Class<?> firstArgClass, int cnt, int tagNumber) throws IOException {
-        String secondClass = field.getName() + ENTRY + SchemaGenerator.factor;
-        String mapName = field.getName() + MAP + SchemaGenerator.factor;
+    private static void simpleMapHeader(BufferedWriter writer, Field field, Class<?> firstArgClass,SharedVariables variables, int cnt, int tagNumber) throws IOException {
+        String secondClass = field.getName() + ENTRY + variables.nestedCnt;
+        String mapName = field.getName() + MAP + variables.nestedCnt;
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(  "  " + MAP + "<"  + firstArgClass.getSimpleName() + "," + secondClass + "> " + mapName + " = " + tagNumber +  ";");
@@ -53,30 +52,24 @@ public class MapProcessor {
         writer.newLine();
     }
 
-    public static int complexMap(Type[] typeArguments, Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
-        Type firstArg = typeArguments[0];
-        Type secondArg = typeArguments[1];
-
-        complexMapHeader(writer, field, cnt, tagNumber);
-        cnt++;
-        SchemaGenerator.factor++;
-        if (firstArg instanceof ParameterizedType) {
-            Type[] typeArguments2 = ((ParameterizedType) firstArg).getActualTypeArguments();
+    private static int firstArgComplexMap(Type firstArg, BufferedWriter writer, Field field, SharedVariables variables, int cnt) throws IOException {
+        if (firstArg instanceof ParameterizedType parameterizedType) {
+            Type[] typeArguments2 = (parameterizedType).getActualTypeArguments();
             if (typeArguments2.length == 1) {
                 // List Type
-                cnt = ListProcessor.createList(writer, typeArguments2, field, 1, cnt);
+                cnt = ListProcessor.createList(writer, typeArguments2, field, variables, 1, cnt);
             } else {
                 // Map Type
                 if (checkSimpleMap(typeArguments2)) {
-                    cnt = simpleMap(typeArguments2, field, writer, 1, cnt);
+                    cnt = simpleMap(typeArguments2, field, writer,variables, 1, cnt);
                 } else {
-                    cnt = complexMap(typeArguments2, field, writer, 1, cnt);
+                    cnt = complexMap(typeArguments2, field, writer, variables, 1, cnt);
                 }
             }
         } else if (firstArg instanceof Class<?> innerClass) {
             if (innerClass.equals(Object.class)) {
-                ObjectProcessor.objectScan(field, writer, 1, cnt);
-                SchemaGenerator.factor++;
+                ObjectProcessor.objectScan(field, writer, 1, cnt, variables);
+                variables.nestedCnt++;
             } else {
                 String keyName = innerClass.getSimpleName();
                 if (ProtobufUtils.isPrimitiveMapType(innerClass)) {
@@ -87,25 +80,27 @@ public class MapProcessor {
                 writer.newLine();
             }
         }
+        return cnt;
+    }
 
-        // checking for second Arg
-        if (secondArg instanceof ParameterizedType) {
-            Type[] typeArguments2 = ((ParameterizedType) secondArg).getActualTypeArguments();
+    private static int secondArgComplexMap(Type secondArg, BufferedWriter writer, Field field, SharedVariables variables, int cnt) throws IOException {
+        if (secondArg instanceof ParameterizedType parameterizedType) {
+            Type[] typeArguments2 = (parameterizedType).getActualTypeArguments();
             if (typeArguments2.length == 1) {
                 // List Type
-                cnt = ListProcessor.createList(writer, typeArguments2, field, 2, cnt);
+                cnt = ListProcessor.createList(writer, typeArguments2, field,variables, 2, cnt);
             } else {
                 // Map Type
                 if (checkSimpleMap(typeArguments2)) {
-                    cnt = simpleMap(typeArguments2, field, writer, 2, cnt);
+                    cnt = simpleMap(typeArguments2, field, writer,variables,  2, cnt);
                 } else {
-                    cnt = complexMap(typeArguments2, field, writer, 2, cnt);
+                    cnt = complexMap(typeArguments2, field, writer,variables, 2, cnt);
                 }
             }
         } else if (secondArg instanceof Class<?> innerClass) {
             if (innerClass.equals(Object.class)) {
-                ObjectProcessor.objectScan(field, writer, 1, cnt);
-                SchemaGenerator.factor++;
+                ObjectProcessor.objectScan(field, writer, 1, cnt, variables);
+                variables.nestedCnt++;
             } else {
                 String keyName = innerClass.getSimpleName();
                 if (ProtobufUtils.isPrimitiveMapType(innerClass)) {
@@ -116,77 +111,108 @@ public class MapProcessor {
                 writer.newLine();
             }
         }
+        return cnt;
+    }
+
+
+    public static int complexMap(Type[] typeArguments, Field field, BufferedWriter writer,SharedVariables variables, int tagNumber, int cnt) throws IOException {
+        Type firstArg = typeArguments[0];
+        Type secondArg = typeArguments[1];
+
+        complexMapHeader(writer, field,variables, cnt, tagNumber);
+        cnt++;
+        variables.nestedCnt++;
+
+        cnt = firstArgComplexMap(firstArg, writer, field, variables, cnt);
+
+        cnt = secondArgComplexMap(secondArg, writer, field, variables, cnt);
+
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write("  }");
         writer.newLine();
         return cnt - 1;
     }
 
-    public static int simpleMap(Type[] typeArguments, Field field, BufferedWriter writer, int tagNumber, int cnt) throws IOException {
-        Type firstArg = typeArguments[0];
-        Type secondArg = typeArguments[1];
+    private static int parameterizedArg(ParameterizedType parameterizedType, Class<?> firstArgClass, BufferedWriter writer, Field field,
+                                        SharedVariables variables, int tagNumber, int cnt) throws IOException {
 
-        Class<?> firstArgClass = (Class<?>) firstArg;
-        firstArgClass = ProtobufUtils.getProtoKeyType(firstArgClass);
+        Type[] typeArguments2 = (parameterizedType).getActualTypeArguments();
+        simpleMapHeader(writer, field, firstArgClass, variables, cnt, tagNumber);
 
-        // here firstArg is primitive for Map
-        if (secondArg instanceof ParameterizedType){
-            Type[] typeArguments2 = ((ParameterizedType) secondArg).getActualTypeArguments();
-            simpleMapHeader(writer, field, firstArgClass, cnt, tagNumber);
+        cnt++;
+        variables.nestedCnt++;
+        if (typeArguments2.length == 1){
+            // List Type
+            cnt = ListProcessor.createList(writer, typeArguments2, field,variables, tagNumber, cnt);
+        }
+        else {
+            // Map Type
+            if (checkSimpleMap(typeArguments2)) {
+                cnt = simpleMap(typeArguments2, field, writer,variables, tagNumber, cnt);
+            }
+            else{
+                cnt = complexMap(typeArguments2, field, writer, variables, tagNumber, cnt);
+            }
+        }
+        writer.write("  ".repeat(Math.max(0, cnt)));
+        writer.write("  }");
+        writer.newLine();
+        return cnt-1;
+    }
 
+    private static int nonParameterizedArg(Class<?> secondArgClass, Class<?> firstArgClass, BufferedWriter writer, Field field,
+                                           SharedVariables variables, int tagNumber, int cnt) throws IOException {
+
+        if (secondArgClass.equals(Object.class)){
+            simpleMapHeader(writer, field, firstArgClass, variables, cnt, tagNumber);
             cnt++;
-            SchemaGenerator.factor++;
-            if (typeArguments2.length == 1){
-                // List Type
-                cnt = ListProcessor.createList(writer, typeArguments2, field, tagNumber, cnt);
-            }
-            else {
-                // Map Type
-                if (checkSimpleMap(typeArguments2)) {
-                    cnt = simpleMap(typeArguments2, field, writer, tagNumber, cnt);
-                }
-                else{
-                    cnt = complexMap(typeArguments2, field, writer, tagNumber, cnt);
-                }
-            }
+            variables.nestedCnt++;
+            ObjectProcessor.objectScan(field, writer, tagNumber, cnt, variables);
             writer.write("  ".repeat(Math.max(0, cnt)));
             writer.write("  }");
             writer.newLine();
             return cnt-1;
         }
-        else if (secondArg instanceof Class<?> secondArgClass){
+        else {
+            String mapName = field.getName();
+            writer.write("  ".repeat(Math.max(0, cnt)));
+            writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass.getSimpleName() + "> " + mapName + " = " + tagNumber +  ";");
+            writer.newLine();
+        }
+        return cnt;
+    }
 
-            if (secondArgClass.equals(Object.class)){
-                simpleMapHeader(writer, field, firstArgClass, cnt, tagNumber);
-                cnt++;
-                SchemaGenerator.factor++;
-                ObjectProcessor.objectScan(field, writer, tagNumber, cnt);
-                writer.write("  ".repeat(Math.max(0, cnt)));
-                writer.write("  }");
-                writer.newLine();
-                return cnt-1;
-            }
-            else {
-                String mapName = field.getName();
-                writer.write("  ".repeat(Math.max(0, cnt)));
-                writer.write(   "  " + MAP + "<" + firstArgClass.getSimpleName() + "," + secondArgClass.getSimpleName() + "> " + mapName + " = " + tagNumber +  ";");
-                writer.newLine();
-            }
-            return cnt;
+    public static int simpleMap(Type[] typeArguments, Field field, BufferedWriter writer,SharedVariables variables, int tagNumber, int cnt) throws IOException {
+        Type firstArg = typeArguments[0];
+        Type secondArg = typeArguments[1];
+
+        // here firstArg is primitive for Map
+        Class<?> firstArgClass = (Class<?>) firstArg;
+        firstArgClass = ProtobufUtils.getProtoKeyType(firstArgClass);
+
+
+        if (secondArg instanceof ParameterizedType parameterizedType){
+            return parameterizedArg(parameterizedType, firstArgClass, writer, field, variables, tagNumber, cnt);
+        }
+
+        else if (secondArg instanceof Class<?> secondArgClass){
+            return nonParameterizedArg(secondArgClass, firstArgClass, writer, field, variables, tagNumber, cnt);
         }
         return 0;
     }
 
     public static int mapScan(Field field, int tagNumber, BufferedWriter writer) throws IOException {
         Type genericType = field.getGenericType();
+        SharedVariables variables = new SharedVariables();
+        variables.nestedCnt = 0;
 
-        if (genericType instanceof ParameterizedType){
-            Type[] typeArguments = ((ParameterizedType) genericType).getActualTypeArguments();
+        if (genericType instanceof ParameterizedType parameterizedType){
+            Type[] typeArguments = (parameterizedType).getActualTypeArguments();
             if (checkSimpleMap(typeArguments)){
-                simpleMap(typeArguments, field, writer, tagNumber, 0);
+                simpleMap(typeArguments, field, writer,variables, tagNumber, 0);
             }
             else {
-                complexMap(typeArguments, field, writer, tagNumber, 0);
+                complexMap(typeArguments, field, writer,variables, tagNumber, 0);
             }
             tagNumber++;
             writer.newLine();

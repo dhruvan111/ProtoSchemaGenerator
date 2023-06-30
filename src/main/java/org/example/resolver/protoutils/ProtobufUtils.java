@@ -1,7 +1,6 @@
-package org.example.resolver.protoUtils;
+package org.example.resolver.protoutils;
 
-import com.google.common.collect.ImmutableSet;
-import org.example.resolver.protoDatatypes.*;
+import org.example.resolver.protoutils.protodatatypes.*;
 
 import java.util.*;
 
@@ -10,7 +9,7 @@ public class ProtobufUtils {
     private static final Map<Class<?>, Class<?>> PRIMITIVE_TYPE_MAPPING = new HashMap<>();
     private static final Set<Class<?>> PRIMITIVE_MAP_MAPPING = new HashSet<>();
     private static final Map<Class<?>, Class<?>> PRIMITIVE_KEY_MAPPING = new HashMap<>();
-    private static final Set<Class<?>> PRIMITIVE_LIST_MAPPING;
+    private static final Set<Class<?>> PRIMITIVE_LIST_MAPPING = new HashSet<>();
 
     static {
         PRIMITIVE_TYPE_MAPPING.put(boolean.class, bool.class);
@@ -26,15 +25,10 @@ public class ProtobufUtils {
     }
 
     static {
-        Set<Class<?>> primitiveClasses = new HashSet<>();
         // for Collection types
-        primitiveClasses.add(List.class);
-        primitiveClasses.add(ArrayList.class);
-        primitiveClasses.add(LinkedList.class);
-
-        PRIMITIVE_LIST_MAPPING = ImmutableSet.of(List.class, ArrayList.class);
-
-
+        PRIMITIVE_LIST_MAPPING.add(List.class);
+        PRIMITIVE_LIST_MAPPING.add(ArrayList.class);
+        PRIMITIVE_LIST_MAPPING.add(LinkedList.class);
 
         PRIMITIVE_LIST_MAPPING.add(Vector.class);
         PRIMITIVE_LIST_MAPPING.add(Stack.class);

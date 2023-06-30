@@ -2,12 +2,12 @@ package org.example.resolver.generator;
 
 import org.example.resolver.processor.ArrayProcessor;
 import org.example.resolver.processor.EnumProcessor;
-import org.example.resolver.fileScan.FileCreator;
-import org.example.resolver.fileScan.FileScanner;
+import org.example.resolver.fileanalyzer.FileCreator;
+import org.example.resolver.fileanalyzer.FileScanner;
 import org.example.resolver.processor.ListProcessor;
 import org.example.resolver.processor.MapProcessor;
 import org.example.resolver.processor.ObjectProcessor;
-import org.example.resolver.protoUtils.ProtobufUtils;
+import org.example.resolver.protoutils.ProtobufUtils;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -25,7 +25,6 @@ public class SchemaGenerator {
     private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
     private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
 
-    public static int factor;
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
         makeDir(outputDirectoryPath);
@@ -95,7 +94,8 @@ public class SchemaGenerator {
 
     private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
-        Set<Class<?>> importDone, fields;
+        Set<Class<?>> importDone;
+        Set<Class<?>> fields;
         importDone = new HashSet<>();
         fields = FileScanner.analyzeFields(clazz.getDeclaredFields());
 
@@ -128,15 +128,11 @@ public class SchemaGenerator {
             if (ProtobufUtils.isPrimitiveType(dependency)){
                 continue;
             }
-            if (dependency.equals(Object.class)){
-                importWithoutCall(dependency, writer, clazz);
-                importDone.add(dependency);
-            }
-            else if (!isFileGenerated.contains(dependency)){
+            if (!isFileGenerated.contains(dependency)){
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
-            else if (!importDone.contains(dependency)){
+            else if (dependency.equals(Object.class) || !importDone.contains(dependency)){
                 importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
@@ -173,7 +169,6 @@ public class SchemaGenerator {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            factor = 0;
 
             // checking for any Collection Type
             if (ProtobufUtils.isPrimitiveListType(fieldType)){
@@ -224,7 +219,8 @@ public class SchemaGenerator {
         File file = FileCreator.createFile(clazz, outputDirectoryPath);
 
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        Set<Class<?>> interfaces, superClass;
+        Set<Class<?>> interfaces;
+        Set<Class<?>> superClass;
         interfaces = FileScanner.analyzeImports(clazz.getInterfaces());
         superClass = FileScanner.analyzeImports(new Class[]{clazz.getSuperclass()});
 

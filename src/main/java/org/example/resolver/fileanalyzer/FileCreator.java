@@ -1,4 +1,4 @@
-package org.example.resolver.fileScan;
+package org.example.resolver.fileanalyzer;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -22,7 +22,7 @@ public class FileCreator {
 
     public static File createFile(Class<?> clazz, String outputDirectoryPath) throws IOException {
         String packageName = clazz.getPackageName();
-        String packagePath = outputDirectoryPath + "/" + packageName.replace(".", "/");
+        String packagePath = outputDirectoryPath + File.separator + packageName.replace(".", "/");
         File packageDir = new File(packagePath);
         if (!packageDir.exists()) {
             boolean dirCreated = packageDir.mkdirs();
@@ -31,7 +31,7 @@ public class FileCreator {
             }
         }
 
-        String fileName = packagePath + "/" + clazz.getSimpleName() + PROTOEXT;
+        String fileName = packagePath + File.separator + clazz.getSimpleName() + PROTOEXT;
         File file = new File(fileName);
         if (!file.exists()) {
             boolean fileCreated = file.createNewFile();
