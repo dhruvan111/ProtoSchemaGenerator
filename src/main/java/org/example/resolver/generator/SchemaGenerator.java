@@ -1,169 +1,110 @@
 package org.example.resolver.generator;
 
-import org.example.resolver.processor.ArrayProcessor;
-import org.example.resolver.processor.EnumProcessor;
-import org.example.resolver.fileanalyzer.FileCreator;
-import org.example.resolver.fileanalyzer.FileScanner;
-import org.example.resolver.processor.ListProcessor;
-import org.example.resolver.processor.MapProcessor;
-import org.example.resolver.processor.ObjectProcessor;
+import org.example.resolver.fileutilities.FileAnalyzer;
+import org.example.resolver.fileutilities.FileCreator;
+import org.example.resolver.processor.*;
 import org.example.resolver.protoutils.ProtobufUtils;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class SchemaGenerator {
 
     private static final Set<Class<?>> isFileGenerated = new HashSet<>();
     private static final String IMPORT = "import";
     private static final String PROTOEXT = ".proto";
-    private static final String PROTOVERSION = "syntax = \"proto3\";";
     private static final String IMPORT_ANY = "import \"google/protobuf/any.proto\";";
-    private static final String JAVA_PKG = "option java_package = ";
-    private static final String MULTIPLE_FILES_OPN = "option java_multiple_files = true;";
-    private static final String FILE_CREATE_ERR = "Unable to create file at specified path.";
+    private static final ConcurrentHashMap<Class<?>, Object> fileLocks = new ConcurrentHashMap<>();
+
 
     public void generateProtobufSchema(Class<?> rootClass, String outputDirectoryPath) throws IOException {
 
-        makeDir(outputDirectoryPath);
+        FileCreator.makeDir(outputDirectoryPath);
         // creating .proto file for rootClass
         writeProtobufSchema(rootClass, outputDirectoryPath);
     }
 
-    private void makeDir(String outputDirectoryPath) throws IOException {
-
-        File outputDirectory = new File(outputDirectoryPath);
-        if (!outputDirectory.exists()) {
-            boolean dirCreated = outputDirectory.mkdirs();
-            if (!dirCreated){
-                throw new IOException(FILE_CREATE_ERR);
-            }
-        }
-    }
-
     private void importWithoutCall(Class<?> fieldType, BufferedWriter writer, Class<?> clazz) throws IOException {
-        if (fieldType.equals(Object.class)){
+        if (fieldType.equals(Object.class)) {
             writer.write(IMPORT_ANY);
             writer.newLine();
             return;
         }
         String packageName = fieldType.getPackageName();
-        if (fieldType == clazz){
+        if (fieldType == clazz) {
             return;
         }
         String importPackage = packageName.replace(".", "/");
-        writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
+        writer.write(IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() + PROTOEXT + "\";");
         writer.newLine();
     }
 
-    private void importWithCall(Class<?> fieldType,BufferedWriter writer, String outputDirectoryPath, Class<?> clazz) throws IOException {
+    private void importWithCall(Class<?> fieldType, BufferedWriter writer, String outputDirectoryPath, Class<?> clazz) throws IOException {
         String packageName = fieldType.getPackageName();
-        if (fieldType == clazz){
+        if (fieldType == clazz) {
             return;
         }
         String importPackage = packageName.replace(".", "/");
-        writer.write( IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() +  PROTOEXT + "\";");
+        writer.write(IMPORT + " \"" + importPackage + "/" + fieldType.getSimpleName() + PROTOEXT + "\";");
         writer.newLine();
         // recursively making .proto files for all non-primitive files
         writeProtobufSchema(fieldType, outputDirectoryPath);
     }
 
-    public static String capitalize(String str) {
-        if (str == null || str.isEmpty()) {
-            return str;
-        }
-        return Character.toUpperCase(str.charAt(0)) + str.substring(1);
-    }
 
-    private void hardCodeHeaders(BufferedWriter writer,String packageName) throws IOException {
-        writer.write(PROTOVERSION);
-        writer.newLine();
-        writer.newLine();
-
-        writer.write(JAVA_PKG + "\"" + packageName + "\";");
-        writer.newLine();
-        writer.newLine();
-
-        writer.write(MULTIPLE_FILES_OPN);
-        writer.newLine();
-        writer.newLine();
-    }
-
-
-    private void writeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
+    private void analyzeHeaders(BufferedWriter writer, String outputDirectoryPath, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
         Set<Class<?>> importDone;
         Set<Class<?>> fields;
         importDone = new HashSet<>();
-        fields = FileScanner.analyzeFields(clazz.getDeclaredFields());
+        fields = FileAnalyzer.analyzeFields(clazz.getDeclaredFields());
 
-        hardCodeHeaders(writer, clazz.getPackageName());
+        FileCreator.fileHeaders(writer, clazz.getPackageName());
 
         // Import for interfaces & Parent class
-        for (Class<?> dependency:interfaces){
-            if (!isFileGenerated.contains(dependency)){
+        for (Class<?> dependency : interfaces) {
+            if (!isFileGenerated.contains(dependency)) {
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
-            }
-            else if (!importDone.contains(dependency)){
+            } else if (!importDone.contains(dependency)) {
                 importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }
-        for (Class<?> dependency:superClass){
-            if (!isFileGenerated.contains(dependency)){
+        for (Class<?> dependency : superClass) {
+            if (!isFileGenerated.contains(dependency)) {
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
-            }
-            else if (!importDone.contains(dependency)){
+            } else if (!importDone.contains(dependency)) {
                 importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }
 
         // Imports for Fields
-        for (Class<?> dependency:fields){
-            if (ProtobufUtils.isPrimitiveType(dependency)){
+        for (Class<?> dependency : fields) {
+            if (ProtobufUtils.isPrimitiveType(dependency)) {
                 continue;
             }
-            if (!isFileGenerated.contains(dependency)){
+            if (!isFileGenerated.contains(dependency)) {
                 importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
-            }
-            else if (dependency.equals(Object.class) || !importDone.contains(dependency)){
+            } else if (dependency.equals(Object.class) || !importDone.contains(dependency)) {
                 importWithoutCall(dependency, writer, clazz);
                 importDone.add(dependency);
             }
         }
     }
 
-    private int schemaDependency(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
-
-        writer.newLine();
-        writer.write("message " + clazz.getSimpleName() + " {");
-        writer.newLine();
-
-        int tagNumber = 1;
-
-        for (Class<?> dependency: interfaces){
-            String dependencyName = dependency.getSimpleName() + "Implementation";
-            writer.write("  " + dependency.getSimpleName() + " " + dependencyName + " = " + (tagNumber++) + ";");
-            writer.newLine();
-        }
-
-        for (Class<?> dependency: superClass){
-            String dependencyName = dependency.getSimpleName() + "Instance";
-            writer.write("  " + dependency.getSimpleName() + " " + dependencyName + " = " + (tagNumber++) + ";");
-            writer.newLine();
-        }
-        return tagNumber;
-    }
-
     private void writeMessage(BufferedWriter writer, Class<?> clazz, Set<Class<?>> interfaces, Set<Class<?>> superClass) throws IOException {
 
-        int tagNumber = schemaDependency(writer, clazz, interfaces, superClass);
+        int tagNumber = FileCreator.schemaDependency(writer, clazz, interfaces, superClass);
 
         // for every Field
         Field[] fields = clazz.getDeclaredFields();
@@ -171,25 +112,21 @@ public class SchemaGenerator {
             Class<?> fieldType = field.getType();
 
             // checking for any Collection Type
-            if (ProtobufUtils.isPrimitiveListType(fieldType)){
+            if (ProtobufUtils.isPrimitiveListType(fieldType)) {
                 tagNumber = ListProcessor.listScan(field, tagNumber, writer);
             }
 
             // Checking for Map Type
-            else if (ProtobufUtils.isPrimitiveMapType(fieldType)){
+            else if (ProtobufUtils.isPrimitiveMapType(fieldType)) {
                 tagNumber = MapProcessor.mapScan(field, tagNumber, writer);
-            }
-
-            else if (fieldType.isArray()){
+            } else if (fieldType.isArray()) {
                 tagNumber = ArrayProcessor.arrayScan(field, tagNumber, writer);
             }
 
             // Checking for Enum type
-            else if (fieldType.isEnum()){
+            else if (fieldType.isEnum()) {
                 tagNumber = EnumProcessor.enumScan(field, fieldType, tagNumber, writer);
-            }
-
-            else if (fieldType.equals(Object.class)){
+            } else if (fieldType.equals(Object.class)) {
                 tagNumber = ObjectProcessor.objectScan(field, writer, tagNumber, 1);
             }
 
@@ -200,7 +137,7 @@ public class SchemaGenerator {
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
 
-            } else if (FileScanner.checkNonPrimitive(fieldType)) {
+            } else if (FileAnalyzer.checkNonPrimitive(fieldType)) {
 
                 writer.write("  " + fieldType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
@@ -213,22 +150,30 @@ public class SchemaGenerator {
 
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) throws IOException {
-        // adding to created files
-        isFileGenerated.add(clazz);
 
-        File file = FileCreator.createFile(clazz, outputDirectoryPath);
+        Object fileLock = fileLocks.putIfAbsent(clazz, new Object());
+        if (fileLock != null) {
+            return;
+        }
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-        Set<Class<?>> interfaces;
-        Set<Class<?>> superClass;
-        interfaces = FileScanner.analyzeImports(clazz.getInterfaces());
-        superClass = FileScanner.analyzeImports(new Class[]{clazz.getSuperclass()});
+        try {
+            // object acquired lock on file clazz
+            isFileGenerated.add(clazz);
+            File file = FileCreator.createFile(clazz, outputDirectoryPath);
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                Set<Class<?>> interfaces;
+                Set<Class<?>> superClass;
+                interfaces = FileAnalyzer.analyzeImports(clazz.getInterfaces());
+                superClass = FileAnalyzer.analyzeImports(new Class[]{clazz.getSuperclass()});
+                // All Imports
+                analyzeHeaders(writer, outputDirectoryPath, clazz, interfaces, superClass);
 
-        // All Imports
-        writeHeaders(writer, outputDirectoryPath, clazz, interfaces, superClass);
-
-        // message body
-        writeMessage(writer, clazz, interfaces, superClass);
+                // message body
+                writeMessage(writer, clazz, interfaces, superClass);
+            }
+        }finally {
+            fileLocks.remove(clazz);
+        }
     }
 }
 

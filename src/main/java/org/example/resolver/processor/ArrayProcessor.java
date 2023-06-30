@@ -1,5 +1,6 @@
 package org.example.resolver.processor;
 
+import org.example.resolver.fileutilities.FileCreator;
 import org.example.resolver.generator.SchemaGenerator;
 import org.example.resolver.protoutils.ProtobufUtils;
 
@@ -31,7 +32,7 @@ public class ArrayProcessor{
     private static int createArray(Field field, Class<?> argument, SharedVariables variables, int tagNumber, int cnt, BufferedWriter writer) throws IOException {
         if (argument.isArray()){
             // nested array
-            String nestedListName = SchemaGenerator.capitalize(field.getName()) + ARRAY;
+            String nestedListName = FileCreator.capitalize(field.getName()) + ARRAY;
             cnt++;
             variables.nestedCnt++;
             argument = argument.getComponentType();

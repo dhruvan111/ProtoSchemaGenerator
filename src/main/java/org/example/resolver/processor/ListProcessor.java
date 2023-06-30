@@ -1,5 +1,6 @@
 package org.example.resolver.processor;
 
+import org.example.resolver.fileutilities.FileCreator;
 import org.example.resolver.generator.SchemaGenerator;
 import org.example.resolver.protoutils.ProtobufUtils;
 
@@ -49,7 +50,7 @@ public class ListProcessor{
 
         if (typeArguments.length>0 && typeArguments[0] instanceof ParameterizedType parameterizedType){
 
-            String nestedListName = SchemaGenerator.capitalize(field.getName()) + LIST;
+            String nestedListName = FileCreator.capitalize(field.getName()) + LIST;
             Type[] typeArguments2 = (parameterizedType).getActualTypeArguments();
             listHeader(writer, nestedListName, field, variables, cnt, tagNumber);
 

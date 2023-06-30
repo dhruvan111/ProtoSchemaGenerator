@@ -11,12 +11,11 @@ import java.util.Objects;
 public class ProtoGenerator {
     private static final String JAVA_EXT = ".java";
     public void generateAllFiles(String inputDir , String outputDir) throws IOException, ClassNotFoundException {
-        SchemaGenerator generator = new SchemaGenerator();
         File currDir = new File(inputDir);
         File[] files = currDir.listFiles();
 
         assert files != null;
-        iterateAllFiles(files, generator, outputDir);
+        iterateAllFiles(files, outputDir);
     }
 
     public void generateOneFile(Class<?> clazz, String outputDir) throws IOException {
@@ -24,7 +23,7 @@ public class ProtoGenerator {
         generator.generateProtobufSchema(clazz, outputDir);
     }
 
-    private static void iterateAllFiles(File[] files, SchemaGenerator generator, String outputDir) throws IOException, ClassNotFoundException {
+    private static void iterateAllFiles(File[] files, String outputDir) throws IOException, ClassNotFoundException {
         for (File file:files){
             if (file.isFile() && file.getName().endsWith(JAVA_EXT)){
 
@@ -33,10 +32,10 @@ public class ProtoGenerator {
                 String className = packageName + "." + fileName.replace(JAVA_EXT, "");
 
                 Class<?> clazz = Class.forName(className);
-                generateAllSchema(generator, clazz, outputDir);
+                generateAllSchema(clazz, outputDir);
             }
             else if (file.isDirectory()){
-                iterateAllFiles(Objects.requireNonNull(file.listFiles()), generator, outputDir);
+                iterateAllFiles(Objects.requireNonNull(file.listFiles()), outputDir);
             }
         }
     }
@@ -54,7 +53,8 @@ public class ProtoGenerator {
         return "";
     }
 
-    private static void generateAllSchema(SchemaGenerator generator, Class<?> clazz, String outputDirPath) throws IOException {
+    private static void generateAllSchema(Class<?> clazz, String outputDirPath) throws IOException {
+        SchemaGenerator generator = new SchemaGenerator();
         generator.generateProtobufSchema(clazz, outputDirPath);
     }
 }

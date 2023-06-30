@@ -1,4 +1,4 @@
-package org.example.resolver.fileanalyzer;
+package org.example.resolver.fileutilities;
 
 import org.example.resolver.protoutils.ProtobufUtils;
 
@@ -8,9 +8,9 @@ import java.lang.reflect.Type;
 import java.util.HashSet;
 import java.util.Set;
 
-public class FileScanner {
+public class FileAnalyzer {
     private static final String JAVAEXT = "java.";
-    private FileScanner(){}
+    private FileAnalyzer(){}
     public static Set<Class<?>> analyzeImports(Class<?>[] interfaces) {
         Set<Class<?>> dependencies;
         dependencies = new HashSet<>();
