@@ -3,9 +3,7 @@ package org.example.resolver;
 import org.example.resolver.fileutilities.FileAnalyzer;
 import org.example.resolver.generator.SchemaGenerator;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
@@ -29,7 +27,7 @@ public class ProtoGenerator {
         generator.generateProtobufSchema(clazz, outputDir);
     }
 
-    private static void iterateAllFiles(File[] files, String outputDir, ExecutorService service) throws IOException, ClassNotFoundException {
+    private void iterateAllFiles(File[] files, String outputDir, ExecutorService service) throws IOException, ClassNotFoundException {
         for (File file:files){
             if (file.isFile() && file.getName().endsWith(JAVA_EXT)){
 
@@ -47,11 +45,11 @@ public class ProtoGenerator {
     }
 
 
-    private static void generateAllSchema(Class<?> clazz, String outputDirPath, ExecutorService service) {
+    private void generateAllSchema(Class<?> clazz, String outputDirPath, ExecutorService service) {
 
         Runnable task = () -> {
-            SchemaGenerator generator = new SchemaGenerator();
             try {
+                SchemaGenerator generator = new SchemaGenerator();
                 generator.generateProtobufSchema(clazz, outputDirPath);
             } catch (IOException e) {
                 throw new FileNotGenerated(FILE_NOT_GENERATED + " for " + clazz);

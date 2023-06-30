@@ -28,7 +28,7 @@ public class FileCreator {
         File packageDir = new File(packagePath);
         if (!packageDir.exists()) {
             boolean dirCreated = packageDir.mkdirs();
-            if (!dirCreated) {
+            if (!dirCreated && !packageDir.exists()) {
                 throw new IOException(PACKAGE_CREATE_ERR);
             }
         }
@@ -50,7 +50,7 @@ public class FileCreator {
         File outputDirectory = new File(outputDirectoryPath);
         if (!outputDirectory.exists()) {
             boolean dirCreated = outputDirectory.mkdirs();
-            if (!dirCreated){
+            if (!dirCreated && !outputDirectory.exists()){
                 throw new IOException(DIR_CREATE_ERR);
             }
         }
