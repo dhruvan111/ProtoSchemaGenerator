@@ -46,7 +46,7 @@ public class ArrayProcessor{
         else {
             String innerClassName = argument.getSimpleName();
             if (ProtobufUtils.isPrimitiveType(argument)) {
-                innerClassName = ProtobufUtils.getProtobufType(argument).getSimpleName();
+                innerClassName = ProtobufUtils.getProtoPrimitiveType(argument).getSimpleName();
             }
             variables.nestedCnt++;
             writer.write("  ".repeat(Math.max(0, cnt)));

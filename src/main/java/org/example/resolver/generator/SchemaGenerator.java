@@ -92,11 +92,11 @@ public class SchemaGenerator {
             if (ProtobufUtils.isPrimitiveType(dependency)) {
                 continue;
             }
-            if (!isFileGenerated.contains(dependency)) {
-                importWithCall(dependency, writer, outputDirectoryPath, clazz);
-                importDone.add(dependency);
-            } else if (dependency.equals(Object.class) || !importDone.contains(dependency)) {
+            if (dependency.equals(Object.class) || !importDone.contains(dependency)) {
                 importWithoutCall(dependency, writer, clazz);
+                importDone.add(dependency);
+            } else if (!isFileGenerated.contains(dependency)) {
+                importWithCall(dependency, writer, outputDirectoryPath, clazz);
                 importDone.add(dependency);
             }
         }
@@ -111,29 +111,19 @@ public class SchemaGenerator {
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
 
-            // checking for any Collection Type
-            if (ProtobufUtils.isPrimitiveListType(fieldType)) {
+            if (ProtobufUtils.isPrimitiveListType(fieldType)) { // List Type
                 tagNumber = ListProcessor.listScan(field, tagNumber, writer);
-            }
-
-            // Checking for Map Type
-            else if (ProtobufUtils.isPrimitiveMapType(fieldType)) {
+            } else if (ProtobufUtils.isPrimitiveMapType(fieldType)) {   // Map type
                 tagNumber = MapProcessor.mapScan(field, tagNumber, writer);
-            } else if (fieldType.isArray()) {
+            } else if (fieldType.isArray()) {  // Array Type
                 tagNumber = ArrayProcessor.arrayScan(field, tagNumber, writer);
-            }
-
-            // Checking for Enum type
-            else if (fieldType.isEnum()) {
+            } else if (fieldType.isEnum()) {    // Enum Type
                 tagNumber = EnumProcessor.enumScan(field, fieldType, tagNumber, writer);
-            } else if (fieldType.equals(Object.class)) {
+            } else if (fieldType.equals(Object.class)) {    // Object Type
                 tagNumber = ObjectProcessor.objectScan(field, writer, tagNumber, 1);
-            }
+            } else if (ProtobufUtils.isPrimitiveType(fieldType)) {
 
-            // Checking for Proto Primitive types
-            else if (ProtobufUtils.isPrimitiveType(fieldType)) {
-
-                Class<?> protobufType = ProtobufUtils.getProtobufType(fieldType);
+                Class<?> protobufType = ProtobufUtils.getProtoPrimitiveType(fieldType);
                 writer.write("  " + protobufType.getSimpleName() + " " + field.getName() + " = " + (tagNumber++) + ";");
                 writer.newLine();
 

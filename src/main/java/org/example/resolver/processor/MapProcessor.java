@@ -26,8 +26,8 @@ public class MapProcessor {
     }
 
     private static void complexMapHeader(BufferedWriter writer, Field field,SharedVariables variables, int cnt, int tagNumber) throws IOException {
-        String schemaName = field.getName() + ENTRY + variables.nestedCnt;
-        String mapName = field.getName() + MAP + variables.nestedCnt;
+        String schemaName = field.getName() + ENTRY + ((variables.nestedCnt != 0) ? variables.nestedCnt : "");
+        String mapName = field.getName() + MAP + ((variables.nestedCnt != 0) ? variables.nestedCnt : "");
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write(REPEATED + schemaName + " " + mapName + " = " + tagNumber + ";");
@@ -72,8 +72,8 @@ public class MapProcessor {
                 variables.nestedCnt++;
             } else {
                 String keyName = innerClass.getSimpleName();
-                if (ProtobufUtils.isPrimitiveMapType(innerClass)) {
-                    keyName = ProtobufUtils.getProtoMapType().getSimpleName();
+                if (ProtobufUtils.isPrimitiveType(innerClass)) {
+                    keyName = ProtobufUtils.getProtoPrimitiveType(innerClass).getSimpleName();
                 }
                 writer.write("  ".repeat(Math.max(0, cnt)));
                 writer.write("  " + keyName + KEY);
@@ -103,8 +103,8 @@ public class MapProcessor {
                 variables.nestedCnt++;
             } else {
                 String keyName = innerClass.getSimpleName();
-                if (ProtobufUtils.isPrimitiveMapType(innerClass)) {
-                    keyName = ProtobufUtils.getProtoMapType().getSimpleName();
+                if (ProtobufUtils.isPrimitiveType(innerClass)) {
+                    keyName = ProtobufUtils.getProtoPrimitiveType(innerClass).getSimpleName();
                 }
                 writer.write("  ".repeat(Math.max(0, cnt)));
                 writer.write("  " + keyName + VAL);
@@ -128,7 +128,7 @@ public class MapProcessor {
         cnt = secondArgComplexMap(secondArg, writer, field, variables, cnt);
 
         writer.write("  ".repeat(Math.max(0, cnt)));
-        writer.write("  }");
+        writer.write("}");
         writer.newLine();
         return cnt - 1;
     }

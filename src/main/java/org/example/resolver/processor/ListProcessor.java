@@ -17,8 +17,8 @@ public class ListProcessor{
     private ListProcessor(){}
 
     private static void listHeader(BufferedWriter writer,String nestedListName, Field field,SharedVariables variables, int cnt, int tagNumber) throws IOException {
-        String currListName = nestedListName + variables.nestedCnt;
-        String elementName = field.getName() + variables.nestedCnt;
+        String currListName = nestedListName  + ((variables.nestedCnt != 0) ? (variables.nestedCnt) : "");
+        String elementName = field.getName() + ((variables.nestedCnt != 0) ? (variables.nestedCnt) : "");
 
         writer.write("  ".repeat(Math.max(0, cnt)));
         writer.write( REPEATED + currListName + " " + elementName + " = " + (tagNumber) + ";");
@@ -69,7 +69,7 @@ public class ListProcessor{
                 }
             }
             writer.write("  ".repeat(Math.max(0, cnt)));
-            writer.write("  }");
+            writer.write("}");
             writer.newLine();
             return cnt-1;
         }
@@ -77,7 +77,7 @@ public class ListProcessor{
 
             String className = innerClass.getSimpleName();
             if (ProtobufUtils.isPrimitiveType(innerClass)){
-                className = ProtobufUtils.getProtobufType(innerClass).getSimpleName();
+                className = ProtobufUtils.getProtoPrimitiveType(innerClass).getSimpleName();
             }
             else if (innerClass.equals(Object.class)){
                 className = ANY;

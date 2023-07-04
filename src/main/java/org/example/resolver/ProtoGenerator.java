@@ -16,7 +16,9 @@ public class ProtoGenerator {
         File currDir = new File(inputDir);
         File[] files = currDir.listFiles();
 
-        assert files != null;
+        if (files == null){
+            return;
+        }
         ExecutorService service = Executors.newFixedThreadPool(threadCount);
         iterateAllFiles(files, outputDir, service);
         service.shutdown();

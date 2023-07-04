@@ -72,9 +72,7 @@ public class FileAnalyzer {
             if (ProtobufUtils.isPrimitiveListType(fieldType) || ProtobufUtils.isPrimitiveMapType(fieldType)) {
                 Type genericType = field.getGenericType();
                 dependencies.addAll(analyzeNestedDependency(genericType));
-            }
-
-            else if (fieldType.isArray()){
+            } else if (fieldType.isArray()){
                 Class<?> componentType = fieldType.getComponentType();
                 while (componentType.isArray()){
                     componentType = componentType.getComponentType();
@@ -82,13 +80,9 @@ public class FileAnalyzer {
                 if (checkNonPrimitive(componentType)){
                     dependencies.add(componentType);
                 }
-            }
-
-            else if (fieldType.equals(Object.class)){
+            } else if (fieldType.equals(Object.class)){
                 dependencies.add(fieldType);
-            }
-
-            else if (checkNonPrimitive(fieldType)){
+            } else if (checkNonPrimitive(fieldType)){
                 dependencies.add(fieldType);
             }
         }

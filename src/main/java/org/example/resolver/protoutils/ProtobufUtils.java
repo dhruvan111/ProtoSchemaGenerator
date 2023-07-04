@@ -73,7 +73,7 @@ public class ProtobufUtils {
         return PRIMITIVE_TYPE_MAPPING.containsKey(clazz);
     }
 
-    public static Class<?> getProtobufType(Class<?> clazz) {
+    public static Class<?> getProtoPrimitiveType(Class<?> clazz) {
         return PRIMITIVE_TYPE_MAPPING.get(clazz);
     }
 
