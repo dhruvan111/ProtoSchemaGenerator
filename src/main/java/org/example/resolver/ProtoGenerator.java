@@ -12,14 +12,14 @@ import java.util.concurrent.Executors;
 public class ProtoGenerator {
     private static final String JAVA_EXT = ".java";
     private static final String FILE_NOT_GENERATED = "File not generated";
-    public void generateAllFiles(String inputDir , String outputDir, int threadCount) throws IOException, ClassNotFoundException {
+    public void generateAllFiles(String inputDir , String outputDir) throws IOException, ClassNotFoundException {
         File currDir = new File(inputDir);
         File[] files = currDir.listFiles();
 
         if (files == null){
             return;
         }
-        ExecutorService service = Executors.newFixedThreadPool(threadCount);
+        ExecutorService service = Executors.newFixedThreadPool(4);
         iterateAllFiles(files, outputDir, service);
         service.shutdown();
     }
