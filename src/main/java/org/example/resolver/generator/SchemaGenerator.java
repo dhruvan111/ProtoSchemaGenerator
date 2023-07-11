@@ -141,14 +141,14 @@ public class SchemaGenerator {
 
     private void writeProtobufSchema(Class<?> clazz, String outputDirectoryPath) {
 
-        if (!isFileGenerated.contains(clazz)){
-            isFileGenerated.add(clazz);
-        }
-        else{
-            return;
+        synchronized (isFileGenerated) {
+            if (isFileGenerated.contains(clazz)) {
+                return;
+            } else {
+                isFileGenerated.add(clazz);
+            }
         }
         try {
-
             File file = FileCreator.createFile(clazz, outputDirectoryPath);
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
                 Set<Class<?>> interfaces;
