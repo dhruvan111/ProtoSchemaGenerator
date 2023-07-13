@@ -19,7 +19,7 @@ public class ProtoGenerator {
         if (files == null){
             return;
         }
-        ExecutorService service = Executors.newFixedThreadPool(4);
+        ExecutorService service = Executors.newFixedThreadPool(1);
         iterateAllFiles(files, outputDir, service);
         service.shutdown();
     }

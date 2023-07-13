@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -112,7 +113,7 @@ public class SchemaGenerator {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
-            if (field.isAnnotationPresent(JsonIgnore.class)){
+            if (field.isAnnotationPresent(JsonIgnore.class) || Modifier.isStatic(field.getModifiers())){
                 continue;
             }
 
