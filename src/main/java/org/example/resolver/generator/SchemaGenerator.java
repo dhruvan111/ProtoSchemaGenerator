@@ -1,5 +1,6 @@
 package org.example.resolver.generator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.example.resolver.fileutilities.FileAnalyzer;
 import org.example.resolver.fileutilities.FileCreator;
 import org.example.resolver.processor.*;
@@ -9,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashSet;
@@ -110,6 +112,9 @@ public class SchemaGenerator {
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
             Class<?> fieldType = field.getType();
+            if (field.isAnnotationPresent(JsonIgnore.class)){
+                continue;
+            }
 
             if (ProtobufUtils.isPrimitiveListType(fieldType)) { // List Type
                 tagNumber = ListProcessor.listScan(field, tagNumber, writer);

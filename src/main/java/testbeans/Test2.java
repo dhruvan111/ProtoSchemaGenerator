@@ -2,10 +2,10 @@ package testbeans;
 
 import java.util.Map;
 
-public class Test2 extends Test3{
-    String uid;
-    Map<Test1, Integer> mapTesting;
-    Object obj;
+public class Test2 extends Test3 {
+    private String uid;
+    private Map<Test1, Integer> mapTesting;
+    private Object obj;
 
     public Test2() {
     }
