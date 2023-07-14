@@ -112,6 +112,7 @@ public class SchemaGenerator {
         // for every Field
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
+            field.setAccessible(true);
             Class<?> fieldType = field.getType();
             if (field.isAnnotationPresent(JsonIgnore.class) || Modifier.isStatic(field.getModifiers())){
                 continue;
