@@ -1,9 +1,0 @@
-syntax = "proto3";
-
-package personData;
-
-
-message Address {
-  string cityName = 1;
-  string PIN = 2;
-}

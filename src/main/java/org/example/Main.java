@@ -1,12 +1,11 @@
 package org.example;
 
-import org.example.resolver.ProtobufSchemaGenerator;
-
-import java.io.IOException;
+import org.example.resolver.ProtoGenerator;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        ProtobufSchemaGenerator generator = new ProtobufSchemaGenerator();
-        generator.generateProtobufSchema(Person.class, "protofiles");
+    public static void main(String[] args) throws Exception {
+        String path = "/Users/dhruvankadavala/Documents/Protobuf2/src/main/java/test";
+        ProtoGenerator generator = new ProtoGenerator();
+        generator.generateAllFiles(path, "ProtoFiles");
     }
 }
